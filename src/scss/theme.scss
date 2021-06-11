@@ -1,27 +1,39 @@
-$bg: #F4F4F4;
+$bg: #f4f4f4;
 $white: #fff;
-$blue: #673BB7;
+$blue: #673bb7;
 $blue2: rgba(103, 59, 183, 0.67);
 $blue3: rgba(103, 59, 183, 0.67);
 $orange: #d5aa6c;
 $red: red;
-$lightorange: #FFEAC0;
+$lightorange: #ffeac0;
 $white-opacity: rgba(255, 255, 255, 0.67);
 $grey: #242424;
 $grey2: #777;
-$lightgrey: #F4F4F4;
-$lightgrey1: #FAFAFA;
+$lightgrey: #f8f3eb;
+$lightgrey1: #fafafa;
 $lightgrey2: #dedede;
-$link: #673BB7;
+$link: #f48989;
 $scrollbar: rgba(133, 133, 133, 0.3);
 $scrollbar-background: rgba(208, 208, 208, 0.2);
 
-$gradient-button: linear-gradient(90deg, $blue2 0px, $blue2 7px, $blue 7px, $blue 100%);
-$gradient-button-disabled: linear-gradient(90deg, $blue2 0px, $blue2 7px, $blue3 7px, $blue3 100%);
+$gradient-button: linear-gradient(
+  90deg,
+  $blue2 0px,
+  $blue2 7px,
+  $blue 7px,
+  $blue 100%
+);
+$gradient-button-disabled: linear-gradient(
+  90deg,
+  $blue2 0px,
+  $blue2 7px,
+  $blue3 7px,
+  $blue3 100%
+);
 
-$shadow-container: 0px 4px 60px rgba(0, 0, 0, 0.05);
+$shadow-container: 0px 20px 30px rgba(244, 137, 137, 0.1);
 $shadow-dropdown: 0px 8px 15px rgba(0, 0, 0, 0.15);
-$shadow-menu: 0 4px 40px rgba(0,0,0,.14);
+$shadow-menu: 0 4px 40px rgba(0, 0, 0, 0.14);
 $shadow-border: 0 0 0 1px lightgrey inset;
 
 $font: 'Ubuntu', normal;

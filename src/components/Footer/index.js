@@ -2,18 +2,30 @@ import React from 'react';
 
 import './style.scss';
 
-function Footer() {
+import TwImg from '../../assets/icons/social/twitter-circle.svg';
+import TgImg from '../../assets/icons/social/telegram-circle.svg';
+import RubicImg from '../../assets/icons/rubic.svg';
+
+const Footer = React.memo(() => {
   return (
     <footer className="footer">
-      <div className="footer-copyright">
-        ©{' '}
-        <a className="link" href="https://dds.store" target="_blank">
-          Dds.store
+      <div className="footer__socials">
+        <a href="/">
+          <img src={TwImg} alt="twitter" />
         </a>
-        {' '}2021 – All rights reserved
+        <a href="/">
+          <img src={TgImg} alt="telegram" />
+        </a>
+      </div>
+      <div className="footer-copyright">
+        © 2021 bscgirl. All rights reserved
+      </div>
+      <div className="footer__powered">
+        <span>Powered by</span>
+        <img src={RubicImg} alt="rubic" />
       </div>
     </footer>
   );
-}
+});
 
 export default Footer;

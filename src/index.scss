@@ -1,12 +1,12 @@
-@import "./scss/theme.scss";
-@import "./scss/mixins.scss";
+@import './scss/theme.scss';
+@import './scss/mixins.scss';
 
 @font-face {
   font-family: 'Sofia Pro';
   src: local('Sofia Pro Regular'), local('Sofia-Pro-Regular'),
-  url('./assets/fonts/SofiaPro/SofiaProRegular.woff2') format('woff2'),
-  url('./assets/fonts/SofiaPro/SofiaProRegular.woff') format('woff'),
-  url('./assets/fonts/SofiaPro/SofiaProRegular.ttf') format('truetype');
+    url('./assets/fonts/SofiaPro/SofiaProRegular.woff2') format('woff2'),
+    url('./assets/fonts/SofiaPro/SofiaProRegular.woff') format('woff'),
+    url('./assets/fonts/SofiaPro/SofiaProRegular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
@@ -59,10 +59,25 @@ input::placeholder {
 .App {
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   box-sizing: border-box;
   background-position: top, center;
   background-repeat: space;
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 800px;
+    background: linear-gradient(
+      180deg,
+      #f48989 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    left: 0;
+  }
 }
 
 .App-background {
@@ -85,10 +100,15 @@ input::placeholder {
 }
 
 .body {
-  @include flex(row,normal,center);
-  padding: 100px + 37px 30px 80px 30px;
+  @include flex(row, normal, center);
+  padding: 0 30px 100px 30px;
   user-select: none;
   box-sizing: border-box;
+  margin-top: -120px;
+  z-index: 10;
+  * {
+    box-sizing: border-box;
+  }
 }
 
 .info {
@@ -118,7 +138,7 @@ input::placeholder {
 .links {
   line-height: 24px;
   &-item {
-    @include flex(row,center);
+    @include flex(row, center);
     margin-top: 40px;
     text-decoration: none;
     font-weight: bold;
@@ -148,9 +168,9 @@ input::placeholder {
 }
 
 .button {
-  @include flex(row,center);
+  @include flex(row, center);
   cursor: pointer;
-  background: $blue;
+  background: #f48989;
   padding: 0px 28px 0px 20px;
   line-height: 42px;
   font-size: 14px;
@@ -159,15 +179,16 @@ input::placeholder {
   white-space: nowrap;
   border-radius: 8px;
   &-big {
-    @include flex(row,center);
+    @include flex(row, center);
     cursor: pointer;
-    background: $blue;
-    padding: 0px 48px 0px 40px;
+    background: #f48989;
+    padding: 0px 80px 0px 80px;
     line-height: 62px;
     font-size: 14px;
+    font-size: 25px;
     color: $white;
     font-weight: 700;
-    border-radius: 8px;
+    border-radius: 18px;
   }
   &-arrow {
     margin-right: 10px;
@@ -213,4 +234,3 @@ input::placeholder {
 .color-red {
   color: $red;
 }
-

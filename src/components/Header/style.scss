@@ -1,19 +1,18 @@
-@import "../../scss/theme.scss";
-@import "../../scss/mixins.scss";
+@import '../../scss/theme.scss';
+@import '../../scss/mixins.scss';
 
 $fs: 11px;
-$height: 90px;
+$height: 420px;
 
 .header {
-  @include flex(row,center,center,nowrap);
+  @include flex(row, center, center, nowrap);
   font-family: $font4;
   box-sizing: border-box;
-  position: fixed;
+  position: relative;
   left: 0;
   width: 100%;
   height: $height;
-  background-color: $white;
-  z-index: 999;
+  background-color: #e68e8c;
   user-select: none;
   color: $blue;
   padding-top: 12px;
@@ -22,14 +21,23 @@ $height: 90px;
   font-weight: 700;
   letter-spacing: 3px;
   font-size: $fs;
+  background-image: url(../../assets/images/header-bg1.svg),
+    url(../../assets/images/header-bg2.svg);
+  background-repeat: no-repeat, no-repeat;
+  background-position: 100% 0, 100% 100%;
+  z-index: -1;
   &-container {
-    @include flex(row,center,space-between,nowrap);
+    @include flex(row, flex-start, center, nowrap);
     height: $height;
     width: 100%;
     max-width: 1270px;
   }
+  &__title {
+    width: 345px;
+    margin-top: 40px;
+  }
   &-left-group {
-    @include flex(row,center,center,nowrap);
+    @include flex(row, center, center, nowrap);
     height: $height;
     padding: 0px 2vw;
     @include b('mobile') {
@@ -37,15 +45,21 @@ $height: 90px;
     }
   }
   &-right-group {
-    @include flex(row,center,center,nowrap);
+    @include flex(row, center, center, nowrap);
     height: $height;
     padding: 0px 2vw;
     @include b('mobile') {
-      display:none;
+      display: none;
     }
   }
+  &__logo {
+    position: absolute;
+    top: 50%;
+    left: 25px;
+    transform: translateY(-50%);
+  }
   &-item {
-    @include flex(row,center,center);
+    @include flex(row, center, center);
     cursor: pointer;
     padding: 20px 25px;
     font-size: $fs;
@@ -57,7 +71,7 @@ $height: 90px;
     }
   }
   &-item:hover {
-    @include flex(row,center,center);
+    @include flex(row, center, center);
     cursor: pointer;
     padding: 20px 25px;
     font-size: $fs;
@@ -70,14 +84,13 @@ $height: 90px;
     opacity: 0.4;
   }
   &-logo {
-    width: 121px;
-    height: 62px;
+    width: 213px;
   }
   &-menu-mobile-closed {
-    display:none;
+    display: none;
   }
   &-menu-mobile-open {
-    @include flex(column,center,flex-start);
+    @include flex(column, center, flex-start);
     box-sizing: border-box;
     position: fixed;
     height: 100vh;
@@ -94,7 +107,7 @@ $height: 90px;
   cursor: pointer;
   z-index: 1000;
   &-wrapper {
-    @include flex(column,center,center);
+    @include flex(column, center, center);
     padding: 0px 28px;
     height: 60px;
     cursor: pointer;
@@ -108,7 +121,7 @@ $height: 90px;
 
 .header-menu {
   &-footer {
-    @include flex(column,center,space-around);
+    @include flex(column, center, space-around);
     box-sizing: border-box;
     position: absolute;
     left: 0;
@@ -121,15 +134,15 @@ $height: 90px;
     font-size: 15px;
     user-select: none;
     &-logo-group {
-      @include flex(row,center,center);
+      @include flex(row, center, center);
     }
     &-logo {
       cursor: pointer;
       margin: 0px 10px;
-      path[fill="#2873FB"] {
+      path[fill='#2873FB'] {
         fill: $blue;
       }
-      path[fill="white"] {
+      path[fill='white'] {
         fill: $lightgrey1;
       }
     }
@@ -143,4 +156,3 @@ $height: 90px;
     }
   }
 }
-

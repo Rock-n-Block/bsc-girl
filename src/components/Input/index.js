@@ -1,9 +1,15 @@
 import React from 'react';
 
 import './style.scss';
-import { formatNumberWithSpace, formatNumberWithSpaceBack, formatNumberWithDots, setToStorage, getFromStorage } from "../../utils";
+import {
+  formatNumberWithSpace,
+  formatNumberWithSpaceBack,
+  formatNumberWithDots,
+  setToStorage,
+  getFromStorage,
+} from '../../utils';
 
-function Input(props) {
+const Input = React.memo((props) => {
   let {
     name = '',
     type = 'text',
@@ -33,51 +39,52 @@ function Input(props) {
     // console.log('Input',value)
     // if (formatNumber) value = getFromStorage(`input-${name}`);
     // console.log('Input',value)
-    onChange(value)
-  }
+    onChange(value);
+  };
 
   const handleFocus = (e) => {
-    setNewPlaceholder('')
-    onFocus(e)
-  }
+    setNewPlaceholder('');
+    onFocus(e);
+  };
 
-  const handleBlur = (e) => setNewPlaceholder(placeholder)
+  const handleBlur = (e) => setNewPlaceholder(placeholder);
 
   const isError = error ? 'error' : '';
-  const classNameInput = big ?
-  `input-big ${isError}` :
-  medium ? `input-medium ${isError}` : `input ${isError}`;
+  const classNameInput = big
+    ? `input-big ${isError}`
+    : medium
+    ? `input-medium ${isError}`
+    : `input ${isError}`;
 
   return (
-    <div className={ `input-container ${error ? 'error' : ''}` }>
-      { label &&
-      <label
-      htmlFor="input"
-      className={ big ? "input-label-big" : "input-label" }
-      >
-        {label}
-      </label>
-      }
-      <div className={ `input-container-inner` }>
-        <div className={ `input-container-input` }>
+    <div className={`input-container ${error ? 'error' : ''}`}>
+      {label && (
+        <label
+          htmlFor="input"
+          className={big ? 'input-label-big' : 'input-label'}>
+          {label}
+        </label>
+      )}
+      <div className={`input-container-inner`}>
+        <div className={`input-container-input`}>
           <input
-          id="input"
-          disabled={disabled}
-          ref={r => r && focused && r.focus()}
-          className={classNameInput}
-          style={{...styleCustom}}
-          type={type}
-          placeholder={newPlaceholder}
-          value={value}
-          onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+            id="input"
+            disabled={disabled}
+            ref={(r) => r && focused && r.focus()}
+            className={classNameInput}
+            style={{ ...styleCustom }}
+            type={type}
+            placeholder={newPlaceholder}
+            value={value}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
         </div>
-        { labelInner && <div className="input-label-inner">{labelInner}</div> }
+        {labelInner && <div className="input-label-inner">{labelInner}</div>}
       </div>
     </div>
   );
-}
+});
 
 export default Input;
