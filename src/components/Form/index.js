@@ -398,33 +398,43 @@ function Form() {
         <div>
           <div className="m10">Choose wallet to connect</div>
 
-          <div
-            className="button m10"
-            onClick={() => {
-              dispatch(walletActions.setWalletType('metamask'));
-              toggleModal({ isOpen: false });
-            }}>
-            <IconArrowWhite className="button-arrow" />
-            Metamask
-          </div>
-          <div
-            className="button m10"
-            onClick={() => {
-              dispatch(walletActions.setWalletType('matic'));
-              toggleModal({ isOpen: false });
-            }}>
-            <IconArrowWhite className="button-arrow" />
-            Polygon
-          </div>
-          <div
-            className="button m10"
-            onClick={() => {
-              dispatch(walletActions.setWalletType('binance'));
-              toggleModal({ isOpen: false });
-            }}>
-            <IconArrowWhite className="button-arrow" />
-            Binance Chain Wallet
-          </div>
+          {networkFrom === 'Ethereum' ||
+          ['Binance-Chain', 'Binance-Smart-Chain'].includes(networkFrom) ? (
+            <>
+              <div
+                className="button m10"
+                onClick={() => {
+                  dispatch(walletActions.setWalletType('metamask'));
+                  toggleModal({ isOpen: false });
+                }}>
+                <IconArrowWhite className="button-arrow" />
+                Metamask
+              </div>
+              <div
+                className="button m10"
+                onClick={() => {
+                  dispatch(walletActions.setWalletType('binance'));
+                  toggleModal({ isOpen: false });
+                }}>
+                <IconArrowWhite className="button-arrow" />
+                Binance Chain Wallet
+              </div>
+            </>
+          ) : (
+            ''
+          )}
+          {networkFrom === 'Matic' ? (
+            <div
+              className="button m10"
+              onClick={() => {
+                dispatch(walletActions.setWalletType('matic'));
+                toggleModal({ isOpen: false });
+              }}>
+              Metamask
+            </div>
+          ) : (
+            ''
+          )}
         </div>
       ),
     });
