@@ -57,6 +57,8 @@ export const getTokenSymbol = (network) => {
   return network === 'Binance-Chain'
     ? 'DDS'
     : network === 'Binance-Smart-Chain'
-    ? 'bscscan kyp'
-    : 'etherscan KYP';
+    ? 'bscscan BSCGIRL'
+    : network === 'Matic'
+    ? 'POLYGON BSCGIRL'
+    : 'etherscan BSCGIRL';
 };

@@ -17,6 +17,9 @@ export default {
   },
   tokenLinks() {
     return {
+      matic: this.IS_PRODUCTION
+        ? 'https://explorer-mainnet.maticvigil.com/address/'
+        : 'https://explorer-mumbai.maticvigil.com/address/',
       ethereum: this.IS_PRODUCTION
         ? 'https://etherscan.io'
         : 'https://kovan.etherscan.io',
