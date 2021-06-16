@@ -37,6 +37,12 @@ const networksMetamask = [
     text: 'Binance-Smart-Chain',
     image: require('../../assets/icons/crypto/bnb-circle.svg').default,
   },
+  {
+    id: 3,
+    key: 'Matic',
+    text: 'Polygon',
+    image: require('../../assets/icons/crypto/polygon.svg').default,
+  },
 ];
 
 const networksMetamaskFrom = [
@@ -52,6 +58,12 @@ const networksMetamaskFrom = [
     text: 'Binance-Smart-Chain',
     image: require('../../assets/icons/crypto/bnb-circle.svg').default,
   },
+  {
+    id: 3,
+    key: 'Matic',
+    text: 'Polygon',
+    image: require('../../assets/icons/crypto/polygon.svg').default,
+  },
 ];
 
 const networksMetamaskTo = [
@@ -65,6 +77,12 @@ const networksMetamaskTo = [
     id: 1,
     key: 'Binance-Smart-Chain',
     text: 'Binance-Smart-Chain',
+    image: require('../../assets/icons/crypto/bnb-circle.svg').default,
+  },
+  {
+    id: 3,
+    key: 'Matic',
+    text: 'Matic',
     image: require('../../assets/icons/crypto/bnb-circle.svg').default,
   },
 ];
@@ -150,7 +168,7 @@ function Form() {
     try {
       showFormError({ amount: null });
       let newValue = value;
-      if (newValue < 0) newValue = '0';
+      if (+newValue < 0) newValue = '0';
       if (
         newValue.length > 1 &&
         Number(newValue) >= 1 &&
@@ -161,7 +179,7 @@ function Form() {
       // get swap address
       if (!dex) newValue = '0';
       const network = networks.filter((item) => item.key === networkFrom)[0];
-      const networkName = network && network.text;
+      const networkName = network && network.key;
       const token =
         dex && dex.tokens.filter((item) => item.network === networkName)[0];
       // console.log(networks,networkFrom,networkName,wallet,dex)
@@ -393,6 +411,18 @@ function Form() {
               </div>
             </>
           )}
+          {networkFrom === 'Matic' ? (
+            <div
+              className="button m10"
+              onClick={() => {
+                dispatch(walletActions.setWalletType('matic'));
+                toggleModal({ isOpen: false });
+              }}>
+              Metamask
+            </div>
+          ) : (
+            ''
+          )}
 
           {['Binance-Chain', 'Binance-Smart-Chain'].includes(networkFrom) && (
             <>
@@ -422,8 +452,8 @@ function Form() {
     if (!networkTo) return;
     amount && handleChangeAmount(amount);
     if (!dex) return;
-    getFee();
     getMinimumAmount();
+    getFee();
     getAddresses();
   }, [networkTo, dex]);
 

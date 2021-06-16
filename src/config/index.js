@@ -2,7 +2,7 @@ export default {
   IS_PRODUCTION: false,
   serverDomain() {
     return this.IS_PRODUCTION
-      ? `https://api.dds.store/api/v1`
+      ? `https://bridge.bscgirl.com/api/v1`
       : `https://devswaps.rubic.exchange/api/v1`;
   },
   links: {
@@ -38,6 +38,10 @@ export default {
         name: 'Binance smart chain',
         id: [56, '0x38'],
       },
+      Matic: {
+        name: 'Mumbai Testnet',
+        id: ['0x89'],
+      },
     },
     testnet: {
       Ethereum: {
@@ -47,6 +51,10 @@ export default {
       'Binance-Smart-Chain': {
         name: 'Binance smart chain testnet',
         id: [97, '0x61'],
+      },
+      Matic: {
+        name: 'Mumbai Testnet',
+        id: ['0x13881'],
       },
     },
   },
