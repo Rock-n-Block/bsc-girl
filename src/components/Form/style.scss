@@ -12,6 +12,9 @@
   user-select: none;
   border-radius: 8px;
   border-radius: 30px;
+  @include b('mobile') {
+    padding: 20px;
+  }
   &-label {
     @include flex(row, center, space-between);
     width: 100%;
@@ -36,6 +39,9 @@
       font-weight: 400;
       color: $grey;
       text-transform: uppercase;
+      @include b('mobile') {
+        font-size: 14px;
+      }
       & > div:first-of-type {
         opacity: 0.6;
       }

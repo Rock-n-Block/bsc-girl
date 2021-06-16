@@ -106,6 +106,10 @@ input::placeholder {
   box-sizing: border-box;
   margin-top: -120px;
   z-index: 10;
+  @include b('mobile') {
+    margin-top: -40px;
+    padding: 0px 15px 50px;
+  }
   * {
     box-sizing: border-box;
   }
@@ -189,6 +193,9 @@ input::placeholder {
     color: $white;
     font-weight: 700;
     border-radius: 18px;
+    @include b('mobile') {
+      font-size: inherit;
+    }
   }
   &-arrow {
     margin-right: 10px;

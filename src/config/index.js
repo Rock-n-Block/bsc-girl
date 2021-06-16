@@ -1,5 +1,5 @@
 export default {
-  IS_PRODUCTION: false,
+  IS_PRODUCTION: true,
   serverDomain() {
     return this.IS_PRODUCTION
       ? `https://bridge.bscgirl.com/api/v1`

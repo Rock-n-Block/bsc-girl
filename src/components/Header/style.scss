@@ -26,6 +26,11 @@ $height: 420px;
   background-repeat: no-repeat, no-repeat;
   background-position: 100% 0, 100% 100%;
   z-index: -1;
+  @include b('mobile') {
+    background-image: url(../../assets/images/header-bg2.svg);
+    background-repeat: no-repeat;
+    background-position: 100% 100%;
+  }
   &-container {
     @include flex(row, flex-start, center, nowrap);
     height: $height;
@@ -57,6 +62,13 @@ $height: 420px;
     top: 50%;
     left: 25px;
     transform: translateY(-50%);
+    @include b('mobile') {
+      left: 0;
+      top: unset;
+      bottom: 0;
+      transform: none;
+      height: fit-content;
+    }
   }
   &-item {
     @include flex(row, center, center);
@@ -85,6 +97,9 @@ $height: 420px;
   }
   &-logo {
     width: 213px;
+    @include b('mobile') {
+      width: 130px;
+    }
   }
   &-menu-mobile-closed {
     display: none;
