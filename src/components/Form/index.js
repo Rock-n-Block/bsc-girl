@@ -136,7 +136,7 @@ function Form() {
   const getFee = () => {
     try {
       const network = networks.filter((item) => item.key === networkTo)[0];
-      const networkName = network && network.text;
+      const networkName = network && network.key;
       const token =
         dex && dex.tokens.filter((item) => item.network === networkName)[0];
       const fee = dex ? token && token.fee : 0;
@@ -398,45 +398,33 @@ function Form() {
         <div>
           <div className="m10">Choose wallet to connect</div>
 
-          {networkFrom === 'Ethereum' && (
-            <>
-              <div
-                className="button m10"
-                onClick={() => {
-                  dispatch(walletActions.setWalletType('metamask'));
-                  toggleModal({ isOpen: false });
-                }}>
-                <IconArrowWhite className="button-arrow" />
-                Metamask
-              </div>
-            </>
-          )}
-          {networkFrom === 'Matic' ? (
-            <div
-              className="button m10"
-              onClick={() => {
-                dispatch(walletActions.setWalletType('matic'));
-                toggleModal({ isOpen: false });
-              }}>
-              Metamask
-            </div>
-          ) : (
-            ''
-          )}
-
-          {['Binance-Chain', 'Binance-Smart-Chain'].includes(networkFrom) && (
-            <>
-              <div
-                className="button m10"
-                onClick={() => {
-                  dispatch(walletActions.setWalletType('binance'));
-                  toggleModal({ isOpen: false });
-                }}>
-                <IconArrowWhite className="button-arrow" />
-                Binance Chain Wallet
-              </div>
-            </>
-          )}
+          <div
+            className="button m10"
+            onClick={() => {
+              dispatch(walletActions.setWalletType('metamask'));
+              toggleModal({ isOpen: false });
+            }}>
+            <IconArrowWhite className="button-arrow" />
+            Metamask
+          </div>
+          <div
+            className="button m10"
+            onClick={() => {
+              dispatch(walletActions.setWalletType('matic'));
+              toggleModal({ isOpen: false });
+            }}>
+            <IconArrowWhite className="button-arrow" />
+            Polygon
+          </div>
+          <div
+            className="button m10"
+            onClick={() => {
+              dispatch(walletActions.setWalletType('binance'));
+              toggleModal({ isOpen: false });
+            }}>
+            <IconArrowWhite className="button-arrow" />
+            Binance Chain Wallet
+          </div>
         </div>
       ),
     });

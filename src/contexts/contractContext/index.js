@@ -113,7 +113,6 @@ const ContractProvider = ({ children }) => {
   };
 
   const loginBinance = async (interval) => {
-    debugger;
     try {
       console.log('loginBinance', networkFrom);
       const wallet = new BinanceService({
