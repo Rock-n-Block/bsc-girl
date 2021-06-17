@@ -10,10 +10,10 @@ const Footer = React.memo(() => {
   return (
     <footer className="footer">
       <div className="footer__socials">
-        <a href="/">
+        <a href="https://mobile.twitter.com/BSC_Girl" target="_blank">
           <img src={TwImg} alt="twitter" />
         </a>
-        <a href="/">
+        <a href="https://t.co/6bYLaonxAH" target="_blank">
           <img src={TgImg} alt="telegram" />
         </a>
       </div>

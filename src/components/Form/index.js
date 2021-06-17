@@ -567,7 +567,7 @@ function Form() {
 
       <div className="form-label-note">
         <IconInfo className="form-label-error-icon" />
-        Note: Transfer from Ethereum Network with Metamask wallet
+        Note: The tokens will be sent to the same address they were sent from
       </div>
 
       <div
