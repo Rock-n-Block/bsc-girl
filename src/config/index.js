@@ -2,8 +2,8 @@ export default {
   IS_PRODUCTION: true,
   serverDomain() {
     return this.IS_PRODUCTION
-      ? `https://bridge.bscgirl.com/api/v1`
-      : `https://devswaps.rubic.exchange/api/v1`;
+        ? `https://bridge.bscgirl.com/api/v1`
+        : `https://devswaps.rubic.exchange/api/v1`;
   },
   links: {
     twitter: '',
