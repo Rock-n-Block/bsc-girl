@@ -16,9 +16,9 @@ export default class BackendService {
     }
   }
 
-  getDex = async ({name}) => {
+  getDex = async () => {
     try {
-      return axios.get(`/dex/${name}/`)
+      return axios.get(`/networks/`)
     } catch (e) {
       console.error(e);
     }
