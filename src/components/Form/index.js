@@ -531,7 +531,7 @@ function Form() {
           {form.amount && form.amount.text.includes('Minimum') && (
             <IconError className="form-label-error-icon" />
           )}
-          Minimum amount: {minimumAmount} KYP
+          Minimum amount: {minimumAmount} BSCGIRL
         </div>
       </div>
 
