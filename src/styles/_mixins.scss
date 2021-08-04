@@ -1,0 +1,41 @@
+@import './variables';
+
+@mixin font-face($font-family, $file-path, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: $font-family;
+    font-weight: $weight;
+    font-style: $style;
+    font-display: swap;
+    src: url($file-path);
+  }
+}
+
+@mixin b($point) {
+  @if $point==desktop {
+    @media (max-width: $mediaWidthLaptop) {
+      @content;
+    }
+  } @else if $point==tablet {
+    @media (max-width: $mediaWidthDesktop) {
+      @content;
+    }
+  } @else if $point==mobile {
+    @media (max-width: $mediaWidthTablet) {
+      @content;
+    }
+  } @else if $point==extramobile {
+    @media (max-width: $mediaWidthMobile) {
+      @content;
+    }
+  } @else if $point==mobile3x {
+    @media only screen and (-webkit-min-device-pixel-ratio: 3),
+    only screen and (min-resolution: 3dppx),
+    only screen and (min-resolution: 350dpi) {
+      @content;
+    }
+  } @else {
+    @media (max-width: $point + 'px') {
+      @content;
+    }
+  }
+}

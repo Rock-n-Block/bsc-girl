@@ -1,10 +1,14 @@
 import React from 'react';
 
-import './Home.scss'
+import './index.scss';
+
+import {Preview} from '../../components';
 
 const Home: React.FC = () => {
   return (
-    <div className="home">home</div>
+    <div className="container">
+      <Preview />
+    </div>
   );
 }
 

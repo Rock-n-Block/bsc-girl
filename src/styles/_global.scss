@@ -1,0 +1,17 @@
+@import './variables';
+
+html, body {
+  margin: 0;
+  padding: 0;
+};
+
+.container {
+  margin: 0 auto;
+  padding: 0 140px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 1440px;
+};
+
+

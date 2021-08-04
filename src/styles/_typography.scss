@@ -1,0 +1,19 @@
+@import './variables';
+
+.gradient-button {
+  padding: 1px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: $gradient;
+  border: transparent;
+  border-radius: 30px;
+  color: #fff;
+};
+
+.gradient-text {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
