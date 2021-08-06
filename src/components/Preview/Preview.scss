@@ -1,0 +1,152 @@
+.preview {
+  position: relative;
+  margin-top: 80px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  &__img img {
+    border-radius: 30px;
+  }
+
+  &__content {
+    margin-left: 72px;
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+      margin: 0 0 33px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 40px;
+      line-height: 60px;
+      color: #F48989;
+    }
+
+    &__users {
+      height: 30px;
+      display: flex;
+      flex-direction: row;
+
+      &__user {
+        &-1:hover {
+          width: 40px;
+          position: relative;
+          z-index: 5;
+
+          img {
+            width: 40px;
+          }
+        }
+
+        &-2 {
+          position: relative;
+          left: -13px;
+
+          &:hover {
+            position: relative;
+            z-index: 5;
+
+            img {
+              width: 40px;
+            }
+          }
+        }
+
+        &-3 {
+          position: relative;
+          left: -26px;
+
+          &:hover {
+            position: relative;
+            z-index: 5;
+
+            img {
+              width: 40px;
+            }
+          }
+        }
+
+        &-other {
+          position: relative;
+          left: -39px;
+
+          &:hover {
+            position: relative;
+
+            img {
+              width: 40px;
+            }
+          }
+        }
+      }
+    }
+
+    &__second-title {
+      margin: 18px 0 18px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      line-height: 30px;
+      color: #000;
+    }
+
+    &__text {
+      margin: 0;
+      width: 400px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      color: #000;
+    }
+
+    &__buttons {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      button {
+        width: 269px;
+        height: 54px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 30px;
+        color: #fff;
+      }
+
+      &__text {
+        margin-left: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 21px;
+        color: #959595;
+      }
+    }
+  }
+
+  &__buttons {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+
+    &__button {
+      margin-left: 13px;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #e6e8ec;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+}
+
+

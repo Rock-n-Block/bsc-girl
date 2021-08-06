@@ -1,14 +1,15 @@
 @import './_mixins';
 
 //Poppins
+@include font-face('Poppins', '../assets/fonts/Poppins-ExtraBold.ttf', 800);
 @include font-face('Poppins', '../assets/fonts/Poppins-Bold.ttf', 700);
 @include font-face('Poppins', '../assets/fonts/Poppins-Medium.ttf', 500);
 @include font-face('Poppins', '../assets/fonts/Poppins-Regular.ttf', 400);
 
 //Montserrat
-@include font-face('Montserrat', '../assets/fonts/Montserrat-Bold.ttf', bold);
-@include font-face('Montserrat', '../assets/fonts/Montserrat-Regular.ttf', normal);
+@include font-face('Montserrat', '../assets/fonts/Montserrat-Bold.ttf', 700);
+@include font-face('Montserrat', '../assets/fonts/Montserrat-Regular.ttf', 400);
 
 //Roboto
-@include font-face('Roboto', '../assets/fonts/Roboto-Bold.ttf', bold);
-@include font-face('Poppins', '../assets/fonts/Roboto-Regular.ttf', normal);
+@include font-face('Roboto', '../assets/fonts/Roboto-Bold.ttf', 700);
+@include font-face('Poppins', '../assets/fonts/Roboto-Regular.ttf', 400);
