@@ -1,0 +1,15 @@
+.home {
+  margin: 0 auto;
+  padding: 0 140px;
+  display: flex;
+  flex-direction: column;
+  max-width: 1440px;
+
+  .cards {
+    margin-top: 70px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 30px;
+  }
+}

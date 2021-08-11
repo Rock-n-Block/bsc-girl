@@ -1,0 +1,97 @@
+.card {
+  padding: 10px 10px 23px;
+  width: 275px;
+  border: 1px solid #e7e7e7;
+  border-radius: 30px;
+
+  &__users {
+    padding-bottom: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+
+    &__user {
+      &-1:hover {
+        width: 40px;
+        position: relative;
+        z-index: 5;
+
+        img {
+          width: 40px;
+        }
+      }
+
+      &-2 {
+        position: relative;
+        left: -13px;
+
+        &:hover {
+          position: relative;
+          z-index: 5;
+
+          img {
+            width: 40px;
+          }
+        }
+      }
+
+      &-3 {
+        position: relative;
+        left: -26px;
+
+        &:hover {
+          position: relative;
+          z-index: 5;
+
+          img {
+            width: 40px;
+          }
+        }
+      }
+
+      &-other {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+    }
+  }
+
+  &__img {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      border-radius: 30px;
+    }
+  }
+
+  &__title {
+    margin-top: 19px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+  }
+
+  &__price {
+    display: flex;
+    flex-direction: row;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    line-height: 21px;
+
+    &__value {
+      margin-right: 10px;
+      font-weight: 700;
+      color: #f48989;
+    }
+
+    &__count {
+      font-weight: 500;
+      color: #959595;
+    }
+  }
+}

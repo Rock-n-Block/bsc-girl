@@ -1,0 +1,109 @@
+@import "src/styles/variables";
+
+.popular {
+  margin-top: 128px;
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h2 {
+      margin-right: 30px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 40px;
+      line-height: 60px;
+      color: $soft-red;
+    }
+
+    &__select {
+      margin-right: 27px;
+      padding: 10px 20px;
+      height: 47px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #e6e8ec;
+      border-radius: 24px;
+    }
+
+    &__select, option {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 27px;
+      color: #161616;
+    }
+
+    &__select:focus {
+      display: none;
+    }
+  }
+
+  &__items {
+    height: 252px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 36px;
+
+    .item {
+      position: relative;
+      padding: 5px;
+      box-sizing: border-box;
+      height: 60px;
+      display: flex;
+      flex-direction: row;
+      border: 1px solid #e7e7e7;
+      border-radius: 30px;
+
+      &__number {
+        position: absolute;
+        left: -20px;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        color: #959595;
+      }
+
+      &__img {
+        position: relative;
+
+        &__avatar {
+          border-radius: 50%;
+        }
+
+        &__verified {
+          position: absolute;
+          bottom: -3px;
+          right: 0;
+        }
+      }
+
+      &__info {
+        margin: 5px 0 0 9px;
+
+        &__name {
+          font-family: 'Poppins', sans-serif;
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 24px;
+          color: #434343;
+        }
+
+        &__amount {
+          font-family: 'Roboto', sans-serif;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 16px;
+          color: #959595;
+        }
+      }
+    }
+  }
+}
