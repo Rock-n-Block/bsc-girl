@@ -1,16 +1,16 @@
 import React from 'react';
 
-import './Header.scss';
-
 import Logo from '../../assets/img/icons/logo.svg';
 import SearchIcon from '../../assets/img/icons/search-icon.svg';
+
+import './Header.scss';
 
 const Header: React.FC = () => {
   return (
     <header>
       <div className="container">
         <div className="main">
-          <img src={Logo} alt="bsc-girl logo" className="main__logo"/>
+          <img src={Logo} alt="bsc-girl logo" className="main__logo" />
           <div className="main__nav">
             <div className="main__nav__link">Explore</div>
             <div className="main__nav__link">My items</div>
@@ -18,8 +18,8 @@ const Header: React.FC = () => {
         </div>
         <div className="nav">
           <div className="search">
-            <img src={SearchIcon} alt="search icon" className="search__icon"/>
-            <input type="text" placeholder="Search items, collections"/>
+            <img src={SearchIcon} alt="search icon" className="search__icon" />
+            <input type="text" placeholder="Search items, collections" />
           </div>
           <button type="button" className="gradient-button">
             <div className="nav__button">
@@ -32,7 +32,7 @@ const Header: React.FC = () => {
         </div>
       </div>
     </header>
-  )
+  );
 };
 
 export default Header;

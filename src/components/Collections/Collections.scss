@@ -1,0 +1,115 @@
+.container {
+  position: relative;
+  top: -121px;
+}
+
+.collections {
+  overflow-x: auto;
+
+  h2 {
+    margin-bottom: 21px;
+  }
+
+  &__list {
+    position: relative;
+    width: 100%;
+    height: 344px;
+    display: inline-flex;
+    justify-content: space-between;
+    overflow-x: hidden;
+
+    &__scroll {
+      margin: 0 30px;
+      width: max-content;
+      display: inline-flex;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      gap: 20px;
+    }
+
+    &__scroll::-webkit-scrollbar {
+      width: 0;
+    }
+
+    .btn {
+      position: absolute;
+      top: 130px;
+      width: 42px;
+      height: 42px;
+      background: #fafafa;
+      box-shadow: 0 4px 6px rgba(244, 137, 137, 0.4);
+      border-radius: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+
+      &-left {
+        left: 4px;
+      }
+
+      &-right {
+        right: 4px;
+      }
+    }
+
+    .collection {
+      padding: 9px;
+      min-width: 275px;
+      max-height: 344px;
+      border: 1px solid #e7e7e7;
+      box-sizing: border-box;
+      border-radius: 12px;
+
+      &__images {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        img {
+          width: 122px;
+          height: 122px;
+          border-radius: 12px;
+        }
+      }
+
+      &__author {
+        margin: 25px 0 13px 10px;
+        display: flex;
+        flex-direction: row;
+
+        &__avatar {
+          margin-right: 6px;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+        }
+
+        &__name {
+          font-family: 'Roboto', sans-serif;
+
+          &__title {
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 14px;
+            text-transform: uppercase;
+            color: #959595;
+          }
+
+          &__text {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 16px;
+            color: #f48989;
+          }
+        }
+      }
+    }
+  }
+
+  //&__list::-webkit-scrollbar {
+  //  width: 0;
+  //}
+};

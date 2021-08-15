@@ -1,10 +1,10 @@
 import React from 'react';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import { Header } from './components';
+import { HomePage } from './pages';
 
 import './styles/index.scss';
-
-import {HomePage} from './pages';
-import {Header} from './components';
 
 export const App: React.FC = () => {
   return (

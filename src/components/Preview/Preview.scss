@@ -1,6 +1,6 @@
 .preview {
-  position: relative;
   margin-top: 80px;
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -14,13 +14,8 @@
     display: flex;
     flex-direction: column;
 
-    &__title {
-      margin: 0 0 33px;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 800;
-      font-size: 40px;
-      line-height: 60px;
-      color: #F48989;
+    h2 {
+      margin-bottom: 33px;
     }
 
     &__users {

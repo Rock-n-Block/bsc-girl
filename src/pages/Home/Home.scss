@@ -1,9 +1,9 @@
 .home {
-  margin: 0 auto;
-  padding: 0 140px;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  max-width: 1440px;
+  align-items: center;
 
   .cards {
     margin-top: 70px;
