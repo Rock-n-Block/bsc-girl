@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Image from '../../assets/img/art-main-image.png';
 import ArrowLeft from '../../assets/img/icons/arrow-left.svg';
@@ -33,8 +34,8 @@ const Preview: React.FC<TypePreviewProps> = ({ users }) => {
             through a fine work of...
           </div>
           <div className="preview__content__buttons">
-            <button type="button" className="gradient-button">
-              Buy for 0.5 BSCGIRL
+            <button type="button" className="gradient-button" >
+              <Link to="/token">Buy for 0.5 BSCGIRL</Link>
             </button>
             <div className="preview__content__buttons__text">1 of 3</div>
           </div>

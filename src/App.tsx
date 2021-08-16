@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { Footer, Header } from './components';
-import { HomePage } from './pages';
+import { HomePage, TokenPage } from './pages';
 
 import './styles/index.scss';
 
@@ -11,8 +11,11 @@ export const App: React.FC = () => {
     <Router>
       <Header />
       <Switch>
-        <Route path="/">
+        <Route path="/home">
           <HomePage />
+        </Route>
+        <Route path="/token">
+          <TokenPage />
         </Route>
       </Switch>
       <Footer />

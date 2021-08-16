@@ -46,6 +46,13 @@ export type TypeCollection = {
   name: string;
 };
 
+export type TypeTokenInfo = {
+  name: string,
+  series: string,
+  number: string,
+  strengths: string
+};
+
 export const users: TypeUser[] = [
   {
     name: 'user-1',
@@ -212,3 +219,10 @@ export const exploreItems = [
 ];
 
 export const sortItems = ['Recommended', 'Most Recent', 'Popular', 'Price High', 'Price Low'];
+
+export const tokenInfo: TypeTokenInfo = {
+  name: 'Skweebo',
+  series: '01',
+  number: '002',
+  strengths: 'Body Length, Attack, Grip, Burrowing, Hiding...'
+};

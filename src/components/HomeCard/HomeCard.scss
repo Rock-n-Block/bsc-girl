@@ -60,6 +60,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    cursor: pointer;
 
     img {
       max-height: 256px;
@@ -73,6 +74,7 @@
     font-weight: 500;
     font-size: 14px;
     line-height: 21px;
+    cursor: pointer;
   }
 
   &__price {
@@ -81,6 +83,7 @@
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
     line-height: 21px;
+    cursor: pointer;
 
     &__value {
       margin-right: 10px;

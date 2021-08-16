@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import Burger from '../../assets/img/icons/burger.svg';
 import CloseBtn from '../../assets/img/icons/close-btn.svg';
 import LogoDS from '../../assets/img/icons/logo-ds.svg';
@@ -20,7 +22,9 @@ const Header: React.FC = () => {
       <div className="container">
         <div className="header">
           <div className="main">
-            <img src={Logo} alt="bsc-girl logo" className="main__logo" />
+            <Link to="/home">
+              <img src={Logo} alt="bsc-girl logo" className="main__logo" />
+            </Link>
             <div className="main__nav">
               <div className="main__nav__link">Explore</div>
               <div className="main__nav__link">My items</div>
