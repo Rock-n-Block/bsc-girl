@@ -69,7 +69,9 @@ const Header: React.FC = () => {
               </div>
             )}
           </div>
-          <img src={Logo} alt="bsc-girl logo" className="logo" />
+          <Link to="/home">
+            <img src={Logo} alt="bsc-girl logo" className="logo" />
+          </Link>
           {!isOpen ? (
             <button type="button" className="nav-btn__create gradient-button">
               Create
