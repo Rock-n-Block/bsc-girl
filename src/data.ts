@@ -198,3 +198,23 @@ export const collections: TypeCollection[] = [
     name: 'DicraKiller',
   },
 ];
+
+export const exploreItems = [
+  'All',
+  'Photography',
+  'Games',
+  'Metaverse',
+  'Music',
+  'Domains',
+  'DeFi',
+  'Memes',
+  '...',
+];
+
+export const sortItems = [
+  'Recommended',
+  'Most Recent',
+  'Popular',
+  'Price High',
+  'Price Low',
+];

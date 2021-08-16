@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Collections, HomeCard, Popular, Preview } from '../../components';
-import { cards, collections, populars, users } from '../../data';
+import {Collections, Explore, HomeCard, Popular, Preview} from '../../components';
+import { cards, collections, populars, users, exploreItems, sortItems } from '../../data';
 
 import './Home.scss';
 
@@ -21,6 +21,7 @@ const Home: React.FC = () => {
         <Popular items={populars} />
         <div className="gradient-bg-2" />
         <Collections items={collections} />
+        <Explore exploreItems={exploreItems} sortItems={sortItems} cards={cards} users={users}/>
       </div>
     </div>
   );

@@ -3,10 +3,10 @@
 html, body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 };
 
 .container {
+  position: relative;
   box-sizing: border-box;
   margin: 0 auto;
   padding: 0 140px;
@@ -14,7 +14,6 @@ html, body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  overflow-x: hidden;
 };
 
 header {
@@ -23,6 +22,10 @@ header {
   display: flex;
   align-items: center;
 };
+
+footer {
+  position: relative;
+}
 
 h2 {
   margin: 0;

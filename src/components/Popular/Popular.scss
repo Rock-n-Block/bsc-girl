@@ -15,29 +15,55 @@
     };
 
     &__select {
+      position: relative;
       margin-right: 27px;
-      padding: 10px 20px;
+      padding: 0 25px;
       height: 47px;
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 1px solid #e6e8ec;
+      border: 2px solid #e6e8ec;
       border-radius: 24px;
-    };
-
-    &__select, option {
-      display: flex;
-      justify-content: center;
-      align-items: center;
       font-family: 'Poppins', sans-serif;
       font-weight: 500;
       font-size: 18px;
       line-height: 27px;
       color: #161616;
-    };
+      cursor: pointer;
 
-    &__select:focus {
-      display: none;
+      img {
+        margin-left: 8px;
+      }
+
+      .close {
+        display: none;
+      }
+
+      .open {
+        position: absolute;
+        top: 50px;
+        padding: 10px 25px;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        border: 2px solid #e6e8ec;
+        border-radius: 24px;
+
+        &__item {
+          padding: 5px;
+          width: 100%;
+          text-align: center;
+          cursor: pointer;
+        }
+
+        &__item:hover {
+          background: $soft-red;
+          border-radius: 5px;
+        }
+      }
     };
   };
 
