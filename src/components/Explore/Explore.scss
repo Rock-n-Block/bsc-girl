@@ -2,12 +2,14 @@
 
 .explore {
   margin-bottom: 120px;
+  overflow-x: auto;
 
   &__nav {
     margin-top: 20px;
     display: flex;
     flex-direction: row;
     gap: 10px;
+    overflow-x: scroll;
 
     &__item {
       position: relative;
@@ -45,6 +47,10 @@
       font-weight: 700;
       font-size: 13px;
       line-height: 16px;
+
+      @include b(990) {
+        top: 50px;
+      }
 
       .btn {
         cursor: pointer;
@@ -136,11 +142,37 @@
     }
   }
 
+  &__nav::-webkit-scrollbar {
+    width: 0;
+  }
+
   &__cards {
     margin-top: 30px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-column-gap: 20px;
-    grid-row-gap: 30px;
+    width: 100%;
+    overflow-x: hidden;
+
+    .scroll {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-column-gap: 20px;
+      grid-row-gap: 30px;
+
+      @include b(1440) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @include b(990) {
+      display: flex;
+      overflow-x: hidden;
+
+      .scroll {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 20px;
+        overflow-x: scroll;
+      }
+    }
   }
 }

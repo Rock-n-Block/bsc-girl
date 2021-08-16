@@ -1,18 +1,42 @@
+@import "src/styles/index";
+
 .preview {
   margin-top: 80px;
   position: relative;
   width: 100%;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 
-  &__img img {
-    border-radius: 30px;
+  @include b(990) {
+    margin-top: 10px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @include b(990) {
+      max-width: 500px;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 30px;
+    }
   }
 
   &__content {
     margin-left: 72px;
     display: flex;
     flex-direction: column;
+
+    @include b(990) {
+      margin: 20px 0 0;
+    }
 
     h2 {
       margin-bottom: 33px;
@@ -94,6 +118,10 @@
       font-size: 16px;
       line-height: 24px;
       color: #000;
+
+      @include b('mobile') {
+        width: 100%;
+      }
     }
 
     &__buttons {
@@ -130,6 +158,11 @@
     display: flex;
     flex-direction: row;
 
+    @include b(990) {
+      top: 25%;
+      width: 100%;
+    }
+
     &__button {
       margin-left: 13px;
       width: 42px;
@@ -137,9 +170,28 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      background: #fff;
       border: 2px solid #e6e8ec;
       border-radius: 50%;
       cursor: pointer;
+
+      @include b(990) {
+        margin: 0;
+      }
+    }
+
+    .left {
+      @include b(990) {
+        position: absolute;
+        left: 0;
+      }
+    }
+
+    .right {
+      @include b(990) {
+        position: absolute;
+        right: 0;
+      }
     }
   }
 }

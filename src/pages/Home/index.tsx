@@ -1,7 +1,7 @@
 import React from 'react';
 
-import {Collections, Explore, HomeCard, Popular, Preview} from '../../components';
-import { cards, collections, populars, users, exploreItems, sortItems } from '../../data';
+import { Collections, Explore, HomeCard, Popular, Preview } from '../../components';
+import { cards, collections, exploreItems, populars, sortItems, users } from '../../data';
 
 import './Home.scss';
 
@@ -13,15 +13,17 @@ const Home: React.FC = () => {
         <Preview users={users} />
         <div className="container">
           <div className="cards">
-            {cards.map((card) => (
-              <HomeCard users={users} img={card.img} title={card.title} price={card.price} />
-            ))}
+            <div className="scroll">
+              {cards.map((card) => (
+                <HomeCard users={users} img={card.img} title={card.title} price={card.price} />
+              ))}
+            </div>
           </div>
         </div>
         <Popular items={populars} />
         <div className="gradient-bg-2" />
         <Collections items={collections} />
-        <Explore exploreItems={exploreItems} sortItems={sortItems} cards={cards} users={users}/>
+        <Explore exploreItems={exploreItems} sortItems={sortItems} cards={cards} users={users} />
       </div>
     </div>
   );

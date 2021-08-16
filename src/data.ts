@@ -6,6 +6,7 @@ import Card5 from './assets/img/card-5.png';
 import Card6 from './assets/img/card-6.png';
 import Card7 from './assets/img/card-7.png';
 import Card8 from './assets/img/card-8.png';
+import ImgDefault from './assets/img/collection-img-default.png';
 import ColAva1 from './assets/img/collections-avatar-1.png';
 import User1 from './assets/img/icons/mini-icon-1.svg';
 import User2 from './assets/img/icons/mini-icon-2.svg';
@@ -21,7 +22,6 @@ import Ava7 from './assets/img/populars-7.png';
 import Ava8 from './assets/img/populars-8.png';
 import Ava9 from './assets/img/populars-9.png';
 import Ava10 from './assets/img/populars-10.png';
-import ImgDefault from './assets/img/collection-img-default.png';
 
 export type TypeUser = {
   name: string;
@@ -211,10 +211,4 @@ export const exploreItems = [
   '...',
 ];
 
-export const sortItems = [
-  'Recommended',
-  'Most Recent',
-  'Popular',
-  'Price High',
-  'Price Low',
-];
+export const sortItems = ['Recommended', 'Most Recent', 'Popular', 'Price High', 'Price Low'];

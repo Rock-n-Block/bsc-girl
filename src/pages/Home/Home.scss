@@ -1,16 +1,39 @@
+@import "src/styles/index";
+
 .home {
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   border-bottom: 1px solid #e6e8ec;
 
   .cards {
     margin-top: 70px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-column-gap: 20px;
-    grid-row-gap: 30px;
+    width: 100%;
+
+    .scroll {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-column-gap: 20px;
+      grid-row-gap: 30px;
+
+      @include b(1440) {
+        margin: 0 auto;
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: center;
+      }
+    }
+
+    @include b(990) {
+      height: 402px;
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+
+      .scroll {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 20px;
+      }
+    }
   }
 }

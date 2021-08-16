@@ -40,8 +40,24 @@ const Popular: React.FC<TypePopularsProps> = ({ items }) => {
             {topType}
             <img src={ArrowDown} alt="arrow down" />
             <div className={isFirstOpen ? 'open' : 'close'}>
-              <div className="open__item" role="button" tabIndex={0} onClick={() => setType('Sellers')} onKeyPress={() => {}}>Sellers</div>
-              <div className="open__item" role="button" tabIndex={0} onClick={() => setType('Other')} onKeyPress={() => {}}>Other</div>
+              <div
+                className="open__item"
+                role="button"
+                tabIndex={0}
+                onClick={() => setType('Sellers')}
+                onKeyPress={() => {}}
+              >
+                Sellers
+              </div>
+              <div
+                className="open__item"
+                role="button"
+                tabIndex={0}
+                onClick={() => setType('Other')}
+                onKeyPress={() => {}}
+              >
+                Other
+              </div>
             </div>
           </div>
           <h2>in</h2>
@@ -55,9 +71,33 @@ const Popular: React.FC<TypePopularsProps> = ({ items }) => {
             {topTime}
             <img src={ArrowDown} alt="arrow down" />
             <div className={isSecondOpen ? 'open' : 'close'}>
-              <div className="open__item" role="button" tabIndex={0} onClick={() => setTime('1 day')} onKeyPress={() => {}}>1 day</div>
-              <div className="open__item" role="button" tabIndex={0} onClick={() => setTime('1 week')} onKeyPress={() => {}}>1 week</div>
-              <div className="open__item" role="button" tabIndex={0} onClick={() => setTime('1 month')} onKeyPress={() => {}}>1 month</div>
+              <div
+                className="open__item"
+                role="button"
+                tabIndex={0}
+                onClick={() => setTime('1 day')}
+                onKeyPress={() => {}}
+              >
+                1 day
+              </div>
+              <div
+                className="open__item"
+                role="button"
+                tabIndex={0}
+                onClick={() => setTime('1 week')}
+                onKeyPress={() => {}}
+              >
+                1 week
+              </div>
+              <div
+                className="open__item"
+                role="button"
+                tabIndex={0}
+                onClick={() => setTime('1 month')}
+                onKeyPress={() => {}}
+              >
+                1 month
+              </div>
             </div>
           </div>
         </div>

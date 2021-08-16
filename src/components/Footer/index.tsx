@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Logo from '../../assets/img/icons/logo.svg';
-import LogoFB from '../../assets/img/icons/logo-fb.svg';
-import LogoTW from '../../assets/img/icons/logo-tw.svg';
-import LogoInst from '../../assets/img/icons/logo-inst.svg';
 import LogoDS from '../../assets/img/icons/logo-ds.svg';
+import LogoFB from '../../assets/img/icons/logo-fb.svg';
+import LogoInst from '../../assets/img/icons/logo-inst.svg';
+import LogoTW from '../../assets/img/icons/logo-tw.svg';
 import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
+import Logo from '../../assets/img/icons/logo.svg';
 
 import './Footer.scss';
 
@@ -53,9 +53,7 @@ const Footer: React.FC = () => (
             </a>
           </div>
         </div>
-        <div className="copyright">
-          Copyright © 2021 BSCGIRL. LLC. All rights reserved
-        </div>
+        <div className="copyright">Copyright © 2021 BSCGIRL. LLC. All rights reserved</div>
       </div>
     </div>
     <div className="gradient-footer" />

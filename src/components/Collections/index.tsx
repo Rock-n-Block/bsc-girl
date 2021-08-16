@@ -2,8 +2,7 @@ import React from 'react';
 
 import BtnLeft from '../../assets/img/icons/arrow-left.svg';
 import BtnRight from '../../assets/img/icons/arrow-right.svg';
-
-import {TypeCollection} from '../../data';
+import { TypeCollection } from '../../data';
 
 import './Collections.scss';
 
@@ -11,7 +10,7 @@ type TypeCollectionsProps = {
   items: TypeCollection[];
 };
 
-const Collections: React.FC<TypeCollectionsProps> = ({items}) => {
+const Collections: React.FC<TypeCollectionsProps> = ({ items }) => {
   return (
     <div className="container">
       <div className="collections">

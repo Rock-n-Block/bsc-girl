@@ -2,20 +2,19 @@ import React, { useState } from 'react';
 
 import ArrowUp from '../../assets/img/icons/arrow-up.svg';
 import CheckMark from '../../assets/img/icons/check-mark.svg';
-
-import {TypeCard, TypeUser} from '../../data';
+import { TypeCard, TypeUser } from '../../data';
+import { HomeCard } from '../index';
 
 import './Explore.scss';
-import {HomeCard} from "../index";
 
 type TypeExploreProps = {
-  exploreItems: string[],
-  sortItems: string[],
-  cards: TypeCard[],
-  users: TypeUser[]
+  exploreItems: string[];
+  sortItems: string[];
+  cards: TypeCard[];
+  users: TypeUser[];
 };
 
-const Explore: React.FC<TypeExploreProps> = ({exploreItems, sortItems, cards, users}) => {
+const Explore: React.FC<TypeExploreProps> = ({ exploreItems, sortItems, cards, users }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [exploreValue, setExploreValue] = useState('All');
   const [sortValue, setSortValue] = useState('');
@@ -26,7 +25,7 @@ const Explore: React.FC<TypeExploreProps> = ({exploreItems, sortItems, cards, us
       <div className="explore">
         <h2>Explore</h2>
         <div className="explore__nav">
-          {exploreItems.map(item => (
+          {exploreItems.map((item) => (
             <div
               key={item}
               className={`explore__nav__item ${exploreValue === item ? 'red' : null}`}
@@ -34,21 +33,25 @@ const Explore: React.FC<TypeExploreProps> = ({exploreItems, sortItems, cards, us
               tabIndex={0}
               onClick={() => setExploreValue(item)}
               onKeyPress={() => {}}
-            >{item}</div>
+            >
+              {item}
+            </div>
           ))}
           <div className="explore__nav__sort">
             <div
               className="btn"
               role="button"
               tabIndex={0}
-              onClick={() => {setIsOpen(!isOpen)}}
+              onClick={() => {
+                setIsOpen(!isOpen);
+              }}
               onKeyPress={() => {}}
             >
               Sort
               <img className={`arrow ${isOpen ? 'up' : 'down'}`} src={ArrowUp} alt="arrow down" />
             </div>
             <div className={isOpen ? 'open' : 'close'}>
-              {sortItems.map(item => (
+              {sortItems.map((item) => (
                 <div
                   key={item}
                   className={`open__item ${sortValue === item ? 'red' : undefined}`}
@@ -58,7 +61,11 @@ const Explore: React.FC<TypeExploreProps> = ({exploreItems, sortItems, cards, us
                   onKeyPress={() => {}}
                 >
                   {item}
-                  <img className={sortValue === item ? 'checked' : 'non-checked'} src={CheckMark} alt="check mark" />
+                  <img
+                    className={sortValue === item ? 'checked' : 'non-checked'}
+                    src={CheckMark}
+                    alt="check mark"
+                  />
                 </div>
               ))}
               <div className="switch">
@@ -77,13 +84,15 @@ const Explore: React.FC<TypeExploreProps> = ({exploreItems, sortItems, cards, us
           </div>
         </div>
         <div className="explore__cards">
-          {cards.map(card => (
-            <HomeCard users={users} img={card.img} title={card.title} price={card.price} />
-          ))}
+          <div className="scroll">
+            {cards.map((card) => (
+              <HomeCard users={users} img={card.img} title={card.title} price={card.price} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default Explore;

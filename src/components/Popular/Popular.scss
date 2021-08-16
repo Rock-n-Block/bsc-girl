@@ -1,22 +1,20 @@
-@import "src/styles/variables";
+@import "src/styles/index";
 
 .popular {
   margin: 128px 0 110px;
   width: 100%;
+  overflow-x: hidden;
 
   &__header {
     margin-bottom: 51px;
     display: flex;
     flex-direction: row;
     align-items: center;
-
-    h2 {
-      margin-right: 30px;
-    };
+    flex-wrap: wrap;
 
     &__select {
       position: relative;
-      margin-right: 27px;
+      margin: 0 20px;
       padding: 0 25px;
       height: 47px;
       display: flex;
@@ -30,6 +28,10 @@
       line-height: 27px;
       color: #161616;
       cursor: pointer;
+
+      @include b(420) {
+        margin: 0 10px;
+      }
 
       img {
         margin-left: 8px;
@@ -68,12 +70,16 @@
   };
 
   &__items {
-    margin-left: 20px;
+    padding-left: 20px;
     height: 252px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     gap: 36px;
+
+    @include b(1440) {
+      overflow-x: scroll;
+    }
 
     .item {
       position: relative;
