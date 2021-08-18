@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Collections, Explore, HomeCard, Popular, Preview } from '../../components';
+import { Collections, Explore, TokenCard, Popular, Preview } from '../../components';
 import { cards, collections, exploreItems, populars, sortItems, users } from '../../data';
 
 import './Home.scss';
@@ -15,7 +15,7 @@ const Home: React.FC = () => {
           <div className="cards">
             <div className="scroll">
               {cards.map((card) => (
-                <HomeCard users={users} img={card.img} title={card.title} price={card.price} />
+                <TokenCard users={users} img={card.img} title={card.title} price={card.price} />
               ))}
             </div>
           </div>

@@ -2,16 +2,16 @@ import React from 'react';
 
 import { TypeUser } from '../../data';
 
-import './HomeCard.scss';
+import './TokenCard.scss';
 
-type TypeHomeCardProps = {
+type TypeTokenCardProps = {
   users: Array<TypeUser>;
   img: any;
   title: string;
   price: number;
 };
 
-const HomeCard: React.FC<TypeHomeCardProps> = ({ users, img, title, price }) => {
+const TokenCard: React.FC<TypeTokenCardProps> = ({ users, img, title, price }) => {
   return (
     <div className="card">
       <div className="card__users">
@@ -33,4 +33,4 @@ const HomeCard: React.FC<TypeHomeCardProps> = ({ users, img, title, price }) => 
   );
 };
 
-export default HomeCard;
+export default TokenCard;

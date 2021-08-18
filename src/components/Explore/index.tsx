@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import ArrowUp from '../../assets/img/icons/arrow-up.svg';
 import CheckMark from '../../assets/img/icons/check-mark.svg';
 import { TypeCard, TypeUser } from '../../data';
-import { HomeCard } from '../index';
+import { TokenCard } from '../index';
 
 import './Explore.scss';
 
@@ -86,7 +86,7 @@ const Explore: React.FC<TypeExploreProps> = ({ exploreItems, sortItems, cards, u
         <div className="explore__cards">
           <div className="scroll">
             {cards.map((card) => (
-              <HomeCard users={users} img={card.img} title={card.title} price={card.price} />
+              <TokenCard users={users} img={card.img} title={card.title} price={card.price} />
             ))}
           </div>
         </div>

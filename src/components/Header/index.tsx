@@ -10,7 +10,7 @@ import LogoInst from '../../assets/img/icons/logo-inst.svg';
 import LogoTW from '../../assets/img/icons/logo-tw.svg';
 import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
 import SearchIcon from '../../assets/img/icons/search-icon.svg';
-import Logo from '../../assets/img/logo.png';
+import Logo from '../../assets/img/icons/logo.svg';
 
 import './Header.scss';
 
@@ -22,7 +22,7 @@ const Header: React.FC = () => {
       <div className="container">
         <div className="header">
           <div className="main">
-            <Link to="/home">
+            <Link to="/">
               <img src={Logo} alt="bsc-girl logo" className="main__logo" />
             </Link>
             <div className="main__nav">
@@ -69,7 +69,7 @@ const Header: React.FC = () => {
               </div>
             )}
           </div>
-          <Link to="/home">
+          <Link to="/">
             <img src={Logo} alt="bsc-girl logo" className="logo" />
           </Link>
           {!isOpen ? (

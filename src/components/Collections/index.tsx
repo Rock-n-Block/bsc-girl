@@ -5,6 +5,7 @@ import BtnRight from '../../assets/img/icons/arrow-right.svg';
 import { TypeCollection } from '../../data';
 
 import './Collections.scss';
+import {CollectionCard} from "../index";
 
 type TypeCollectionsProps = {
   items: TypeCollection[];
@@ -20,21 +21,8 @@ const Collections: React.FC<TypeCollectionsProps> = ({ items }) => {
             <img src={BtnLeft} alt="button left" />
           </div>
           <div className="collections__list__scroll">
-            {items.map((item, index) => (
-              <div key={`collection ${index + 1}`} className="collection">
-                <div className="collection__images">
-                  {item.images.map((image: string | undefined, i: any) => (
-                    <img src={image} alt={`collection item ${i + 1}`} />
-                  ))}
-                </div>
-                <div className="collection__author">
-                  <img className="collection__author__avatar" src={item.avatar} alt={item.name} />
-                  <div className="collection__author__name">
-                    <div className="collection__author__name__title">BY</div>
-                    <div className="collection__author__name__text">{item.name}</div>
-                  </div>
-                </div>
-              </div>
+            {items.map((item) => (
+              <CollectionCard images={item.images} avatar={item.avatar} name={item.name} />
             ))}
           </div>
           <div className="btn btn-right">

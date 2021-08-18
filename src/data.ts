@@ -22,6 +22,8 @@ import Ava7 from './assets/img/populars-7.png';
 import Ava8 from './assets/img/populars-8.png';
 import Ava9 from './assets/img/populars-9.png';
 import Ava10 from './assets/img/populars-10.png';
+import CoverImg from './assets/img/cover.png';
+import Avatar from './assets/img/profile-avatar.png';
 
 export type TypeUser = {
   name: string;
@@ -41,7 +43,7 @@ export type TypePopular = {
 };
 
 export type TypeCollection = {
-  images: string[] | [];
+  images: string[];
   avatar: string;
   name: string;
 };
@@ -51,6 +53,17 @@ export type TypeTokenInfo = {
   series: string,
   number: string,
   strengths: string
+};
+
+export type TypeProfileInfo = {
+  coverImg: string,
+  avatar: string,
+  name: string,
+  bio: string,
+  twitterLink: string,
+  instLink: string,
+  facebookLink: string,
+  id: string
 };
 
 export const users: TypeUser[] = [
@@ -225,4 +238,16 @@ export const tokenInfo: TypeTokenInfo = {
   series: '01',
   number: '002',
   strengths: 'Body Length, Attack, Grip, Burrowing, Hiding...'
+};
+
+export const profileInfo: TypeProfileInfo = {
+  coverImg: CoverImg,
+  avatar: Avatar,
+  name: 'DicraKiller',
+  bio: 'T3 "Skelly" Series, 1 off a kind numbered skulls will drop and none will ever be repeated, each Skelly will ' +
+    'either have a new colorway, or animation, sometimes both. Which Skelly will be the Chosen one. ',
+  id: '0x3d6a89c8751a4...6193',
+  twitterLink: 'www.twitter.com',
+  instLink: 'instagram.com',
+  facebookLink: 'facebook.com'
 };
