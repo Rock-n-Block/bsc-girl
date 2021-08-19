@@ -3,9 +3,9 @@ import React from 'react';
 import BtnLeft from '../../assets/img/icons/arrow-left.svg';
 import BtnRight from '../../assets/img/icons/arrow-right.svg';
 import { TypeCollection } from '../../data';
+import { CollectionCard } from '../index';
 
 import './Collections.scss';
-import {CollectionCard} from "../index";
 
 type TypeCollectionsProps = {
   items: TypeCollection[];

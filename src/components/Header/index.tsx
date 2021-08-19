@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { Link } from 'react-router-dom';
 
 import Burger from '../../assets/img/icons/burger.svg';
@@ -9,8 +8,8 @@ import LogoFB from '../../assets/img/icons/logo-fb.svg';
 import LogoInst from '../../assets/img/icons/logo-inst.svg';
 import LogoTW from '../../assets/img/icons/logo-tw.svg';
 import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
-import SearchIcon from '../../assets/img/icons/search-icon.svg';
 import Logo from '../../assets/img/icons/logo.svg';
+import SearchIcon from '../../assets/img/icons/search-icon.svg';
 
 import './Header.scss';
 
@@ -40,9 +39,11 @@ const Header: React.FC = () => {
                 <div className="nav__button__text gradient-text">Buy BSCGIRL</div>
               </div>
             </button>
-            <button type="button" className="gradient-button">
-              Create
-            </button>
+            <Link to="/create">
+              <button type="button" className="gradient-button">
+                Create
+              </button>
+            </Link>
           </div>
         </div>
         <div className="header-mobile">
@@ -73,9 +74,11 @@ const Header: React.FC = () => {
             <img src={Logo} alt="bsc-girl logo" className="logo" />
           </Link>
           {!isOpen ? (
-            <button type="button" className="nav-btn__create gradient-button">
-              Create
-            </button>
+            <Link to="/create">
+              <button type="button" className="nav-btn__create gradient-button">
+                Create
+              </button>
+            </Link>
           ) : null}
           {isOpen ? (
             <div className="nav">

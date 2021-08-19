@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {tokenInfo} from '../../data';
-
-import TokenImg from '../../assets/img/img-token.png';
 import ShareIcon from '../../assets/img/icons/share-icon.svg';
-import OwnerAva from '../../assets/img/populars-1.png';
-import ArtistAva from '../../assets/img/populars-7.png';
-import CollectionAva from '../../assets/img/populars-4.png';
 import Verified from '../../assets/img/icons/verification.svg';
+import TokenImg from '../../assets/img/img-token.png';
+import OwnerAva from '../../assets/img/populars-1.png';
+import CollectionAva from '../../assets/img/populars-4.png';
+import ArtistAva from '../../assets/img/populars-7.png';
+import { tokenInfo } from '../../data';
 
 import './Token.scss';
 
@@ -15,40 +14,41 @@ const TokenPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('Info');
 
   const getDetails = () => {
-    if (activeTab === 'Info') return (
-      <div className="token__content__details__data">
-        <div className="person">
-          <div className="person__img">
-            <img className="avatar" src={OwnerAva} alt="person avatar" />
-            <img className="verified" src={Verified} alt="verified" />
+    if (activeTab === 'Info')
+      return (
+        <div className="token__content__details__data">
+          <div className="person">
+            <div className="person__img">
+              <img className="avatar" src={OwnerAva} alt="person avatar" />
+              <img className="verified" src={Verified} alt="verified" />
+            </div>
+            Owner
           </div>
-          Owner
+          <div className="person">
+            <div className="person__img">
+              <img src={ArtistAva} alt="person avatar" />
+            </div>
+            <div className="info">
+              Artist
+              <div className="info__position">Digital Sailor</div>
+            </div>
+          </div>
+          <div className="warning">15% of sales will go to creator</div>
+          <div className="person">
+            <div className="person__img">
+              <img className="avatar" src={CollectionAva} alt="person avatar" />
+              <img className="verified" src={Verified} alt="verified" />
+            </div>
+            <div className="info">
+              COLLECTION (ERC1155)
+              <div className="info__position">Diamond HODLR Collecto...</div>
+            </div>
+          </div>
         </div>
-        <div className="person">
-          <div className="person__img">
-            <img src={ArtistAva} alt="person avatar" />
-          </div>
-          <div className="info">
-            Artist
-            <div className="info__position">Digital Sailor</div>
-          </div>
-        </div>
-        <div className="warning">15% of sales will go to creator</div>
-        <div className="person">
-          <div className="person__img">
-            <img className="avatar" src={CollectionAva} alt="person avatar" />
-            <img className="verified" src={Verified} alt="verified" />
-          </div>
-          <div className="info">
-            COLLECTION (ERC1155)
-            <div className="info__position">Diamond HODLR Collecto...</div>
-          </div>
-        </div>
-      </div>
-    );
-    if (activeTab === 'Owners') return <div className="grey-text">1 owner</div>
-    if (activeTab === 'History') return <div className="grey-text">No history yet</div>
-    return <div className="grey-text">No details yet</div>
+      );
+    if (activeTab === 'Owners') return <div className="grey-text">1 owner</div>;
+    if (activeTab === 'History') return <div className="grey-text">No history yet</div>;
+    return <div className="grey-text">No details yet</div>;
   };
 
   return (
@@ -73,48 +73,68 @@ const TokenPage: React.FC = () => {
               </div>
               <div className="converted">$713.60</div>
             </div>
-            <button type="button" className="token__content__card__btn gradient-button">Buy now</button>
+            <button type="button" className="token__content__card__btn gradient-button">
+              Buy now
+            </button>
             <div className="token__content__card__description">
               Name: {tokenInfo.name}
-              <br/>
+              <br />
               Series: {tokenInfo.series}
-              <br/>
+              <br />
               Number: {tokenInfo.number}
-              <br/>
+              <br />
               Strengths: {tokenInfo.strengths}
             </div>
-            <button type="button" className="token__content__card__read-more">Read more</button>
+            <button type="button" className="token__content__card__read-more">
+              Read more
+            </button>
           </div>
           <div className="token__content__details">
             <div className="token__content__details__navbar">
               <div
-                className={`token__content__details__navbar__link ${activeTab === 'Info' ? 'active' : undefined}`}
+                className={`token__content__details__navbar__link ${
+                  activeTab === 'Info' ? 'active' : undefined
+                }`}
                 role="button"
                 tabIndex={0}
                 onClick={() => setActiveTab('Info')}
                 onKeyPress={() => {}}
-              >Info</div>
+              >
+                Info
+              </div>
               <div
-                className={`token__content__details__navbar__link ${activeTab === 'Owners' ? 'active' : undefined}`}
+                className={`token__content__details__navbar__link ${
+                  activeTab === 'Owners' ? 'active' : undefined
+                }`}
                 role="button"
                 tabIndex={0}
                 onClick={() => setActiveTab('Owners')}
                 onKeyPress={() => {}}
-              >Owners</div>
+              >
+                Owners
+              </div>
               <div
-                className={`token__content__details__navbar__link ${activeTab === 'History' ? 'active' : undefined}`}
+                className={`token__content__details__navbar__link ${
+                  activeTab === 'History' ? 'active' : undefined
+                }`}
                 role="button"
                 tabIndex={0}
                 onClick={() => setActiveTab('History')}
                 onKeyPress={() => {}}
-              >History</div>
+              >
+                History
+              </div>
               <div
-                className={`token__content__details__navbar__link ${activeTab === 'Details' ? 'active' : undefined}`}
+                className={`token__content__details__navbar__link ${
+                  activeTab === 'Details' ? 'active' : undefined
+                }`}
                 role="button"
                 tabIndex={0}
                 onClick={() => setActiveTab('Details')}
                 onKeyPress={() => {}}
-              >Details</div>
+              >
+                Details
+              </div>
             </div>
             {getDetails()}
           </div>

@@ -8,7 +8,7 @@ type TypeCollectionCardProps = {
   name: string;
 };
 
-const CollectionCard: React.FC<TypeCollectionCardProps> = ({images, avatar, name}) => {
+const CollectionCard: React.FC<TypeCollectionCardProps> = ({ images, avatar, name }) => {
   return (
     <div className="collection">
       <div className="collection__images">

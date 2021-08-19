@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Collections, Explore, TokenCard, Popular, Preview } from '../../components';
+import { Collections, Explore, Popular, Preview, TokenCard } from '../../components';
 import { cards, collections, exploreItems, populars, sortItems, users } from '../../data';
 
 import './Home.scss';

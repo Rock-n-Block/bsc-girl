@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
 
-import { profileInfo, cards, users, collections } from '../../data';
-
-import {CollectionCard, TokenCard} from '../../components';
-
-import Img from '../../assets/img/icons/img-icon.svg';
-import Edit from '../../assets/img/icons/edit-icon.svg';
 import Coins from '../../assets/img/icons/coins-icon.svg';
-import TwitterLogo from '../../assets/img/icons/profile-logo-tw.svg';
-import InstLogo from '../../assets/img/icons/profile-logo-inst.svg';
-import FacebookLogo from '../../assets/img/icons/profile-logo-fb.svg';
-import Share from '../../assets/img/icons/profile-icon-share.svg';
+import Edit from '../../assets/img/icons/edit-icon.svg';
+import Img from '../../assets/img/icons/img-icon.svg';
 import More from '../../assets/img/icons/profile-icon-more.svg';
+import Share from '../../assets/img/icons/profile-icon-share.svg';
+import FacebookLogo from '../../assets/img/icons/profile-logo-fb.svg';
+import InstLogo from '../../assets/img/icons/profile-logo-inst.svg';
+import TwitterLogo from '../../assets/img/icons/profile-logo-tw.svg';
+import { CollectionCard, TokenCard } from '../../components';
+import { cards, collections, profileInfo, users } from '../../data';
 
 import './Profile.scss';
 
 type TypeLink = {
-  name: string,
-  href: string,
-  img: string
+  name: string;
+  href: string;
+  img: string;
 };
 
 const links: TypeLink[] = [
@@ -43,20 +41,26 @@ const ProfilePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('On sale');
 
   const getContent = (): JSX.Element => {
-    if (activeTab === 'On sale' && cards.length > 0) return (
-      <div className="profile__content__items">
-        {cards.map(card => (
-          <TokenCard users={users} img={card.img} title={card.title} price={card.price} />
-        ))}
-      </div>
-    );
-    if (activeTab === 'Collectible' && collections.length > 0) return (
-      <div className="profile__content__items">
-        {collections.map(collection => (
-          <CollectionCard images={collection.images} avatar={collection.avatar} name={collection.name} />
-        ))}
-      </div>
-    );
+    if (activeTab === 'On sale' && cards.length > 0)
+      return (
+        <div className="profile__content__items">
+          {cards.map((card) => (
+            <TokenCard users={users} img={card.img} title={card.title} price={card.price} />
+          ))}
+        </div>
+      );
+    if (activeTab === 'Collectible' && collections.length > 0)
+      return (
+        <div className="profile__content__items">
+          {collections.map((collection) => (
+            <CollectionCard
+              images={collection.images}
+              avatar={collection.avatar}
+              name={collection.name}
+            />
+          ))}
+        </div>
+      );
     return (
       <div className="profile__content__empty">
         <div className="text">No items found</div>
@@ -76,11 +80,11 @@ const ProfilePage: React.FC = () => {
           <div className="btns">
             <button className="gradient-button" type="button">
               Edit cover photo
-              <img src={Img} alt="img icon"/>
+              <img src={Img} alt="img icon" />
             </button>
             <button className="gradient-button" type="button">
               Edit profile
-              <img src={Edit} alt="edit icon"/>
+              <img src={Edit} alt="edit icon" />
             </button>
           </div>
         </div>
@@ -94,7 +98,7 @@ const ProfilePage: React.FC = () => {
             </div>
           </div>
           <div className="profile__info__links">
-            {links.map(link => (
+            {links.map((link) => (
               <a className="link" href={link.href}>
                 <img src={link.img} alt={`${link.name} link`} />
               </a>
@@ -114,26 +118,30 @@ const ProfilePage: React.FC = () => {
             tabIndex={0}
             onClick={() => setActiveTab('On sale')}
             onKeyPress={() => {}}
-          >On sale</div>
+          >
+            On sale
+          </div>
           <div
             className={`profile__navbar__tab ${activeTab === 'Collectible' ? 'active' : undefined}`}
             role="button"
             tabIndex={0}
             onClick={() => setActiveTab('Collectible')}
             onKeyPress={() => {}}
-          >Collectible</div>
+          >
+            Collectible
+          </div>
           <div
             className={`profile__navbar__tab ${activeTab === 'Created' ? 'active' : undefined}`}
             role="button"
             tabIndex={0}
             onClick={() => setActiveTab('Created')}
             onKeyPress={() => {}}
-          >Created</div>
+          >
+            Created
+          </div>
         </div>
         <div className="profile__content">
-          <div className="scroll">
-            {getContent()}
-          </div>
+          <div className="scroll">{getContent()}</div>
         </div>
       </div>
     </div>
