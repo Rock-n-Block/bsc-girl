@@ -12,7 +12,7 @@
     width: 100%;
   }
 
-  @include b(990) {
+  @include b(1030) {
     display: none;
   }
 
@@ -57,8 +57,13 @@
       align-items: center;
       width: 320px;
       height: 40px;
-      border: 2px solid #E6E8EC;
+      border: 2px solid #e6e8ec;
       border-radius: 20px;
+
+      @include b(1339) {
+        width: auto;
+        max-width: 320px;
+      }
 
       &__icon {
         margin-left: 11px;
@@ -83,6 +88,28 @@
 
     a {
       text-decoration: none;
+    }
+
+    .profile-link {
+      margin-left: 15px;
+      padding: 4px;
+      height: 40px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      border: 2px solid #e6e8ec;
+      box-sizing: border-box;
+      border-radius: 30px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 21px;
+      color: #000;
+
+      img {
+        margin-right: 4px;
+        width: 32px;
+      }
     }
 
     button {
@@ -118,7 +145,7 @@
 .header-mobile {
   display: none;
 
-  @include b(990) {
+  @include b(1030) {
     margin-left: -20px;
     position: fixed;
     top: 0;
@@ -173,6 +200,38 @@
     &__top {
       margin-top: 44px;
 
+      a {
+        text-decoration: none;
+      }
+
+      .profile-link {
+        margin: 0 auto 37px;
+        padding: 4px;
+        width: 370px;
+        height: 40px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid #e6e8ec;
+        box-sizing: border-box;
+        border-radius: 30px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 21px;
+        color: #000;
+
+        @include b(400) {
+          width: 100%;
+        }
+
+        img {
+          margin-right: 4px;
+          width: 32px;
+        }
+      }
+
       &__main {
         margin-bottom: 20px;
         display: flex;
@@ -199,8 +258,9 @@
         line-height: 21px;
         cursor: pointer;
 
-        @include b(420) {
-          max-width: 370px;
+        @include b(400) {
+          margin: 10px auto;
+          width: 100%;
         }
 
         .nav__button {

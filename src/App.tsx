@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { Footer, Header } from './components';
-import { CreateCollectiblePage, CreatePage, HomePage, ProfilePage, TokenPage } from './pages';
+import {
+  ConnectWalletPage,
+  CreateCollectiblePage,
+  CreatePage,
+  EditProfilePage,
+  HomePage,
+  ProfilePage,
+  TokenPage,
+} from './pages';
 
 import './styles/index.scss';
 
@@ -31,6 +39,12 @@ export const App: React.FC = () => {
         </Route>
         <Route path={`/create-${collectible}`}>
           <CreateCollectiblePage collectible={collectible} />
+        </Route>
+        <Route path="/edit-profile">
+          <EditProfilePage />
+        </Route>
+        <Route path="/connect">
+          <ConnectWalletPage />
         </Route>
       </Switch>
       <Footer />

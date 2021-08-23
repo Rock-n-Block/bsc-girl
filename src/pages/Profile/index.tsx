@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import Coins from '../../assets/img/icons/coins-icon.svg';
 import Edit from '../../assets/img/icons/edit-icon.svg';
+import Exit from '../../assets/img/icons/exit-icon.svg';
 import Img from '../../assets/img/icons/img-icon.svg';
 import More from '../../assets/img/icons/profile-icon-more.svg';
 import Share from '../../assets/img/icons/profile-icon-share.svg';
@@ -83,13 +85,22 @@ const ProfilePage: React.FC = () => {
               <img src={Img} alt="img icon" />
             </button>
             <button className="gradient-button" type="button">
-              Edit profile
-              <img src={Edit} alt="edit icon" />
+              <Link to="edit-profile">
+                Edit profile
+                <img src={Edit} alt="edit icon" />
+              </Link>
             </button>
           </div>
         </div>
         <div className="profile__info">
-          <div className="profile__info__name">{profileInfo.name}</div>
+          <div className="profile__info__name">
+            {profileInfo.name}
+            <button type="button" className="gradient-button">
+              <div className="content">
+                <img src={Exit} alt="exit icon" />
+              </div>
+            </button>
+          </div>
           <div className="profile__info__bio">{profileInfo.bio}</div>
           <div className="gradient-button">
             <div className="id">

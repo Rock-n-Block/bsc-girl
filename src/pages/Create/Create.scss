@@ -21,8 +21,31 @@
       line-height: 30px;
     }
 
-    img {
+    a {
+      position: relative;
+      box-sizing: border-box;
       margin-right: 20px;
+      padding-bottom: 12px;
+
+      @include b(520) {
+        padding: 0;
+      }
+
+      .link-red {
+        display: none;
+        position: absolute;
+        bottom: 31px;
+      }
+
+      &:hover {
+        .link-red {
+          display: block;
+        }
+
+        .link-black {
+          visibility: hidden;
+        }
+      }
     }
   }
 

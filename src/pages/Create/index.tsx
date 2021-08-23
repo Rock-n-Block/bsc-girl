@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import ArrowLeft from '../../assets/img/icons/arrow-left-black.svg';
+import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
+import ArrowLeftRed from '../../assets/img/icons/arrow-left-red.svg';
 import MultipleImg from '../../assets/img/multiple.png';
 import SingleImg from '../../assets/img/single.png';
 
@@ -16,7 +17,10 @@ const CreatePage: React.FC<TypeCreatePageProps> = ({ chooseCollectible }) => {
     <div className="container">
       <div className="create">
         <div className="create__title">
-          <img src={ArrowLeft} alt="black arrow left" />
+          <Link to="/">
+            <img src={ArrowLeftRed} alt="arrow left soft-red" className="link-red" />
+            <img src={ArrowLeftBlack} alt="arrow left black" className="link-black" />
+          </Link>
           Create collectible
         </div>
         <div className="create__text">

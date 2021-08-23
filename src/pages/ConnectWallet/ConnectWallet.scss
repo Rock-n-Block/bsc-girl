@@ -1,0 +1,159 @@
+@import "src/styles/index";
+
+.connect {
+  margin: 110px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+
+  @include b(900) {
+    margin: 60px auto;
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 72px;
+    text-align: center;
+    color: $soft-red;
+
+    @include b(900) {
+      font-size: 20px;
+      line-height: 30px;
+    }
+
+    a {
+      position: relative;
+      box-sizing: border-box;
+      margin-right: 20px;
+      padding-bottom: 12px;
+
+      @include b(900) {
+        padding: 0;
+      }
+
+      .link-red {
+        display: none;
+        position: absolute;
+        bottom: 31px;
+      }
+
+      &:hover {
+        .link-red {
+          display: block;
+
+          @include b(900) {
+            display: none;
+          }
+        }
+
+        .link-black {
+          visibility: hidden;
+
+          @include b(900) {
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+
+  &__description {
+    margin-top: 33px;
+    width: 600px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+
+    @include b(900) {
+      width: 100%;
+    }
+
+    a {
+      text-decoration: none;
+      color: $soft-red;
+    }
+  }
+
+  &__buttons {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    @include b(900) {
+      flex-direction: column;
+    }
+
+    &__item {
+      box-sizing: border-box;
+      padding-bottom: 85px;
+      width: 350px;
+      height: 300px;
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: column;
+      align-items: center;
+      background: #f5f5f5;
+      border-radius: 24px;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 30px;
+      cursor: pointer;
+
+      @include b(900) {
+        padding: 0 30px;
+        max-width: 100%;
+        height: 100px;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 20px;
+      }
+
+      @include b(400) {
+        width: 100%;
+      }
+
+      img {
+        @include b(900) {
+          width: 60px;
+        }
+      }
+
+      .metamask {
+        margin-bottom: 33px;
+
+        @include b(900) {
+          margin: 0;
+        }
+      }
+
+      .connectWallet {
+        margin-bottom: 52px;
+
+        @include b(900) {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  &__footer {
+    margin-top: 60px;
+    width: 446px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: #959595;
+
+    @include b(900) {
+      width: 100%;
+    }
+  }
+}

@@ -4,6 +4,10 @@
   margin: 110px 80px 120px;
   width: 100%;
 
+  @include b(1024) {
+    margin: 45px 0 60px;
+  }
+
   &__title {
     display: flex;
     flex-direction: row;
@@ -15,8 +19,36 @@
     line-height: 72px;
     text-align: center;
 
-    img {
+    @include b(900) {
+      font-size: 20px;
+      line-height: 30px;
+    }
+
+    a {
+      position: relative;
+      box-sizing: border-box;
       margin-right: 20px;
+      padding-bottom: 12px;
+
+      @include b(900) {
+        padding: 0;
+      }
+
+      .link-red {
+        display: none;
+        position: absolute;
+        bottom: 31px;
+      }
+
+      &:hover {
+        .link-red {
+          display: block;
+        }
+
+        .link-black {
+          visibility: hidden;
+        }
+      }
     }
 
     .red {
@@ -30,10 +62,20 @@
     display: flex;
     flex-direction: row;
 
+    @include b(900) {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     .create-form {
       padding-right: 37px;
       width: 60%;
       overflow-x: auto;
+
+      @include b(900) {
+        padding: 0;
+        width: 100%;
+      }
 
       &__title {
         font-family: 'Poppins', sans-serif;
@@ -73,6 +115,7 @@
           background: #fff;
           border: none;
           border-radius: 50%;
+          cursor: pointer;
         }
       }
 
@@ -192,6 +235,11 @@
             display: flex;
             flex-direction: row;
             gap: 19px;
+            cursor: pointer;
+          }
+
+          &__refresh {
+            cursor: pointer;
           }
         }
 
@@ -212,6 +260,7 @@
             align-items: center;
             background: $gradient;
             border-radius: 30px;
+            cursor: pointer;
 
             .content {
               box-sizing: border-box;
@@ -321,6 +370,10 @@
           grid-column-gap: 40px;
           grid-row-gap: 20px;
           align-items: flex-end;
+
+          @include b(400) {
+            grid-template-columns: 1fr;
+          }
         }
       }
 
@@ -340,6 +393,14 @@
       width: 40%;
       display: flex;
       flex-direction: column;
+
+      @include b(1024) {
+        padding-left: 40px;
+      }
+
+      @include b(900) {
+        display: none;
+      }
 
       &__title {
         margin-bottom: 32px;

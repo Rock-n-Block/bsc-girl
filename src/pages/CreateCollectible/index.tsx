@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import Default from '../../assets/img/card-default.png';
+import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
 import ArrowLeftGradient from '../../assets/img/icons/arrow-left-gradient.svg';
-import ArrowLeft from '../../assets/img/icons/arrow-left-red.svg';
+import ArrowLeftRed from '../../assets/img/icons/arrow-left-red.svg';
 import ArrowRightGradient from '../../assets/img/icons/arrow-right-gradient-active.svg';
 import Close from '../../assets/img/icons/close-icon.svg';
 import Inst from '../../assets/img/icons/logo-inst.svg';
 import Twitter from '../../assets/img/icons/logo-tw.svg';
 import PlusWhite from '../../assets/img/icons/plus-icon-white.svg';
 import Refresh from '../../assets/img/icons/refresh-icon.svg';
-import { TokenCard } from '../../components';
+import { CreateModal, TokenCard } from '../../components';
 
 import './CreateCollectible.scss';
 
@@ -22,17 +24,51 @@ const CreateCollectiblePage: React.FC<TypeCreateCollectibleProps> = ({ collectib
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [royalties, setRoyalties] = useState('');
-  const [numOfCopies, setNumOfCopies] = useState('0');
+  const [numOfCopies, setNumOfCopies] = useState('');
   const [propName, setPropName] = useState('');
   const [propValue, setPropValue] = useState('');
   const [twitter, setTwitter] = useState('');
   const [inst, setInst] = useState('');
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  const formData = {
+    name,
+    price,
+    description,
+    royalties,
+    numOfCopies,
+    [propName]: propValue,
+    twitter,
+    inst,
+  };
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const handleClickCreate = () => {
+    let isOk = true;
+
+    Object.keys(formData).forEach((key) => {
+      if (!formData[key] && (key !== 'twitter' || 'inst')) isOk = false;
+    });
+
+    if (isOk) openModal();
+    else alert('Please, enter all required inputs');
+  };
 
   return (
     <div className="container">
       <div className="create-collectible">
         <div className="create-collectible__title">
-          <img src={ArrowLeft} alt="arrow left soft-red" />
+          <Link to="/create">
+            <img src={ArrowLeftRed} alt="arrow left soft-red" className="link-red" />
+            <img src={ArrowLeftBlack} alt="arrow left black" className="link-black" />
+          </Link>
           Create&nbsp;
           <div className="red">{collectible}</div>
           &nbsp;collectible
@@ -195,7 +231,11 @@ const CreateCollectiblePage: React.FC<TypeCreateCollectibleProps> = ({ collectib
                   />
                 </div>
               </div>
-              <button type="button" className="gradient-button btn">
+              <button
+                type="button"
+                onClick={() => handleClickCreate()}
+                className="gradient-button btn"
+              >
                 Create item
               </button>
             </div>
@@ -208,6 +248,7 @@ const CreateCollectiblePage: React.FC<TypeCreateCollectibleProps> = ({ collectib
           </div>
         </div>
       </div>
+      <CreateModal isOpen={modalIsOpen} closeModal={closeModal} />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import CloseBtn from '../../assets/img/icons/close-btn.svg';
 import LogoDS from '../../assets/img/icons/logo-ds.svg';
 import LogoFB from '../../assets/img/icons/logo-fb.svg';
 import LogoInst from '../../assets/img/icons/logo-inst.svg';
+import LogoMini from '../../assets/img/icons/logo-mini.svg';
 import LogoTW from '../../assets/img/icons/logo-tw.svg';
 import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
 import Logo from '../../assets/img/icons/logo.svg';
@@ -34,6 +35,12 @@ const Header: React.FC = () => {
               <img src={SearchIcon} alt="search icon" className="search__icon" />
               <input type="text" placeholder="Search items, collections" />
             </div>
+            <Link to="/profile">
+              <div className="profile-link">
+                <img src={LogoMini} alt="logo avatar" />
+                9237.. BSCGIRL
+              </div>
+            </Link>
             <button type="button" className="gradient-button">
               <div className="nav__button">
                 <div className="nav__button__text gradient-text">Buy BSCGIRL</div>
@@ -70,11 +77,11 @@ const Header: React.FC = () => {
               </div>
             )}
           </div>
-          <Link to="/">
+          <Link to="/" onClick={() => setIsOpen(false)}>
             <img src={Logo} alt="bsc-girl logo" className="logo" />
           </Link>
           {!isOpen ? (
-            <Link to="/create">
+            <Link to="/create" onClick={() => setIsOpen(false)}>
               <button type="button" className="nav-btn__create gradient-button">
                 Create
               </button>
@@ -83,14 +90,23 @@ const Header: React.FC = () => {
           {isOpen ? (
             <div className="nav">
               <div className="nav__top">
+                <Link to="/profile" onClick={() => setIsOpen(false)}>
+                  <div className="profile-link">
+                    <img src={LogoMini} alt="logo avatar" />
+                    92373453535 BSCGIRL
+                  </div>
+                </Link>
                 <div className="nav__top__main">
                   <div className="nav__top__main__link">Explore</div>
                   <div className="nav__top__main__link">My items</div>
                 </div>
-                <button type="button" className="gradient-button">
-                  Create
-                </button>
-                <button type="button" className="gradient-button">
+                <Link to="/create" onClick={() => setIsOpen(false)}>
+                  <button type="button" className="gradient-button">
+                    Create
+                  </button>
+                </Link>
+
+                <button type="button" className="gradient-button" onClick={() => setIsOpen(false)}>
                   <div className="nav__button">
                     <div className="nav__button__text gradient-text">Buy BSCGIRL</div>
                   </div>
@@ -102,9 +118,15 @@ const Header: React.FC = () => {
               </div>
               <div className="nav__bottom">
                 <div className="links">
-                  <a href="/create">Create</a>
-                  <a href="/how">How it works</a>
-                  <a href="/support">Support</a>
+                  <Link to="/create" onClick={() => setIsOpen(false)}>
+                    Create
+                  </Link>
+                  <Link to="/how" onClick={() => setIsOpen(false)}>
+                    How it works
+                  </Link>
+                  <Link to="/support" onClick={() => setIsOpen(false)}>
+                    Support
+                  </Link>
                 </div>
                 <div className="contacts">
                   <a href="https://www.facebook.com/">
