@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { TypeUser } from '../../data';
 
@@ -21,9 +22,11 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({ users, img, title, price }) =
           </div>
         ))}
       </div>
-      <div className="card__img">
-        <img src={img} alt={img} />
-      </div>
+      <Link to="/token">
+        <div className="card__img">
+          <img src={img} alt={img} />
+        </div>
+      </Link>
       <div className="card__title">{title}</div>
       <div className="card__price">
         <div className="card__price__value">{price} BSCGIRL</div>

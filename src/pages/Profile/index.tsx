@@ -90,16 +90,14 @@ const ProfilePage: React.FC = () => {
                 <img src={Edit} alt="edit icon" />
               </Link>
             </button>
+            <button className="gradient-button exit" type="button">
+              <img src={Exit} alt="exit icon" />
+            </button>
           </div>
         </div>
         <div className="profile__info">
           <div className="profile__info__name">
             {profileInfo.name}
-            <button type="button" className="gradient-button">
-              <div className="content">
-                <img src={Exit} alt="exit icon" />
-              </div>
-            </button>
           </div>
           <div className="profile__info__bio">{profileInfo.bio}</div>
           <div className="gradient-button">

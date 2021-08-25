@@ -54,6 +54,17 @@
         left: calc(50% - 162px);
       }
 
+      .exit {
+        padding: 12px 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          margin: 0;
+        }
+      }
+
       button {
         padding: 0 16px;
         display: flex;
