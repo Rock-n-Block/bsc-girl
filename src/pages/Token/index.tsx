@@ -54,7 +54,9 @@ const TokenPage: React.FC = () => {
   return (
     <div className="container">
       <div className="token">
-        <img className="token__image" src={TokenImg} alt="token" />
+        <div className="token__image">
+          <img src={TokenImg} alt="token" />
+        </div>
         <div className="token__content">
           <div className="token__content__card">
             <div className="token__content__card__header">

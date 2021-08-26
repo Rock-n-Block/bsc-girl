@@ -9,7 +9,8 @@ import LogoInst from '../../assets/img/icons/logo-inst.svg';
 import LogoMini from '../../assets/img/icons/logo-mini.svg';
 import LogoTW from '../../assets/img/icons/logo-tw.svg';
 import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
-import Logo from '../../assets/img/icons/logo.svg';
+import LogoBSCMobile from '../../assets/img/logo.png';
+import LogoBSC from '../../assets/img/icons/logo.svg';
 import SearchIcon from '../../assets/img/icons/search-icon.svg';
 
 import './Header.scss';
@@ -23,7 +24,7 @@ const Header: React.FC = () => {
         <div className="header">
           <div className="main">
             <Link to="/">
-              <img src={Logo} alt="bsc-girl logo" className="main__logo" />
+              <img src={LogoBSC} alt="bsc-girl logo" className="main__logo" />
             </Link>
             <div className="main__nav">
               <div className="main__nav__link">Explore</div>
@@ -77,11 +78,11 @@ const Header: React.FC = () => {
               </div>
             )}
           </div>
-          <Link to="/" onClick={() => setIsOpen(false)}>
-            <img src={Logo} alt="bsc-girl logo" className="logo" />
+          <Link to="/" target="_top" onClick={() => setIsOpen(false)}>
+            <img src={LogoBSCMobile} alt="bsc-girl logo" className="logo" />
           </Link>
           {!isOpen ? (
-            <Link to="/create" onClick={() => setIsOpen(false)}>
+            <Link to="/create" target="_top" onClick={() => setIsOpen(false)}>
               <button type="button" className="nav-btn__create gradient-button">
                 Create
               </button>
@@ -90,7 +91,7 @@ const Header: React.FC = () => {
           {isOpen ? (
             <div className="nav">
               <div className="nav__top">
-                <Link to="/profile" onClick={() => setIsOpen(false)}>
+                <Link to="/profile" target="_top" onClick={() => setIsOpen(false)}>
                   <div className="profile-link">
                     <img src={LogoMini} alt="logo avatar" />
                     92373453535 BSCGIRL

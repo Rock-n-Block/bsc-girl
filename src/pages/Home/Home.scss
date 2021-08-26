@@ -10,14 +10,15 @@
 
     .scroll {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, 275px);
       grid-column-gap: 20px;
       grid-row-gap: 30px;
+      justify-content: space-between;
 
       @include b(1440) {
         margin: 0 auto;
-        grid-template-columns: repeat(3, 1fr);
-        justify-content: center;
+        grid-template-columns: repeat(3, 275px);
+        justify-content: space-between;
       }
     }
 

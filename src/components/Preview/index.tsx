@@ -39,13 +39,21 @@ const Preview: React.FC<TypePreviewProps> = ({ users }) => {
             </button>
             <div className="preview__content__buttons__text">1 of 3</div>
           </div>
-          <div className="preview__buttons">
-            <div className="preview__buttons__button left">
+          <div className="preview__content__nav-buttons">
+            <div className="preview__content__nav-buttons__button left">
               <img src={ArrowLeft} alt="arrow left right" />
             </div>
-            <div className="preview__buttons__button right">
+            <div className="preview__content__nav-buttons__button right">
               <img src={ArrowRight} alt="arrow right" />
             </div>
+          </div>
+        </div>
+        <div className="preview__buttons">
+          <div className="preview__buttons__button left">
+            <img src={ArrowLeft} alt="arrow left right" />
+          </div>
+          <div className="preview__buttons__button right">
+            <img src={ArrowRight} alt="arrow right" />
           </div>
         </div>
       </div>

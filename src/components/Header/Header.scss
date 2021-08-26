@@ -61,6 +61,7 @@
       border-radius: 20px;
 
       @include b(1339) {
+        padding-right: 2px;
         width: auto;
         max-width: 320px;
       }
@@ -69,6 +70,10 @@
         margin-left: 11px;
         margin-right: 7px;
         padding-bottom: 2px;
+
+        @include b(1339) {
+          margin: auto 4px;
+        }
       }
 
       input {

@@ -25,18 +25,20 @@ const Explore: React.FC<TypeExploreProps> = ({ exploreItems, sortItems, cards, u
       <div className="explore">
         <h2>Explore</h2>
         <div className="explore__nav">
-          {exploreItems.map((item) => (
-            <div
-              key={item}
-              className={`explore__nav__item ${exploreValue === item ? 'red' : null}`}
-              role="button"
-              tabIndex={0}
-              onClick={() => setExploreValue(item)}
-              onKeyPress={() => {}}
-            >
-              {item}
-            </div>
-          ))}
+          <div className="items">
+            {exploreItems.map((item) => (
+              <div
+                key={item}
+                className={`explore__nav__item ${exploreValue === item ? 'red' : null}`}
+                role="button"
+                tabIndex={0}
+                onClick={() => setExploreValue(item)}
+                onKeyPress={() => {}}
+              >
+                {item}
+              </div>
+            ))}
+          </div>
           <div className="explore__nav__sort">
             <div
               className="btn"
@@ -50,35 +52,35 @@ const Explore: React.FC<TypeExploreProps> = ({ exploreItems, sortItems, cards, u
               Sort
               <img className={`arrow ${isOpen ? 'up' : 'down'}`} src={ArrowUp} alt="arrow down" />
             </div>
-            <div className={isOpen ? 'open' : 'close'}>
-              {sortItems.map((item) => (
-                <div
-                  key={item}
-                  className={`open__item ${sortValue === item ? 'red' : undefined}`}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setSortValue(item)}
-                  onKeyPress={() => {}}
-                >
-                  {item}
-                  <img
-                    className={sortValue === item ? 'checked' : 'non-checked'}
-                    src={CheckMark}
-                    alt="check mark"
-                  />
-                </div>
-              ))}
-              <div className="switch">
-                text
-                <div
-                  className={`switch__btn ${isActive ? 'active' : undefined}`}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setIsActive(!isActive)}
-                  onKeyPress={() => {}}
-                >
-                  <div className={`switch__btn__circle ${isActive ? 'colored' : undefined}`} />
-                </div>
+          </div>
+          <div className={isOpen ? 'open' : 'close'}>
+            {sortItems.map((item) => (
+              <div
+                key={item}
+                className={`open__item ${sortValue === item ? 'red' : undefined}`}
+                role="button"
+                tabIndex={0}
+                onClick={() => setSortValue(item)}
+                onKeyPress={() => {}}
+              >
+                {item}
+                <img
+                  className={sortValue === item ? 'checked' : 'non-checked'}
+                  src={CheckMark}
+                  alt="check mark"
+                />
+              </div>
+            ))}
+            <div className="switch">
+              text
+              <div
+                className={`switch__btn ${isActive ? 'active' : undefined}`}
+                role="button"
+                tabIndex={0}
+                onClick={() => setIsActive(!isActive)}
+                onKeyPress={() => {}}
+              >
+                <div className={`switch__btn__circle ${isActive ? 'colored' : undefined}`} />
               </div>
             </div>
           </div>

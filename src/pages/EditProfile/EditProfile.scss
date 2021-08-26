@@ -58,10 +58,14 @@
     &__description {
       margin-top: 32px;
       font-family: 'Poppins', sans-serif;
-      font-weight: 400;
+      font-weight: 500;
       font-size: 16px;
       line-height: 24px;
       color: #959595;
+
+      @include b(900) {
+        text-align: center;
+      }
     }
   }
 

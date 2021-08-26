@@ -2,14 +2,23 @@
 
 .explore {
   margin-bottom: 120px;
+  width: 100%;
   overflow-x: auto;
 
   &__nav {
     margin-top: 20px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     gap: 10px;
-    overflow-x: scroll;
+    overflow-x: hidden;
+
+    .items {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      overflow-x: auto;
+    }
 
     &__item {
       position: relative;
@@ -42,14 +51,19 @@
 
     &__sort {
       position: absolute;
-      right: 5%;
+      right: 140px;
       font-family: 'Montserrat', sans-serif;
       font-weight: 700;
       font-size: 13px;
       line-height: 16px;
 
+      @include b(1150) {
+        right: 20px;
+      }
+
       @include b(990) {
-        top: 50px;
+        top: 20px;
+        z-index: 100;
       }
 
       .btn {
@@ -63,80 +77,93 @@
       .down {
         transform: rotate(180deg);
       }
+    }
 
-      .close {
+    .close {
+      display: none;
+    }
+
+    .open {
+      padding: 20px;
+      position: absolute;
+      right: 25px;
+      top: 100px;
+      z-index: 10;
+      min-width: 168px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #fff;
+      border: 1px solid #ededed;
+      box-sizing: border-box;
+      box-shadow: 0 4px 12px rgba(244, 137, 137, 0.2);
+      border-radius: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 16px;
+
+      @include b(1150) {
+        right: 10px;
+      }
+
+      @include b(990) {
+        top: 50px;
+      }
+
+      &__item {
+        cursor: pointer;
+      }
+
+      .red {
+        background: #fff;
+        color: $soft-red;
+      }
+
+      .non-checked {
         display: none;
       }
 
-      .open {
-        padding: 20px;
-        position: relative;
-        top: 20px;
-        z-index: 10;
-        min-width: 168px;
+      .checked {
+        margin-left: 10px;
+      }
+
+      .switch {
         display: flex;
-        flex-direction: column;
-        gap: 10px;
-        background: #fff;
-        border: 1px solid #ededed;
-        box-sizing: border-box;
-        box-shadow: 0 4px 12px rgba(244, 137, 137, 0.2);
-        border-radius: 12px;
+        flex-direction: row;
 
-        &__item {
-          cursor: pointer;
-        }
-
-        .red {
-          background: #fff;
-          color: $soft-red;
-        }
-
-        .non-checked {
-          display: none;
-        }
-
-        .checked {
-          margin-left: 10px;
-        }
-
-        .switch {
+        &__btn {
+          margin-left: 80px;
+          padding: 4px;
+          width: 37px;
+          height: 22px;
           display: flex;
           flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+          background: #e7e7e7;
+          box-sizing: border-box;
+          border: 2px solid #cfcfd0;
+          border-radius: 11px;
+          cursor: pointer;
 
-          &__btn {
-            margin-left: 80px;
-            padding: 4px;
-            width: 37px;
-            height: 22px;
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            background: #e7e7e7;
-            box-sizing: border-box;
-            border: 2px solid #cfcfd0;
-            border-radius: 11px;
-            cursor: pointer;
-
-            &__circle {
-              width: 14px;
-              height: 14px;
-              background: linear-gradient(93.58deg, #dadada -2.94%, #afafaf 101.05%);
-              border-radius: 50%;
-            }
-
-            .colored {
-              background: linear-gradient(105.93deg, #8834a2 -23.55%, #d9226e 103.33%);
-            }
+          &__circle {
+            width: 14px;
+            height: 14px;
+            background: linear-gradient(93.58deg, #dadada -2.94%, #afafaf 101.05%);
+            border-radius: 50%;
           }
 
-          .active {
-            display: flex;
-            justify-content: flex-end;
-            background: #fff;
-            border: 2px solid $soft-red;
+          .colored {
+            background: linear-gradient(105.93deg, #8834a2 -23.55%, #d9226e 103.33%);
           }
+        }
+
+        .active {
+          display: flex;
+          justify-content: flex-end;
+          background: #fff;
+          border: 2px solid $soft-red;
         }
       }
     }
@@ -153,12 +180,13 @@
 
     .scroll {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, 275px);
       grid-column-gap: 20px;
       grid-row-gap: 30px;
+      justify-content: space-between;
 
       @include b(1440) {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, 275px);
       }
     }
 

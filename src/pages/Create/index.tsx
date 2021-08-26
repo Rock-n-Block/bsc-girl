@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
 import ArrowLeftRed from '../../assets/img/icons/arrow-left-red.svg';
-import MultipleImg from '../../assets/img/multiple.png';
-import SingleImg from '../../assets/img/single.png';
+import MultipleImg from '../../assets/img/multiple.svg';
+import SingleImg from '../../assets/img/single.svg';
 
 import './Create.scss';
 
