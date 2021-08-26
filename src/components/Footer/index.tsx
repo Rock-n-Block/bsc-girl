@@ -5,7 +5,7 @@ import LogoFB from '../../assets/img/icons/logo-fb.svg';
 import LogoInst from '../../assets/img/icons/logo-inst.svg';
 import LogoTW from '../../assets/img/icons/logo-tw.svg';
 import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
-import Logo from '../../assets/img/logo.png';
+import Logo from '../../assets/img/icons/logo.svg';
 
 import './Footer.scss';
 
