@@ -1,12 +1,13 @@
 @import 'src/styles/index';
 
 .header {
-  box-sizing: border-box;
-  width: 100vw;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  box-sizing: border-box;
+  width: 100vw;
 
   @include b(1440) {
     width: 100%;
@@ -20,11 +21,14 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+
     background-color: #fff;
 
     &__logo {
       margin-right: 20px;
+
       width: 158px;
+
       cursor: pointer;
     }
 
@@ -35,13 +39,16 @@
 
       &__link {
         margin-right: 15px;
+
         font-family: 'Poppins', sans-serif;
-        font-style: normal;
-        font-weight: 500;
         font-size: 14px;
+        font-weight: 500;
+        font-style: normal;
         line-height: 21px;
-        color: $soft-red;
+
         cursor: pointer;
+
+        color: $soft-red;
       }
     }
   }
@@ -55,20 +62,23 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+
       width: 320px;
       height: 40px;
+
       border: 2px solid #e6e8ec;
       border-radius: 20px;
 
       @include b(1339) {
         padding-right: 2px;
+
         width: auto;
         max-width: 320px;
       }
 
       &__icon {
-        margin-left: 11px;
         margin-right: 7px;
+        margin-left: 11px;
         padding-bottom: 2px;
 
         @include b(1339) {
@@ -83,9 +93,10 @@
 
       input::placeholder {
         font-family: 'Poppins', sans-serif;
-        font-weight: normal;
         font-size: 14px;
+        font-weight: normal;
         line-height: 21px;
+
         color: #000;
         opacity: 0.6;
       }
@@ -98,49 +109,59 @@
     .profile-link {
       margin-left: 15px;
       padding: 4px;
-      height: 40px;
+
       display: flex;
       flex-direction: row;
       align-items: center;
-      border: 2px solid #e6e8ec;
+
       box-sizing: border-box;
-      border-radius: 30px;
+      height: 40px;
+
       font-family: 'Poppins', sans-serif;
-      font-weight: 500;
       font-size: 14px;
+      font-weight: 500;
       line-height: 21px;
+
       color: #000;
+      border: 2px solid #e6e8ec;
+      border-radius: 30px;
 
       img {
         margin-right: 4px;
+
         width: 32px;
       }
     }
 
     button {
       margin-left: 15px;
+
       min-width: 89px;
       height: 40px;
+
       font-family: 'Poppins', sans-serif;
-      font-weight: 500;
       font-size: 14px;
+      font-weight: 500;
       line-height: 21px;
+
       cursor: pointer;
     }
 
     &__button {
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+
       width: 126px;
       height: 100%;
+
       background: #fff;
       border-radius: 30px;
 
       &__text {
         font-family: 'Poppins', sans-serif;
-        font-weight: 500;
         font-size: 14px;
+        font-weight: 500;
         line-height: 21px;
       }
     }
@@ -151,16 +172,20 @@
   display: none;
 
   @include b(1030) {
-    margin-left: -20px;
     position: fixed;
-    top: 0;
     z-index: 100;
-    width: 100vw;
-    min-height: 60px;
+    top: 0;
+
+    margin-left: -20px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    width: 100vw;
+    min-height: 60px;
+
     background: #fff;
   }
 
@@ -170,36 +195,44 @@
 
   .nav-btn {
     position: absolute;
+    z-index: 110;
     top: 24px;
     left: 15px;
-    z-index: 110;
 
     &__create {
-      padding: 20px 10px;
       position: absolute;
-      right: 20px;
-      top: 10px;
       z-index: 110;
+      top: 10px;
+      right: 20px;
+
+      padding: 20px 10px;
+
       height: 40px;
+
       font-family: 'Poppins', sans-serif;
-      font-weight: 500;
       font-size: 14px;
+      font-weight: 500;
       line-height: 21px;
+
       cursor: pointer;
     }
   }
 
   .nav {
-    padding: 0 10px 20px;
     position: fixed;
-    top: 50px;
     z-index: 100;
-    width: 100%;
-    height: 92vh;
+    top: 50px;
+
+    padding: 0 10px 20px;
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
+    width: 100%;
+    height: 92vh;
+
     background: #fff;
 
     &__top {
@@ -212,20 +245,24 @@
       .profile-link {
         margin: 0 auto 37px;
         padding: 4px;
-        width: 370px;
-        height: 40px;
+
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        border: 2px solid #e6e8ec;
+
         box-sizing: border-box;
-        border-radius: 30px;
+        width: 370px;
+        height: 40px;
+
         font-family: 'Poppins', sans-serif;
-        font-weight: 500;
         font-size: 14px;
+        font-weight: 500;
         line-height: 21px;
+
         color: #000;
+        border: 2px solid #e6e8ec;
+        border-radius: 30px;
 
         @include b(400) {
           width: 100%;
@@ -233,12 +270,14 @@
 
         img {
           margin-right: 4px;
+
           width: 32px;
         }
       }
 
       &__main {
         margin-bottom: 20px;
+
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -246,34 +285,41 @@
 
         &__link {
           font-family: 'Poppins', sans-serif;
-          font-weight: 800;
           font-size: 20px;
+          font-weight: 800;
           line-height: 30px;
+
           color: #f48989;
         }
       }
 
       button {
         margin: 10px;
+
         width: 370px;
         height: 62px;
+
         font-family: 'Poppins', sans-serif;
-        font-weight: 500;
         font-size: 14px;
+        font-weight: 500;
         line-height: 21px;
+
         cursor: pointer;
 
         @include b(400) {
           margin: 10px auto;
+
           width: 100%;
         }
 
         .nav__button {
           display: flex;
-          align-items: center;
           justify-content: center;
+          align-items: center;
+
           width: 100%;
           height: 100%;
+
           background: #fff;
           border-radius: 31px;
         }
@@ -281,6 +327,7 @@
 
       .search {
         margin-top: 30px;
+
         display: flex;
         justify-content: center;
         align-items: center;
@@ -305,32 +352,38 @@
 
         a {
           margin: 0 12px;
+
           font-family: 'Poppins', sans-serif;
-          font-weight: 400;
           font-size: 14px;
+          font-weight: 400;
           line-height: 16px;
-          color: #959595;
           text-decoration: none;
+
+          color: #959595;
         }
       }
 
       .contacts {
         padding: 0 50px 32px;
+
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        gap: 39px;
+
         border-bottom: 1px solid #e6e8ec;
+        gap: 39px;
       }
 
       .copyright {
         margin-top: 30px;
+
         font-family: 'Poppins', sans-serif;
-        font-weight: 400;
         font-size: 14px;
+        font-weight: 400;
         line-height: 20px;
         text-align: center;
+
         color: #959595;
       }
     }

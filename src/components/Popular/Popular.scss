@@ -1,4 +1,4 @@
-@import "src/styles/index";
+@import 'src/styles/index';
 
 .popular {
   margin: 128px 0 110px;
@@ -66,8 +66,8 @@
           border-radius: 5px;
         }
       }
-    };
-  };
+    }
+  }
 
   &__items {
     padding-left: 20px;
@@ -99,21 +99,21 @@
         font-size: 14px;
         line-height: 16px;
         color: #959595;
-      };
+      }
 
       &__img {
         position: relative;
 
         &__avatar {
           border-radius: 50%;
-        };
+        }
 
         &__verified {
           position: absolute;
           bottom: -3px;
           right: 0;
-        };
-      };
+        }
+      }
 
       &__info {
         margin: 5px 0 0 9px;
@@ -124,7 +124,7 @@
           font-size: 16px;
           line-height: 24px;
           color: #434343;
-        };
+        }
 
         &__amount {
           font-family: 'Roboto', sans-serif;
@@ -132,8 +132,8 @@
           font-size: 14px;
           line-height: 16px;
           color: #959595;
-        };
-      };
-    };
-  };
-};
+        }
+      }
+    }
+  }
+}

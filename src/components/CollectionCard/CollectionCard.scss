@@ -1,9 +1,11 @@
 .collection {
   padding: 9px;
+
+  box-sizing: border-box;
   min-width: 275px;
   max-height: 344px;
+
   border: 1px solid #e7e7e7;
-  box-sizing: border-box;
   border-radius: 12px;
 
   &__images {
@@ -16,19 +18,23 @@
     img {
       width: 122px;
       height: 122px;
+
       border-radius: 12px;
     }
   }
 
   &__author {
     margin: 25px 0 13px 10px;
+
     display: flex;
     flex-direction: row;
 
     &__avatar {
       margin-right: 6px;
+
       width: 30px;
       height: 30px;
+
       border-radius: 50%;
     }
 
@@ -36,17 +42,19 @@
       font-family: 'Roboto', sans-serif;
 
       &__title {
-        font-weight: 500;
         font-size: 12px;
+        font-weight: 500;
         line-height: 14px;
         text-transform: uppercase;
+
         color: #959595;
       }
 
       &__text {
-        font-weight: 400;
         font-size: 14px;
+        font-weight: 400;
         line-height: 16px;
+
         color: #f48989;
       }
     }

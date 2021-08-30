@@ -9,9 +9,9 @@ import LogoInst from '../../assets/img/icons/logo-inst.svg';
 import LogoMini from '../../assets/img/icons/logo-mini.svg';
 import LogoTW from '../../assets/img/icons/logo-tw.svg';
 import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
-import LogoBSCMobile from '../../assets/img/logo.png';
 import LogoBSC from '../../assets/img/icons/logo.svg';
 import SearchIcon from '../../assets/img/icons/search-icon.svg';
+import LogoBSCMobile from '../../assets/img/logo.png';
 
 import './Header.scss';
 

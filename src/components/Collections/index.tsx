@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import BtnLeft from '../../assets/img/icons/arrow-left.svg';
 import BtnRight from '../../assets/img/icons/arrow-right.svg';
@@ -12,21 +12,44 @@ type TypeCollectionsProps = {
 };
 
 const Collections: React.FC<TypeCollectionsProps> = ({ items }) => {
+  const scrollRef = useRef(null);
+
+  const scroll = (element: HTMLDivElement, scrollOffset: number): void => {
+    element.scrollLeft += scrollOffset;
+    console.log('Width', element);
+    console.log('Scroll left:', element.scrollLeft);
+  };
+
   return (
     <div className="container">
       <div className="collections">
         <h2>Hot collections</h2>
         <div className="collections__list">
-          <div className="btn btn-left">
-            <img src={BtnLeft} alt="button left" />
-          </div>
-          <div className="collections__list__scroll">
+          <div className="collections__list__scroll" ref={scrollRef}>
+            <button
+              type="button"
+              className="btn btn-left" onClick={() => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                scroll(scrollRef.current, -295);
+              }}
+            >
+              <img src={BtnLeft} alt="button left" />
+            </button>
             {items.map((item) => (
               <CollectionCard images={item.images} avatar={item.avatar} name={item.name} />
             ))}
-          </div>
-          <div className="btn btn-right">
-            <img src={BtnRight} alt="button right" />
+            <button
+              type="button"
+              className="btn btn-right"
+              onClick={() => {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              scroll(scrollRef.current, 295);
+              }}
+            >
+              <img src={BtnRight} alt="button right" />
+            </button>
           </div>
         </div>
       </div>

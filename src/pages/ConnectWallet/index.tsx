@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { useWalletConnectorContext } from '../../services/walletConnect';
+
 import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
 import ArrowLeftRed from '../../assets/img/icons/arrow-left-red.svg';
 import Metamask from '../../assets/img/icons/metamask-logo.svg';
@@ -9,6 +11,12 @@ import WalletConnect from '../../assets/img/icons/wallet-connect-logo.svg';
 import './ConnectWallet.scss';
 
 const ConnectWalletPage: React.FC = () => {
+  const walletConnector = useWalletConnectorContext();
+
+  const connectWallet = (): void => {
+    walletConnector.connect();
+  };
+
   return (
     <div className="container">
       <div className="connect">
@@ -25,14 +33,14 @@ const ConnectWalletPage: React.FC = () => {
           <a href="/">What is wallet?</a>
         </div>
         <div className="connect__buttons">
-          <div className="connect__buttons__item">
+          <button type="button" className="connect__buttons__item" onClick={connectWallet}>
             <img src={Metamask} alt="Metamask logo" className="metamask" />
             Metamask
-          </div>
-          <div className="connect__buttons__item">
+          </button>
+          <button type="button" className="connect__buttons__item">
             <img src={WalletConnect} alt="WalletConnect logo" className="connectWallet" />
             WalletConnect
-          </div>
+          </button>
         </div>
         <div className="connect__footer">
           We do not own your private keys and cannot access your funds without your confirmation.

@@ -1,4 +1,4 @@
-@import "src/styles/index";
+@import 'src/styles/index';
 
 .token {
   margin-top: 76px;
@@ -166,7 +166,7 @@
       padding: 26px 20px 45px;
       max-width: 350px;
       height: fit-content;
-      background: #F5F5F5;
+      background: #f5f5f5;
       border-radius: 24px;
 
       @include b(900) {

@@ -1,10 +1,12 @@
 @import './variables';
 @import './_mixins.scss';
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
-};
+  scroll-behavior: smooth;
+}
 
 .container {
   position: relative;
@@ -20,14 +22,14 @@ html, body {
     padding: 0 20px;
     width: 100%;
   }
-};
+}
 
 header {
   height: 60px;
   background: #fff;
   display: flex;
   align-items: center;
-};
+}
 
 footer {
   position: relative;
@@ -41,6 +43,4 @@ h2 {
   font-size: 40px;
   line-height: 60px;
   color: $soft-red;
-};
-
-
+}

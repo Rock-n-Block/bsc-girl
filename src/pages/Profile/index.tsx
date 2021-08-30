@@ -96,9 +96,7 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
         <div className="profile__info">
-          <div className="profile__info__name">
-            {profileInfo.name}
-          </div>
+          <div className="profile__info__name">{profileInfo.name}</div>
           <div className="profile__info__bio">{profileInfo.bio}</div>
           <div className="gradient-button">
             <div className="id">
