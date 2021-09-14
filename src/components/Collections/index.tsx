@@ -16,8 +16,6 @@ const Collections: React.FC<TypeCollectionsProps> = ({ items }) => {
 
   const scroll = (element: HTMLDivElement, scrollOffset: number): void => {
     element.scrollLeft += scrollOffset;
-    console.log('Width', element);
-    console.log('Scroll left:', element.scrollLeft);
   };
 
   return (
@@ -43,9 +41,9 @@ const Collections: React.FC<TypeCollectionsProps> = ({ items }) => {
               type="button"
               className="btn btn-right"
               onClick={() => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              scroll(scrollRef.current, 295);
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                scroll(scrollRef.current, 295);
               }}
             >
               <img src={BtnRight} alt="button right" />

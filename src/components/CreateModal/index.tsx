@@ -1,42 +1,43 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 
-import Bag from '../../assets/img/icons/bag.svg';
-import CheckMarkWhite from '../../assets/img/icons/check-mark-white.svg';
 import Close from '../../assets/img/icons/close-icon.svg';
-import Loader from '../../assets/img/icons/loader.svg';
-import Pencil from '../../assets/img/icons/pencil.svg';
 
 import './CreateModal.scss';
 
 type TypeCreateModalProps = {
   isOpen: boolean;
   closeModal: () => void;
+  approveStatus: { text: string; img: string };
+  uploadStatus: { text: string; img: string };
+  signStatus: { text: string; img: string };
 };
 
-const CreateModal: React.FC<TypeCreateModalProps> = ({ isOpen, closeModal }) => {
-  const [approveStatus, setApproveStatus] = useState({ text: 'In progress...', img: Loader });
-  const [uploadStatus, setUploadStatus] = useState({ text: 'Start now', img: Pencil });
-  const [signStatus, setSignStatus] = useState({ text: 'Start now', img: Bag });
-
+const CreateModal: React.FC<TypeCreateModalProps> = ({
+  isOpen,
+  closeModal,
+  approveStatus,
+  uploadStatus,
+  signStatus,
+}) => {
   const steps = [
     {
       title: 'Approve',
       text: 'Approve performing transactions with your wallet',
-      img: approveStatus.img,
-      status: approveStatus.text,
+      img: approveStatus.img || '',
+      status: approveStatus.text || '',
     },
     {
       title: 'Upload files & Mint token',
       text: 'Call contract method',
-      img: uploadStatus.img,
-      status: uploadStatus.text,
+      img: uploadStatus.img || '',
+      status: uploadStatus.text || '',
     },
     {
       title: 'Sign lock order',
       text: 'Sign sell order using your wallet',
-      img: signStatus.img,
-      status: signStatus.text,
+      img: signStatus.img || '',
+      status: signStatus.text || '',
     },
   ];
 
@@ -52,31 +53,14 @@ const CreateModal: React.FC<TypeCreateModalProps> = ({ isOpen, closeModal }) => 
     return 'green-bg';
   };
 
-  const afterOpen = () => {
-    setTimeout(() => {
-      setApproveStatus({ text: 'Done', img: CheckMarkWhite });
-      setUploadStatus({ text: 'In progress...', img: Loader });
-    }, 1500);
-
-    setTimeout(() => {
-      setUploadStatus({ text: 'Done', img: CheckMarkWhite });
-      setSignStatus({ text: 'In progress...', img: Loader });
-    }, 3000);
-
-    setTimeout(() => {
-      setSignStatus({ text: 'Done', img: CheckMarkWhite });
-    }, 4500);
-
-    setTimeout(() => {
-      closeModal();
-    }, 5500);
-  };
+  const afterOpen = () => {};
 
   return (
     <Modal
       isOpen={isOpen}
       onAfterOpen={afterOpen}
       onRequestClose={closeModal}
+      ariaHideApp={false}
       contentLabel="Follow steps"
       className="modal"
     >

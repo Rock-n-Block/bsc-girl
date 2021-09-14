@@ -28,7 +28,7 @@ const CreatePage: React.FC<TypeCreatePageProps> = ({ chooseCollectible }) => {
           to sell one collectible multiple times
         </div>
         <div className="create__items">
-          <Link to="/create/single">
+          <Link to="/create-single">
             <div
               className="item"
               role="button"
@@ -42,7 +42,7 @@ const CreatePage: React.FC<TypeCreatePageProps> = ({ chooseCollectible }) => {
               </div>
             </div>
           </Link>
-          <Link to="/create/multiple">
+          <Link to="/create-multiple">
             <div
               className="item"
               role="button"

@@ -1,96 +1,108 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import ArrowUp from '../../assets/img/icons/arrow-up.svg';
-import CheckMark from '../../assets/img/icons/check-mark.svg';
-import { TypeCard, TypeUser } from '../../data';
-import { TokenCard } from '../index';
+import DefaultImg from '../../assets/img/card-default.png';
+import { storeApi } from '../../services/api';
+import { clogData } from '../../utils/logger';
+import { Filter, NoItemsFound, TokenCard } from '../index';
 
 import './Explore.scss';
 
-type TypeExploreProps = {
-  exploreItems: string[];
-  sortItems: string[];
-  cards: TypeCard[];
-  users: TypeUser[];
-};
+interface ISortItem {
+  key: string;
+  value: string;
+}
 
-const Explore: React.FC<TypeExploreProps> = ({ exploreItems, sortItems, cards, users }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [exploreValue, setExploreValue] = useState('All');
-  const [sortValue, setSortValue] = useState('');
-  const [isActive, setIsActive] = useState(false);
+const Explore: React.FC = () => {
+  const [explore, setExplore] = useState<any>({});
+  const [tags, setTags] = useState<Array<string>>(['all']);
+  const sortItems: Array<ISortItem> = [
+    { key: 'recommend', value: 'Recommended' },
+    { key: 'recent', value: 'Most Recent' },
+    { key: 'popular', value: 'Popular' },
+    { key: 'highest', value: 'Price High' },
+    { key: 'cheapest', value: 'Price Low' },
+  ];
+  const [activeSort, setActiveSort] = useState<ISortItem>(sortItems[0]);
+  const [activeFilter, setActiveFilter] = useState(tags[0]);
+
+  const loadTags = useCallback(() => {
+    storeApi
+      .getTags()
+      .then(({ data }) => {
+        setTags(data.tags);
+      })
+      .catch((err: any) => {
+        clogData('get tags error', err);
+      });
+  }, []);
+  const loadExplore = useCallback(
+    async (page = 1) => {
+      storeApi
+        .getExplore(page, activeFilter, activeSort.key)
+        .then(({ data }) => {
+          if (page !== 1) {
+            setExplore((prevExplore: any) => {
+              if (prevExplore.tokens) {
+                return {
+                  ...prevExplore,
+                  tokens: [...prevExplore.tokens, ...data.tokens],
+                  length: data.length,
+                };
+              }
+              return { ...prevExplore, ...data };
+            });
+          } else
+            setExplore({
+              ...data,
+            });
+        })
+        .catch((err: any) => {
+          clogData('get tokens error', err);
+        });
+    },
+    [activeFilter, activeSort.key],
+  );
+  const handleFilterChange = (value: string[]): void => {
+    setActiveFilter(value[0]);
+  };
+  const handleSortChange = (value: ISortItem): void => {
+    setActiveSort(value);
+  };
+
+  useEffect(() => {
+    loadTags();
+  }, [loadTags]);
+  useEffect(() => {
+    loadExplore();
+  }, [loadExplore]);
 
   return (
     <div className="container">
       <div className="explore">
         <h2>Explore</h2>
-        <div className="explore__nav">
-          <div className="items">
-            {exploreItems.map((item) => (
-              <div
-                key={item}
-                className={`explore__nav__item ${exploreValue === item ? 'red' : null}`}
-                role="button"
-                tabIndex={0}
-                onClick={() => setExploreValue(item)}
-                onKeyPress={() => {}}
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-          <div className="explore__nav__sort">
-            <div
-              className="btn"
-              role="button"
-              tabIndex={0}
-              onClick={() => {
-                setIsOpen(!isOpen);
-              }}
-              onKeyPress={() => {}}
-            >
-              Sort
-              <img className={`arrow ${isOpen ? 'up' : 'down'}`} src={ArrowUp} alt="arrow down" />
-            </div>
-          </div>
-          <div className={isOpen ? 'open' : 'close'}>
-            {sortItems.map((item) => (
-              <div
-                key={item}
-                className={`open__item ${sortValue === item ? 'red' : undefined}`}
-                role="button"
-                tabIndex={0}
-                onClick={() => setSortValue(item)}
-                onKeyPress={() => {}}
-              >
-                {item}
-                <img
-                  className={sortValue === item ? 'checked' : 'non-checked'}
-                  src={CheckMark}
-                  alt="check mark"
-                />
-              </div>
-            ))}
-            <div className="switch">
-              text
-              <div
-                className={`switch__btn ${isActive ? 'active' : undefined}`}
-                role="button"
-                tabIndex={0}
-                onClick={() => setIsActive(!isActive)}
-                onKeyPress={() => {}}
-              >
-                <div className={`switch__btn__circle ${isActive ? 'colored' : undefined}`} />
-              </div>
-            </div>
-          </div>
-        </div>
+        <Filter
+          filters={tags}
+          onChange={handleFilterChange}
+          onChangeSort={handleSortChange}
+          sortItems={sortItems}
+        />
         <div className="explore__cards">
-          <div className="scroll">
-            {cards.map((card) => (
-              <TokenCard users={users} img={card.img} title={card.title} price={card.price} />
-            ))}
-          </div>
+          {explore.tokens && explore.tokens.length ? (
+            <div className="scroll">
+              {explore.tokens.map((token: any) => (
+                <TokenCard
+                  id={token.id}
+                  owners={token.owners}
+                  img={token.media ? `https://${token.media}` : DefaultImg}
+                  title={token.name}
+                  price={token.price}
+                  numberOfCopies={token.numberOfCopies}
+                />
+              ))}
+            </div>
+          ) : (
+            <NoItemsFound />
+          )}
         </div>
       </div>
     </div>

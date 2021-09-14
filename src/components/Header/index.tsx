@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { observer } from 'mobx-react';
 
 import Burger from '../../assets/img/icons/burger.svg';
 import CloseBtn from '../../assets/img/icons/close-btn.svg';
@@ -12,11 +13,14 @@ import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
 import LogoBSC from '../../assets/img/icons/logo.svg';
 import SearchIcon from '../../assets/img/icons/search-icon.svg';
 import LogoBSCMobile from '../../assets/img/logo.png';
+import { useMst } from '../../store/store';
 
 import './Header.scss';
 
-const Header: React.FC = () => {
+const Header: React.FC = observer(() => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useMst();
+  const location = useLocation();
 
   return (
     <header>
@@ -32,26 +36,42 @@ const Header: React.FC = () => {
             </div>
           </div>
           <div className="nav">
-            <div className="search">
-              <img src={SearchIcon} alt="search icon" className="search__icon" />
-              <input type="text" placeholder="Search items, collections" />
-            </div>
-            <Link to="/profile">
-              <div className="profile-link">
-                <img src={LogoMini} alt="logo avatar" />
-                9237.. BSCGIRL
+            {location.pathname === '/' ? (
+              <div className="search">
+                <img src={SearchIcon} alt="search icon" className="search__icon" />
+                <input type="text" placeholder="Search items, collections" />
               </div>
-            </Link>
+            ) : (
+              React.Fragment
+            )}
+            {user.address ? (
+              <Link to={`/profile/${user.id}`}>
+                <div className="profile-link">
+                  <img src={LogoMini} alt="logo avatar" />
+                  {user.balance} BSCGIRL
+                </div>
+              </Link>
+            ) : (
+              React.Fragment
+            )}
             <button type="button" className="gradient-button">
               <div className="nav__button">
                 <div className="nav__button__text gradient-text">Buy BSCGIRL</div>
               </div>
             </button>
-            <Link to="/create">
-              <button type="button" className="gradient-button">
-                Create
-              </button>
-            </Link>
+            {user.address ? (
+              <Link to="/create">
+                <button type="button" className="gradient-button">
+                  Create
+                </button>
+              </Link>
+            ) : (
+              <Link to="/connect">
+                <button type="button" className="gradient-button connect">
+                  Connect wallet
+                </button>
+              </Link>
+            )}
           </div>
         </div>
         <div className="header-mobile">
@@ -154,6 +174,6 @@ const Header: React.FC = () => {
       </div>
     </header>
   );
-};
+});
 
 export default Header;

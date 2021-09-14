@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
-
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
-import { Provider } from 'mobx-react';
-
-import { rootStore } from './store/store';
+import { Route, Switch } from 'react-router-dom';
 
 import { Footer, Header } from './components';
-
 import {
   ConnectWalletPage,
   CreateCollectiblePage,
@@ -19,7 +13,6 @@ import {
 } from './pages';
 
 import './styles/index.scss';
-import Connector from "./services/walletConnect";
 
 export const App: React.FC = () => {
   const [collectible, setCollectible] = useState('');
@@ -29,36 +22,32 @@ export const App: React.FC = () => {
   };
 
   return (
-    <Provider value={rootStore}>
-      <Router>
-        <Connector>
-          <Header />
-          <Switch>
-            <Route exact path="/">
-              <HomePage />
-            </Route>
-            <Route path="/token">
-              <TokenPage />
-            </Route>
-            <Route path="/profile">
-              <ProfilePage />
-            </Route>
-            <Route path="/create">
-              <CreatePage chooseCollectible={chooseCollectible} />
-            </Route>
-            <Route path={`/create/${collectible}`}>
-              <CreateCollectiblePage collectible={collectible} />
-            </Route>
-            <Route path="/edit-profile">
-              <EditProfilePage />
-            </Route>
-            <Route path="/connect">
-              <ConnectWalletPage />
-            </Route>
-          </Switch>
-          <Footer />
-        </Connector>
-      </Router>
-    </Provider>
+    <div className="bsc-girl">
+      <Header />
+      <Switch>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+        <Route exact path="/token/:tokenId">
+          <TokenPage />
+        </Route>
+        <Route exact path="/profile/:userId">
+          <ProfilePage />
+        </Route>
+        <Route exact path="/create">
+          <CreatePage chooseCollectible={chooseCollectible} />
+        </Route>
+        <Route exact path={`/create-${collectible}`}>
+          <CreateCollectiblePage collectible={collectible} />
+        </Route>
+        <Route exact path="/edit-profile">
+          <EditProfilePage />
+        </Route>
+        <Route exact path="/connect">
+          <ConnectWalletPage />
+        </Route>
+      </Switch>
+      <Footer />
+    </div>
   );
 };

@@ -16,14 +16,32 @@
     flex-direction: row;
 
     &__user {
-      &-1:hover {
-        position: relative;
-        z-index: 5;
+      max-width: 30px;
+      max-height: 30px;
 
-        width: 40px;
+      img {
+        max-width: 30px;
+        max-height: 30px;
+
+        border-radius: 50%;
+      }
+
+      &-1 {
+        max-width: 30px;
+        max-height: 30px;
+
+        border-radius: 50%;
+
+        &:hover {
+          position: relative;
+          z-index: 5;
+        }
 
         img {
-          width: 40px;
+          max-width: 30px;
+          max-height: 30px;
+
+          border-radius: 50%;
         }
       }
 
@@ -31,13 +49,21 @@
         position: relative;
         left: -13px;
 
+        max-width: 30px;
+        max-height: 30px;
+
+        border-radius: 50%;
+
+        img {
+          max-width: 30px;
+          max-height: 30px;
+
+          border-radius: 50%;
+        }
+
         &:hover {
           position: relative;
           z-index: 5;
-
-          img {
-            width: 40px;
-          }
         }
       }
 
@@ -45,13 +71,21 @@
         position: relative;
         left: -26px;
 
+        max-width: 30px;
+        max-height: 30px;
+
+        border-radius: 50%;
+
+        img {
+          max-width: 30px;
+          max-height: 30px;
+
+          border-radius: 50%;
+        }
+
         &:hover {
           position: relative;
           z-index: 5;
-
-          img {
-            width: 40px;
-          }
         }
       }
 
@@ -71,7 +105,7 @@
     cursor: pointer;
 
     img {
-      max-height: 256px;
+      max-width: 100%;
 
       border-radius: 30px;
     }
@@ -90,30 +124,45 @@
     cursor: pointer;
   }
 
-  &__price {
+  &__info {
     display: flex;
-    overflow-x: hidden;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    line-height: 21px;
+    &__price {
+      display: flex;
+      overflow-x: hidden;
+      flex-direction: row;
 
-    cursor: pointer;
-    flex-wrap: wrap;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      line-height: 21px;
 
-    &__value {
-      margin-right: 10px;
+      cursor: pointer;
+      flex-wrap: wrap;
 
-      font-weight: 700;
+      &__value {
+        margin-right: 10px;
 
-      color: #f48989;
+        font-weight: 700;
+
+        color: #f48989;
+      }
+
+      &__count {
+        font-weight: 500;
+
+        color: #959595;
+      }
     }
 
-    &__count {
-      font-weight: 500;
+    &__like {
+      cursor: pointer;
 
-      color: #959595;
+      img:hover {
+        box-shadow: -1px 1px #000;
+      }
     }
   }
 }

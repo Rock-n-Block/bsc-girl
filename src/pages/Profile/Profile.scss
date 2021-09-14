@@ -2,24 +2,32 @@
 
 .profile {
   margin-bottom: 120px;
+
   width: 100%;
 
   &__top {
     position: relative;
-    height: 200px;
+
     display: flex;
     justify-content: center;
     align-items: center;
 
+    height: 200px;
+
     .bg-img {
-      margin: 0 -140px;
-      max-width: 1440px;
-      height: 200px;
       z-index: 1;
-      overflow: hidden;
+
+      margin: 0 -140px;
+
       display: flex;
-      align-items: center;
+      overflow: hidden;
       justify-content: center;
+      align-items: center;
+
+      width: 1440px;
+      height: 200px;
+
+      background: #f1f1f1;
 
       @include b(1440) {
         width: 100vw;
@@ -28,25 +36,50 @@
       @include b(1150) {
         margin: 0 -20px;
       }
+
+      img {
+        width: 100%;
+
+        @include b(500) {
+          width: auto;
+          height: 100%;
+        }
+      }
     }
 
     .avatar {
       position: absolute;
+      z-index: 2;
       left: calc(50% - 75px);
       bottom: -65px;
-      z-index: 2;
+
+      box-sizing: border-box;
+
+      width: 150px;
+      height: 150px;
+
+      background: $soft-red;
       border: 5px solid #fff;
       border-radius: 50%;
+
+      img {
+        width: 100%;
+        height: 100%;
+
+        border-radius: 50%;
+      }
     }
 
     .btns {
       position: absolute;
+      z-index: 2;
       right: 0;
       bottom: -20px;
-      z-index: 2;
-      height: 40px;
+
       display: flex;
       flex-direction: row;
+
+      max-height: 40px;
       gap: 15px;
 
       @include b(1440) {
@@ -60,6 +93,7 @@
       @include b(1024) {
         top: 16px;
         left: -5px;
+
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
@@ -73,16 +107,22 @@
 
       button {
         padding: 12px 16px;
+
+        max-height: 40px;
+
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
+
         box-sizing: border-box;
-        border: 2px solid #fff;
-        font-weight: 500;
+
         font-size: 14px;
+        font-weight: 500;
         line-height: 16px;
+
         color: #fcfcfd;
+        border: 2px solid #fff;
 
         a {
           display: flex;
@@ -99,6 +139,7 @@
 
   &__info {
     margin-top: 80px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -108,24 +149,30 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
+
       font-family: 'Poppins', sans-serif;
-      font-weight: 700;
       font-size: 30px;
+      font-weight: 700;
       line-height: 45px;
+
       color: $soft-red;
 
       button {
         margin-left: 13px;
+
         width: 60px;
         height: 44px;
 
         .content {
           margin: 1px;
-          width: 100%;
-          height: 100%;
+
           display: flex;
           justify-content: center;
           align-items: center;
+
+          width: 100%;
+          height: 100%;
+
           background: #fff;
           border-radius: 20px;
         }
@@ -134,29 +181,35 @@
 
     &__bio {
       margin: 10px auto 20px;
+
       max-width: 535px;
+
       font-family: 'Poppins', sans-serif;
-      font-weight: 500;
       font-size: 14px;
+      font-weight: 500;
       line-height: 21px;
       text-align: center;
+
       color: #959595;
     }
 
     .id {
       margin: 1px;
       padding: 12px 20px;
+
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 14px;
+
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 18px;
+
+      color: $soft-red;
       background: #fff;
       border-radius: 22px;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 500;
-      font-size: 15px;
-      line-height: 18px;
-      color: $soft-red;
+      gap: 14px;
 
       img {
         padding-bottom: 2px;
@@ -165,18 +218,21 @@
 
     &__links {
       margin-top: 20px;
+
       display: flex;
       flex-direction: row;
       gap: 15px;
 
       .link {
-        width: 40px;
-        height: 40px;
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 2px solid #e6e8ec;
+
         box-sizing: border-box;
+        width: 40px;
+        height: 40px;
+
+        border: 2px solid #e6e8ec;
         border-radius: 40px;
       }
     }
@@ -184,34 +240,42 @@
 
   &__navbar {
     margin-top: 36px;
-    width: 100%;
+
     display: flex;
     flex-direction: row;
     justify-content: center;
+
+    width: 100%;
+
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
     &__tab {
       padding: 0 12px 8px;
+
       font-family: 'Poppins', sans-serif;
-      font-weight: 500;
       font-size: 14px;
+      font-weight: 500;
       line-height: 21px;
-      color: #959595;
+
       cursor: pointer;
+
+      color: #959595;
     }
 
     .active {
-      border-bottom: 3px solid $soft-red;
       color: #000;
+      border-bottom: 3px solid $soft-red;
     }
   }
 
   &__content {
     margin-top: 30px;
+
     width: 100%;
 
     .scroll {
       overflow-x: hidden;
+
       width: 100%;
     }
 
@@ -230,31 +294,36 @@
       }
 
       @include b(640) {
-        width: 89vw;
         display: inline-flex;
-        gap: 20px;
         overflow-x: scroll;
+
+        width: 89vw;
+        gap: 20px;
       }
     }
 
     &__empty {
       padding-top: 30px;
+
       text-align: center;
 
       .text {
         font-family: 'Poppins', sans-serif;
-        font-weight: 700;
         font-size: 25px;
+        font-weight: 700;
         line-height: 37px;
+
         color: $soft-red;
       }
 
       .advice {
         margin-top: 10px;
+
         font-family: 'Poppins', sans-serif;
-        font-weight: 500;
         font-size: 14px;
+        font-weight: 500;
         line-height: 21px;
+
         color: #959595;
       }
     }
