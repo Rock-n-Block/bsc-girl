@@ -12,7 +12,7 @@ export interface IProfile {
   bio?: string;
   twitter?: string;
   instagram?: string;
-  facebook?: string;
+  email?: string;
   site?: string;
   img?: any;
   preview?: string;
@@ -52,15 +52,17 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
         placeholder: '@',
         value: values.twitter,
         link: true,
+        href: `https://twitter.com/${values.twitter}`,
         description: 'Link your Twitter account in order to get the verification badge',
       },
       {
-        name: 'facebook',
-        title: 'Facebook Username',
-        placeholder: '@',
-        value: values.facebook,
-        link: true,
-        description: '',
+        name: 'email',
+        title: 'Email Username',
+        placeholder: 'mailto:',
+        value: values.email,
+        link: false,
+        href: values.email,
+        description: 'Link your email in order to get the verification badge',
       },
       {
         name: 'instagram',
@@ -68,15 +70,17 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
         placeholder: '@',
         value: values.instagram,
         link: true,
-        description: '',
+        href: `https://www.instagram.com/${values.instagram}`,
+        description: 'Link your Instagram account in order to get the verification badge',
       },
       {
         name: 'site',
         title: 'Personal site or portfolio',
         placeholder: 'https://',
         value: values.site,
-        link: false,
-        description: '',
+        link: true,
+        href: `https://${values.site}`,
+        description: 'Link your personal site in order to get the verification badge',
       },
     ];
 
@@ -102,7 +106,11 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {item.link ? <a href={item.value}>Link</a> : null}
+                {item.link ? (
+                  <a href={item.href} target="_blank" rel="noreferrer">
+                    Link
+                  </a>
+                ) : null}
               </div>
               {item.description ? (
                 <div className="form-item__description">{item.description}</div>

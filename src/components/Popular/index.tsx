@@ -103,7 +103,7 @@ const Popular: React.FC<TypePopularsProps> = ({ items }) => {
         </div>
         <div className="popular__items">
           {items.map((item, index) => (
-            <div key={item.name} className="item">
+            <div key={`${item.name}-${index + 1}`} className="item">
               <div className="item__number">{index + 1}.</div>
               <div className="item__img">
                 <img className="item__img__avatar" src={item.img} alt={`avatar ${item.name}`} />

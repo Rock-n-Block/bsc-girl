@@ -1,0 +1,35 @@
+@import "src/styles/mixins";
+
+.search-page {
+  margin-bottom: 50px;
+
+  width: 100%;
+
+  &__text {
+    margin-bottom: 30px;
+
+    width: 100%;
+
+    font-size: 24px;
+    font-weight: 500;
+
+    &__result {
+      font-weight: 600;
+    }
+  }
+
+  &__content {
+    overflow-x: auto;
+
+    &__scroll {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      overflow-x: hidden;
+
+      @include b(500) {
+        overflow-x: scroll;
+      }
+    }
+  }
+}

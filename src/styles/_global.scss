@@ -6,6 +6,9 @@ body {
   margin: 0;
   padding: 0;
   scroll-behavior: smooth;
+
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
 }
 
 .container {
@@ -25,6 +28,10 @@ body {
 }
 
 header {
+  position: fixed;
+  top: 0;
+  z-index: 5;
+  width: 100vw;
   height: 60px;
   background: #fff;
   display: flex;

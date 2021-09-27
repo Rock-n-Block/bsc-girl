@@ -5,3 +5,4 @@ export { default as CreatePage } from './Create';
 export { default as CreateCollectiblePage } from './CreateCollectible';
 export { default as EditProfilePage } from './EditProfile';
 export { default as ConnectWalletPage } from './ConnectWallet';
+export { default as SearchPage } from './Search';

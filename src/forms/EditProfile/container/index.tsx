@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { userApi } from '../../../services/api';
 import { useMst } from '../../../store/store';
-import { clog } from '../../../utils/logger';
+import { clog, clogData } from '../../../utils/logger';
 import { validateForm } from '../../../utils/validate';
 import ProfileComponent, { IProfile } from '../component';
 
@@ -19,7 +19,7 @@ const EditProfile: React.FC = observer(() => {
     bio: user.bio || '',
     twitter: user.twitter || '',
     instagram: user.instagram || '',
-    facebook: user.facebook || '',
+    email: user.email || '',
     site: user.site || '',
     img: '',
     preview: `https://${user.avatar}` || '',
@@ -31,7 +31,17 @@ const EditProfile: React.FC = observer(() => {
     validate: (values) => {
       return validateForm({
         values,
-        notRequired: ['displayName', 'customUrl', 'bio', 'twitter', 'instagram', 'img', 'preview'],
+        notRequired: [
+          'displayName',
+          'customUrl',
+          'bio',
+          'twitter',
+          'instagram',
+          'email',
+          'img',
+          'preview',
+          'site',
+        ],
       });
     },
 
@@ -44,13 +54,39 @@ const EditProfile: React.FC = observer(() => {
       formData.append('custom_url', values.customUrl ? values.customUrl : '');
       formData.append('twitter', values.twitter ? values.twitter : '');
       formData.append('instagram', values.instagram ? values.instagram : '');
-      formData.append('facebook', values.facebook ? values.facebook : '');
+      formData.append('email', values.email ? values.email : '');
+      formData.append('site', values.site ? values.site : '');
 
       userApi
         .update(formData)
         .then(({ data }) => {
           user.update(data);
           clog('Congrats you successfully changed your profile');
+
+          const verifyData = new FormData();
+          verifyData.append('url', values.customUrl ? values.customUrl : '');
+          verifyData.append('address', user.address);
+          verifyData.append('role', 'user');
+          verifyData.append('bio', values.bio ? values.bio : '');
+          verifyData.append('twitter', values.twitter ? values.twitter : '');
+          verifyData.append('media', values.img);
+          verifyData.append('instagram', values.instagram ? values.instagram : '');
+          verifyData.append('website', values.site ? values.site : '');
+          verifyData.append('email', values.email ? values.email : '');
+
+          userApi
+            .verifyMe(verifyData)
+            .then(() => {
+              clog('Congrats you have successfully submitted a verification request');
+            })
+            .catch((err: any) => {
+              if (err.message === 'Request failed with status code 400') {
+                clog(`Your verification already in progress`);
+              } else {
+                clogData('error', err.message);
+              }
+              clog(err.message);
+            });
         })
         .catch((err) => {
           clog('Something went wrong');

@@ -5,6 +5,7 @@ export default {
   createCollection: (data: any): Promise<any> => axios.post('store/create_collection/', data),
   saveToken: (data: any): Promise<any> => axios.post('store/save_token/', data),
   saveCollection: (data: any): Promise<any> => axios.post('store/save_collection/', data),
+  getFee: (): Promise<any> => axios.get('store/fee'),
   getExplore: (page: number, filter: string, sort: string): Promise<any> =>
     axios.get(`store/hot/${page}/?sort=${sort}${filter !== 'all' ? `&tag=${filter}` : ''}`),
   getTags: (): Promise<any> => axios.get(`store/tags/`),
@@ -27,7 +28,7 @@ export default {
     if (sellerId) {
       data.sellerId = sellerId;
     }
-    return axios.post(`/store/buy/${localStorage.dds_token}/`, data);
+    return axios.post(`/store/buy/${localStorage.bsc_token}/`, data);
   },
   getLiked: (address: string, page: number): Promise<any> =>
     axios.get(`store/liked/${address}/${page}/`),
@@ -37,14 +38,11 @@ export default {
     axios.get(`store/owned/${address}/${page}/`),
   getUserCollections: (address: string, page: number): Promise<any> =>
     axios.get(`store/collections/${address}/${page}/`),
-  getSearchResults: (data: { text: string; page: number }, query: string): Promise<any> =>
-    axios.post(
-      `store/search/${query === 'items' ? '' : '?type='}${query === 'items' ? '' : query}`,
-      {
-        text: data.text,
-        page: data.page,
-      },
-    ),
+  getSearchResults: (data: { text: string; page: number }): Promise<any> =>
+    axios.post(`store/search/`, {
+      text: data.text,
+      page: data.page,
+    }),
   setCollectionCover: (file: Blob, id: string): Promise<any> => {
     const data = new FormData();
     data.append('id', id);
@@ -54,7 +52,7 @@ export default {
   },
   createBid: (id: string | number, amount: string, quantity: string): Promise<any> =>
     axios.post('/store/bids/make_bid/', {
-      auth_token: localStorage.dds_token,
+      auth_token: localStorage.bsc_token,
       token_id: id,
       amount: +amount,
       quantity: +quantity,
@@ -62,26 +60,23 @@ export default {
   verificateBet: (id: number): Promise<any> => axios.get(`/store/verificate_bet/${id}/`),
   endAuction: (id: number): Promise<any> =>
     axios.post(`/store/end_auction/${id}/`, {
-      token: localStorage.dds_token,
+      token: localStorage.bsc_token,
     }),
   putOnSale: (
     tokenId: number,
     price?: number | null,
-    minimalBid?: number | null,
+    currency?: string,
     remove?: boolean,
   ): Promise<any> => {
     const data: any = {
-      AuthToken: localStorage.dds_token,
+      AuthToken: localStorage.bsc_token,
       selling: !remove,
-      currency: 'ETH',
+      currency: currency || 'BSCGIRL',
       price: null,
       minimal_bid: null,
     };
     if (price) {
       data.price = price;
-    }
-    if (minimalBid) {
-      data.minimal_bid = minimalBid;
     }
 
     return axios.patch(`/store/${tokenId}/`, data);

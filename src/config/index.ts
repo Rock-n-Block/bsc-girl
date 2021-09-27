@@ -64,9 +64,9 @@ export const connectWalletInfo: IConnectWallet = {
 
 export const contracts: IContracts = {
   type: isProduction ? 'mainnet' : 'testnet',
-  names: ['BSCGIRLToken', 'BSCGIRLMOONToken', 'FactoryErc721', 'FactoryErc1155', 'Exchange'],
+  names: ['BSCGIRL', 'BSCGIRLMOON', 'FactoryErc721', 'FactoryErc1155', 'Exchange'],
   contract: {
-    BSCGIRLTOKEN: {
+    BSCGIRL: {
       params: {
         decimals: 18,
       },
@@ -787,7 +787,7 @@ export const contracts: IContracts = {
         },
       },
     },
-    BSCGIRLMOONTOKEN: {
+    BSCGIRLMOON: {
       params: {
         decimals: 8,
       },

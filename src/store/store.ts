@@ -14,7 +14,10 @@ export const Store = RootModel.create({
     address: '',
     is_verificated: false,
     display_name: '',
-    balance: '0',
+    balance: {
+      bscgirl: '0',
+      bscgirlmoon: '0',
+    },
     follows_count: 0,
     followers_count: 0,
   },

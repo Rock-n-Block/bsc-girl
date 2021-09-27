@@ -102,7 +102,7 @@ const UploaderButton: React.FC<IUploader> = ({
                 </div>
               </>
             ) : (
-              <p>PNG, GIF, WEBP, MP4 or MP3. Max 30mb.</p>
+              <p>PNG, GIF, WEBP. Max 30mb.</p>
             )}
           </Dragger>
         </>

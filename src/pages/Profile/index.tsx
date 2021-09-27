@@ -5,11 +5,12 @@ import { observer } from 'mobx-react';
 import Coins from '../../assets/img/icons/coins-icon.svg';
 import Edit from '../../assets/img/icons/edit-icon.svg';
 import Exit from '../../assets/img/icons/exit-icon.svg';
-import More from '../../assets/img/icons/profile-icon-more.svg';
-import Share from '../../assets/img/icons/profile-icon-share.svg';
 import FacebookLogo from '../../assets/img/icons/profile-logo-fb.svg';
 import InstLogo from '../../assets/img/icons/profile-logo-inst.svg';
 import TwitterLogo from '../../assets/img/icons/profile-logo-tw.svg';
+// import More from '../../assets/img/icons/profile-icon-more.svg';
+// import Share from '../../assets/img/icons/profile-icon-share.svg';
+import Verified from '../../assets/img/icons/verification.svg';
 import {
   ProfileCollectibles,
   ProfileCreated,
@@ -17,7 +18,7 @@ import {
   UploaderButton,
 } from '../../components';
 import { storeApi, userApi } from '../../services/api';
-import { ConnectWalletService } from '../../services/connectwallet';
+import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
 import { clog, clogData } from '../../utils/logger';
 
@@ -45,7 +46,7 @@ interface INewUser {
   followsCount: number | null;
   followers: any[];
   followersCount: number | null;
-  isVerificated: boolean;
+  isVerified: boolean;
 }
 
 const ProfilePage: React.FC = observer(() => {
@@ -55,12 +56,12 @@ const ProfilePage: React.FC = observer(() => {
   const [collectibles, setCollectibles] = useState<any>({});
 
   const { user } = useMst();
-  const walletConnector = new ConnectWalletService();
+  const walletConnector = useWalletConnectService();
 
   const { userId } = useParams<{ userId: string | undefined }>();
   const history = useHistory();
   const params = new URLSearchParams(useLocation().search);
-  const [activeTab, setActiveTab] = useState(params.get('tab') ?? 'my-collection');
+  const [activeTab, setActiveTab] = useState(params.get('tab') ?? 'my-items');
 
   const self = user.id === (userId ?? '0');
 
@@ -77,7 +78,7 @@ const ProfilePage: React.FC = observer(() => {
     },
     {
       name: 'facebook',
-      href: currentUser?.facebook || '',
+      href: user.facebook || '',
       img: FacebookLogo,
     },
   ];
@@ -102,7 +103,7 @@ const ProfilePage: React.FC = observer(() => {
           followsCount: data.follows_count,
           followers: data.followers,
           followersCount: data.followers_count,
-          isVerificated: data.is_verificated,
+          isVerified: data.is_verificated,
         });
       })
       .catch((err) => {
@@ -119,7 +120,7 @@ const ProfilePage: React.FC = observer(() => {
             setCollectibles({ tokens: [...data], length: data.length });
           })
           .catch((err: any) => {
-            clogData(err, 'get tokens');
+            clogData('get tokens', err);
           });
       }
     },
@@ -146,7 +147,7 @@ const ProfilePage: React.FC = observer(() => {
         followsCount: user.follows_count,
         followers: user.followers,
         followersCount: user.followers_count,
-        isVerificated: user.is_verificated,
+        isVerified: user.is_verificated,
       });
     }
   }, [self, loadUser, user]);
@@ -203,6 +204,11 @@ const ProfilePage: React.FC = observer(() => {
             </div>
             <div className="avatar">
               {currentUser?.avatar ? <img src={currentUser?.avatar} alt="avatar" /> : ''}
+              {currentUser?.isVerified ? (
+                <img className="avatar__verified" src={Verified} alt="verified" />
+              ) : (
+                ''
+              )}
             </div>
             {self ? (
               <div className="btns">
@@ -212,7 +218,7 @@ const ProfilePage: React.FC = observer(() => {
                   isLoading={isLoading}
                 />
                 <button className="gradient-button" type="button">
-                  <Link to="edit-profile">
+                  <Link to="/edit-profile">
                     Edit profile
                     <img src={Edit} alt="edit icon" />
                   </Link>
@@ -244,25 +250,23 @@ const ProfilePage: React.FC = observer(() => {
                   );
                 return '';
               })}
-              <div className="link">
-                <img src={Share} alt="share" />
-              </div>
-              <div className="link">
-                <img src={More} alt="more" />
-              </div>
+              {/* <div className="link"> */}
+              {/*   <img src={Share} alt="share" /> */}
+              {/* </div> */}
+              {/* <div className="link"> */}
+              {/*   <img src={More} alt="more" /> */}
+              {/* </div> */}
             </div>
           </div>
           <div className="profile__navbar">
             <div
-              className={`profile__navbar__tab ${
-                activeTab === 'my-collection' ? 'active' : undefined
-              }`}
+              className={`profile__navbar__tab ${activeTab === 'my-items' ? 'active' : undefined}`}
               role="button"
               tabIndex={0}
-              onClick={() => setActiveTab('my-collection')}
+              onClick={() => setActiveTab('my-items')}
               onKeyPress={() => {}}
             >
-              My collection
+              {self ? 'My items' : 'Items'}
             </div>
             <div
               className={`profile__navbar__tab ${activeTab === 'liked' ? 'active' : undefined}`}
@@ -283,7 +287,7 @@ const ProfilePage: React.FC = observer(() => {
               Created
             </div>
           </div>
-          {activeTab === 'my-collection' ? <ProfileCollectibles cards={collectibles} /> : ''}
+          {activeTab === 'my-items' ? <ProfileCollectibles tokens={collectibles.tokens} /> : ''}
           {activeTab === 'liked' ? <ProfileLiked address={currentUser?.address ?? ''} /> : ''}
           {activeTab === 'created' ? <ProfileCreated address={currentUser?.address ?? ''} /> : ''}
         </div>

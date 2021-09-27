@@ -10,7 +10,10 @@ const Follower = types.model({
   id: types.optional(types.union(types.number, types.string, types.null), null),
 });
 
-export const Balance = types.optional(types.string, '0');
+export const Balance = types.model({
+  bscgirl: types.optional(types.string, '0'),
+  bscgirlmoon: types.optional(types.string, '0'),
+});
 
 export const User = types
   .model({
@@ -31,11 +34,13 @@ export const User = types
     twitter: types.optional(types.maybeNull(types.string), null),
     instagram: types.optional(types.maybeNull(types.string), null),
     facebook: types.optional(types.maybeNull(types.string), null),
-    balance: types.optional(Balance, '0'),
+    balance: types.optional(Balance, {
+      bscgirl: '0',
+      bscgirlmoon: '0',
+    }),
   })
   .views((self) => ({
     isLiked() {
-      //  return !!self.likes.includes(id);
       return self.likes > 0;
     },
   }))
@@ -44,14 +49,16 @@ export const User = types
       self.address = addr;
     };
     const setBalance = (value: string, currency: string) => {
-      if (currency === ('BSCGIRL' || 'BSCGIRLMOON')) self.balance = value;
+      if (currency === 'BSCGIRL') {
+        self.balance.bscgirl = value;
+      } else if (currency === 'BSCGIRLMOON') {
+        self.balance.bscgirlmoon = value;
+      }
     };
     const addLike = () => {
-      // self.likes.push(tokenId);
       self.likes += 1;
     };
     const removeLike = () => {
-      // self.likes.replace(self.likes.filter((like) => like !== tokenId));
       self.likes -= 1;
     };
     const setCover = (img: string) => {
@@ -64,7 +71,7 @@ export const User = types
       self.address = '';
       self.id = '';
       delete localStorage.bsc_token;
-      delete localStorage.walletconnect;
+      delete localStorage.connector;
     };
     const getMe = flow(function* getMe() {
       try {

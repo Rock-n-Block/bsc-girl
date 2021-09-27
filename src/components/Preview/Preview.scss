@@ -17,14 +17,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 543px;
+    width: 553px;
 
     @include b(990) {
       max-width: 500px;
     }
 
     @include b(550) {
-      min-width: 100%;
+      width: 100%;
     }
 
     img {
@@ -53,8 +53,13 @@
       display: flex;
       flex-direction: row;
 
-      &__user {
-        &-1:hover {
+      &__1 {
+        img {
+          width: 30px;
+          border-radius: 50%;
+        }
+
+        &:hover {
           width: 40px;
           position: relative;
           z-index: 5;
@@ -63,45 +68,42 @@
             width: 40px;
           }
         }
+      }
 
-        &-2 {
-          position: relative;
-          left: -13px;
+      &__2 {
+        position: relative;
+        left: -13px;
 
-          &:hover {
-            position: relative;
-            z-index: 5;
-
-            img {
-              width: 40px;
-            }
-          }
+        img {
+          width: 30px;
+          border-radius: 50%;
         }
 
-        &-3 {
+        &:hover {
           position: relative;
-          left: -26px;
+          z-index: 5;
 
-          &:hover {
-            position: relative;
-            z-index: 5;
-
-            img {
-              width: 40px;
-            }
+          img {
+            width: 40px;
           }
         }
+      }
 
-        &-other {
+      &__3 {
+        position: relative;
+        left: -26px;
+
+        img {
+          width: 30px;
+          border-radius: 50%;
+        }
+
+        &:hover {
           position: relative;
-          left: -39px;
+          z-index: 5;
 
-          &:hover {
-            position: relative;
-
-            img {
-              width: 40px;
-            }
+          img {
+            width: 40px;
           }
         }
       }

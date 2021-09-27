@@ -5,23 +5,28 @@ import DefaultImg from '../../assets/img/card-default.png';
 import { NoItemsFound, TokenCard } from '../index';
 
 interface ProfileCollectiblesProps {
-  cards: any;
+  tokens: any;
 }
 
-const ProfileCollectibles: React.FC<ProfileCollectiblesProps> = observer(({ cards }) => {
+const ProfileCollectibles: React.FC<ProfileCollectiblesProps> = observer(({ tokens }) => {
   return (
     <div className="profile__content">
-      {cards.tokens && cards.tokens.length ? (
+      {tokens && tokens.length ? (
         <div className="scroll">
           <div className="profile__content__items">
-            {cards.tokens.map((token: any) => (
+            {tokens.map((token: any) => (
               <TokenCard
+                key={token.id}
                 id={token.id}
-                owners={token.owners}
-                img={token.media ? `https://${token.media}` : DefaultImg}
-                title={token.name}
+                owners={token.standart === 'ERC1155' ? token.owners : [token.owners]}
+                img={token.media ? token.media : DefaultImg}
+                name={token.name}
                 price={token.price}
-                numberOfCopies={token.numberOfCopies}
+                currency={token.currency.symbol}
+                total_supply={token.total_supply}
+                available={token.available}
+                is_liked={token.is_liked}
+                disableLinks={false}
               />
             ))}
           </div>

@@ -42,3 +42,17 @@ export interface IContracts {
     };
   };
 }
+
+export interface IToken {
+  standart: string;
+  currency: any;
+  media: string;
+  name: string;
+  description: string;
+  id: number;
+  owners: any;
+  available: number;
+  total_supply: number;
+  price: number;
+  is_liked: boolean;
+}

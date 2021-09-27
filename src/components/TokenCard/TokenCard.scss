@@ -2,7 +2,12 @@
   padding: 10px 10px 23px;
 
   box-sizing: border-box;
-  width: 275px;
+  min-width: 275px;
+  max-width: 275px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   border: 1px solid #e7e7e7;
   border-radius: 30px;
@@ -88,12 +93,6 @@
           z-index: 5;
         }
       }
-
-      &-other {
-        position: absolute;
-        top: 0;
-        right: 0;
-      }
     }
   }
 
@@ -159,10 +158,6 @@
 
     &__like {
       cursor: pointer;
-
-      img:hover {
-        box-shadow: -1px 1px #000;
-      }
     }
   }
 }

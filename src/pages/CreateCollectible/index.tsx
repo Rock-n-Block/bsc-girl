@@ -5,7 +5,7 @@ import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
 import ArrowLeftRed from '../../assets/img/icons/arrow-left-red.svg';
 import { CreateForm } from '../../forms';
 import { ratesApi } from '../../services/api';
-import { ConnectWalletService } from '../../services/connectwallet';
+import { useWalletConnectService } from '../../services/connectwallet';
 import { clogData } from '../../utils/logger';
 
 import './CreateCollectible.scss';
@@ -15,7 +15,7 @@ type TypeCreateCollectibleProps = {
 };
 
 const CreateCollectiblePage: React.FC<TypeCreateCollectibleProps> = ({ collectible }) => {
-  const walletConnector = new ConnectWalletService();
+  const walletConnector = useWalletConnectService();
   const [bscRate, setBscRate] = useState(1);
 
   ratesApi
@@ -41,7 +41,7 @@ const CreateCollectiblePage: React.FC<TypeCreateCollectibleProps> = ({ collectib
         </div>
         <CreateForm
           isSingle={collectible === 'single'}
-          walletConnector={walletConnector}
+          walletConnector={walletConnector.connectorService}
           bscRate={bscRate}
         />
       </div>

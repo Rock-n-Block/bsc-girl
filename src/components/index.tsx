@@ -20,3 +20,5 @@ export { default as ProfileCreated } from './ProfileCreated';
 export { default as Sort } from './Sort';
 export { default as Filter } from './Filter';
 export { default as InputNumber } from './InputNumber';
+// eslint-disable-next-line import/no-cycle
+export { default as PutOnSaleModal } from './PutOnSaleModal';

@@ -20,7 +20,7 @@ export default {
   update: (data: any): Promise<any> => axios.patch(`account/self/`, data),
   follow: (data: { id: number | undefined }): Promise<any> =>
     axios.post(`account/self/follow/`, data),
-  like: (data: { id: number | undefined }): Promise<any> => axios.post(`account/self/like/`, data),
+  like: (data: { id: string | undefined }): Promise<any> => axios.post(`account/self/like/`, data),
   verifyMe: (data: any): Promise<any> => axios.post('/account/verification/', data),
   setUserCover: (file: Blob): Promise<any> => {
     const data = new FormData();

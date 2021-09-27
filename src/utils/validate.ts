@@ -50,19 +50,19 @@ export const validateForm = ({ values, notRequired }: { values: any; notRequired
         delete errCopy.tokenProperties;
       }
     },
-    instantSalePriceEth: (value: string): void => {
+    price: (value: string): void => {
       if (!value) {
-        errCopy.instantSalePriceEth = 'Enter price';
+        errCopy.price = 'Enter price';
       }
       if (+value <= 0.001) {
-        errCopy.instantSalePriceEth = 'Price should be more than 0.001';
+        errCopy.price = 'Price should be more than 0.001';
       }
     },
-    bid: (value: string): void => {
-      if (!value || !+value) {
-        errCopy.bid = 'Enter bid value';
-      }
-    },
+    // bid: (value: string): void => {
+    //   if (!value || !+value) {
+    //     errCopy.bid = 'Enter bid value';
+    //   }
+    // },
     videoLink: (value: string): void => {
       if (!value) {
         errCopy.videoLink = 'Enter your link to a video file';
@@ -92,7 +92,7 @@ export const validateForm = ({ values, notRequired }: { values: any; notRequired
       }
     },
 
-    website: (value: string): void => {
+    site: (value: string): void => {
       if (!value) {
         errCopy.instagram = 'Enter your website';
       }

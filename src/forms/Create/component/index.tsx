@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input } from 'antd';
 import BigNumber from 'bignumber.js/bignumber';
 import { FieldArray, FormikProps } from 'formik';
 import { observer } from 'mobx-react-lite';
 
 import DefaultImg from '../../../assets/img/card-default.png';
+import ArrowGradient from '../../../assets/img/icons/arrow-gradient.svg';
 import { CreateModal, InputNumber, TokenCard, UploaderButton } from '../../../components';
 import { useMst } from '../../../store/store';
 import { validateField } from '../../../utils/validate';
@@ -18,6 +19,7 @@ export interface ICreateForm {
   img: any;
   preview: string;
   price: number | string;
+  currency: string;
   tokenName: string;
   tokenDescription: string;
   tokenRoyalties: number | string;
@@ -45,11 +47,18 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
     handleSubmit,
     isSingle,
   }) => {
+    const [isOpen, setIsOpen] = useState(false);
     const { user } = useMst();
-    const serviceFee = 2.5;
+    const serviceFee = 3;
+
     const onSubmit = () => {
       handleSubmit();
     };
+
+    const handleChooseCurrency = (currency: string) => {
+      values.currency = currency;
+    };
+
     const handleChangeProperty = (e: any, index: any, type: any) => {
       const localProperties = [...values.tokenProperties];
 
@@ -71,6 +80,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
       setFieldValue('tokenProperties', localProperties);
       handleChange(e);
     };
+
     return (
       <Form name="create-form" className="create-collectible__main">
         <div className="create-form">
@@ -86,7 +96,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
           <div className="create-form__enter-price">
             <Form.Item
               name="enter-price"
-              validateStatus={validateField('instantSalePriceEth', touched, errors)}
+              validateStatus={validateField('price', touched, errors)}
               help={!touched.price ? false : errors.price}
               label={
                 <span className="create-form__enter-price__title">Enter price for one piece</span>
@@ -102,7 +112,48 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                     onBlur={handleBlur}
                     positiveOnly
                   />
-                  <div className="currency">BSCGIRL</div>
+                  <div className="gradient-box">
+                    <div
+                      className="choose-currency"
+                      role="button"
+                      tabIndex={0}
+                      onKeyPress={() => {}}
+                      onClick={() => setIsOpen(!isOpen)}
+                    >
+                      <div className="currency">{values.currency}</div>
+                      <img
+                        className={isOpen ? 'arrow-up' : ''}
+                        src={ArrowGradient}
+                        alt="arrow gradient"
+                      />
+                      {isOpen ? (
+                        <div className="gradient-box__select">
+                          <div className="choose-currency__items">
+                            <div
+                              className="choose-currency__items__item"
+                              role="button"
+                              tabIndex={0}
+                              onKeyPress={() => {}}
+                              onClick={() => handleChooseCurrency('BSCGIRL')}
+                            >
+                              BSCGIRL
+                            </div>
+                            <div
+                              className="choose-currency__items__item"
+                              role="button"
+                              tabIndex={0}
+                              onKeyPress={() => {}}
+                              onClick={() => handleChooseCurrency('BSCGIRLMOON')}
+                            >
+                              BSCGIRLMOON
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </Form.Item>
@@ -119,7 +170,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                       .multipliedBy(new BigNumber(100 - serviceFee))
                       .dividedBy(100)
                       .toFixed()}{' '}
-                BSCGIRL
+                {values.currency}
               </div>
               {values.bscRate ? (
                 <div className="result__usd">
@@ -297,13 +348,17 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
               owners={[
                 {
                   name: user.name,
-                  img: user.avatar,
+                  avatar: user.avatar,
                 },
               ]}
               img={values.preview || DefaultImg}
-              title={values.tokenName}
+              name={values.tokenName}
               price={values.price}
-              numberOfCopies={isSingle ? 1 : +values.numberOfCopies}
+              currency={values.currency}
+              total_supply={isSingle ? 1 : +values.numberOfCopies}
+              is_liked={false}
+              available={+values.numberOfCopies}
+              id=""
             />
           </div>
         </div>

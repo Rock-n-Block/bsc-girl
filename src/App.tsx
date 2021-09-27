@@ -9,6 +9,7 @@ import {
   EditProfilePage,
   HomePage,
   ProfilePage,
+  SearchPage,
   TokenPage,
 } from './pages';
 
@@ -45,6 +46,9 @@ export const App: React.FC = () => {
         </Route>
         <Route exact path="/connect">
           <ConnectWalletPage />
+        </Route>
+        <Route exact path="/search">
+          <SearchPage />
         </Route>
       </Switch>
       <Footer />

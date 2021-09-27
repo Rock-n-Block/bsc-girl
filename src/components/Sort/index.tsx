@@ -5,8 +5,6 @@ import CheckMark from '../../assets/img/icons/check-mark.svg';
 
 interface ISort {
   items: Array<ISortItem>;
-  // eslint-disable-next-line react/no-unused-prop-types,react/require-default-props
-  isSortShown?: boolean;
   onChange: (sort: ISortItem) => void;
 }
 
@@ -47,15 +45,15 @@ const Sort: React.FC<ISort> = ({ items, onChange }) => {
         {items.map((item) => (
           <div
             key={item.key}
-            className={`open__item ${activeSort === item ? 'red' : undefined}`}
+            className={`open__item ${activeSort.key === item.key ? 'red' : undefined}`}
             role="button"
             tabIndex={0}
             onClick={() => handleChangeSort(item)}
             onKeyPress={() => {}}
           >
-            {item}
+            {item.value}
             <img
-              className={activeSort === item ? 'checked' : 'non-checked'}
+              className={activeSort.key === item.key ? 'checked' : 'non-checked'}
               src={CheckMark}
               alt="check mark"
             />
@@ -74,7 +72,6 @@ const Sort: React.FC<ISort> = ({ items, onChange }) => {
           </div>
         </div>
       </div>
-      ;
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react';
 
+import LogoBSCGIRLMOON from '../../assets/img/bscgirlmoon-logo.png';
 import Burger from '../../assets/img/icons/burger.svg';
 import CloseBtn from '../../assets/img/icons/close-btn.svg';
 import LogoDS from '../../assets/img/icons/logo-ds.svg';
@@ -18,9 +19,25 @@ import { useMst } from '../../store/store';
 import './Header.scss';
 
 const Header: React.FC = observer(() => {
+  const [isShownCurrency, setShownCurrency] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useMst();
+
   const location = useLocation();
+  const history = useHistory();
+
+  const handleKeyDown = (e: any) => {
+    if (e.target.value) {
+      history.push(`/search/?to_search=${e.target.value}`);
+    }
+  };
+
+  const handleKeyDownMobile = (e: any) => {
+    if (e.key === 'Enter' && e.target.value) {
+      history.push(`/search/?to_search=${e.target.value}`);
+      setIsOpen(false);
+    }
+  };
 
   return (
     <header>
@@ -31,28 +48,61 @@ const Header: React.FC = observer(() => {
               <img src={LogoBSC} alt="bsc-girl logo" className="main__logo" />
             </Link>
             <div className="main__nav">
-              <div className="main__nav__link">Explore</div>
-              <div className="main__nav__link">My items</div>
+              <a href="#explore" className="main__nav__link" onClick={() => history.push('/')}>
+                Explore
+              </a>
+              <a href="#my-items" className="main__nav__link" onClick={() => history.push('/')}>
+                My items
+              </a>
             </div>
           </div>
           <div className="nav">
-            {location.pathname === '/' ? (
+            {location.pathname !== ('/connect' || '/create') ? (
               <div className="search">
                 <img src={SearchIcon} alt="search icon" className="search__icon" />
-                <input type="text" placeholder="Search items, collections" />
+                <input type="text" onKeyDown={handleKeyDown} placeholder="Search items" />
               </div>
             ) : (
-              React.Fragment
+              ''
             )}
             {user.address ? (
-              <Link to={`/profile/${user.id}`}>
-                <div className="profile-link">
-                  <img src={LogoMini} alt="logo avatar" />
-                  {user.balance} BSCGIRL
-                </div>
+              <div
+                className="currency"
+                role="button"
+                tabIndex={0}
+                onKeyPress={() => {}}
+                onClick={() => setShownCurrency(!isShownCurrency)}
+              >
+                {!isShownCurrency ? (
+                  <div className="currency__item">
+                    <img src={LogoMini} alt="logo avatar" />
+                    {user.balance.bscgirl}
+                    &nbsp; BSCGIRL
+                  </div>
+                ) : (
+                  <div className="show">
+                    <div className="currency__item">
+                      <img src={LogoMini} alt="logo avatar" />
+                      {user.balance.bscgirl}
+                      &nbsp; BSCGIRL
+                    </div>
+                    <div className="currency__item">
+                      <img src={LogoBSCGIRLMOON} alt="logo avatar" />
+                      {user.balance.bscgirlmoon}
+                      &nbsp; BSCGIRLMOON
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              ''
+            )}
+            {user.address ? (
+              <Link to={`/profile/${user.id}`} className="profile-link">
+                {user.avatar ? <img src={user.avatar} alt="user avatar" /> : ''}
               </Link>
             ) : (
-              React.Fragment
+              ''
             )}
             <button type="button" className="gradient-button">
               <div className="nav__button">
@@ -102,28 +152,44 @@ const Header: React.FC = observer(() => {
             <img src={LogoBSCMobile} alt="bsc-girl logo" className="logo" />
           </Link>
           {!isOpen ? (
-            <Link to="/create" target="_top" onClick={() => setIsOpen(false)}>
+            <Link
+              to={user.address ? '/create' : '/connect'}
+              target="_top"
+              onClick={() => setIsOpen(false)}
+            >
               <button type="button" className="nav-btn__create gradient-button">
-                Create
+                {user.address ? 'Create' : 'Connect'}
               </button>
             </Link>
           ) : null}
           {isOpen ? (
             <div className="nav">
               <div className="nav__top">
-                <Link to="/profile" target="_top" onClick={() => setIsOpen(false)}>
+                <div className="currency">
+                  <div className="currency__item">
+                    <img src={LogoMini} alt="logo bscgirl" />
+                    {user.balance.bscgirl}&nbsp;BSCGIRL
+                  </div>
+                  <div className="currency__item">
+                    <img src={LogoBSCGIRLMOON} alt="logo bscgirlmoon" />
+                    {user.balance.bscgirlmoon}&nbsp;BSCGIRLMOON
+                  </div>
+                </div>
+                <Link to={`/profile/${user.id}`} target="_top" onClick={() => setIsOpen(false)}>
                   <div className="profile-link">
-                    <img src={LogoMini} alt="logo avatar" />
-                    92373453535 BSCGIRL
+                    {user.avatar ? <img src={user.avatar} alt="user avatar" /> : ''}
+                    {user.id}
                   </div>
                 </Link>
                 <div className="nav__top__main">
                   <div className="nav__top__main__link">Explore</div>
-                  <div className="nav__top__main__link">My items</div>
+                  <Link to={`/profile/${user.id}?tab=my-items`} onClick={() => setIsOpen(false)}>
+                    <div className="nav__top__main__link">My items</div>
+                  </Link>
                 </div>
-                <Link to="/create" onClick={() => setIsOpen(false)}>
+                <Link to={user.address ? '/create' : '/connect'} onClick={() => setIsOpen(false)}>
                   <button type="button" className="gradient-button">
-                    Create
+                    {user.address ? 'Create' : 'Connect wallet'}
                   </button>
                 </Link>
 
@@ -134,7 +200,7 @@ const Header: React.FC = observer(() => {
                 </button>
                 <div className="search">
                   <img src={SearchIcon} alt="search icon" className="search__icon" />
-                  <input type="text" placeholder="Search items, collections" />
+                  <input type="text" placeholder="Search items" onKeyPress={handleKeyDownMobile} />
                 </div>
               </div>
               <div className="nav__bottom">

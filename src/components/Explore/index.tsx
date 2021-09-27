@@ -16,7 +16,6 @@ const Explore: React.FC = () => {
   const [explore, setExplore] = useState<any>({});
   const [tags, setTags] = useState<Array<string>>(['all']);
   const sortItems: Array<ISortItem> = [
-    { key: 'recommend', value: 'Recommended' },
     { key: 'recent', value: 'Most Recent' },
     { key: 'popular', value: 'Popular' },
     { key: 'highest', value: 'Price High' },
@@ -29,7 +28,7 @@ const Explore: React.FC = () => {
     storeApi
       .getTags()
       .then(({ data }) => {
-        setTags(data.tags);
+        setTags(['all', ...data.tags]);
       })
       .catch((err: any) => {
         clogData('get tags error', err);
@@ -40,6 +39,7 @@ const Explore: React.FC = () => {
       storeApi
         .getExplore(page, activeFilter, activeSort.key)
         .then(({ data }) => {
+          clogData('explore data:', data);
           if (page !== 1) {
             setExplore((prevExplore: any) => {
               if (prevExplore.tokens) {
@@ -91,12 +91,17 @@ const Explore: React.FC = () => {
             <div className="scroll">
               {explore.tokens.map((token: any) => (
                 <TokenCard
+                  key={token.id}
                   id={token.id}
-                  owners={token.owners}
-                  img={token.media ? `https://${token.media}` : DefaultImg}
-                  title={token.name}
+                  owners={token.standart === 'ERC1155' ? token.owners : [token.owners]}
+                  img={token.media ? token.media : DefaultImg}
+                  name={token.name}
                   price={token.price}
-                  numberOfCopies={token.numberOfCopies}
+                  currency={token.currency.symbol}
+                  total_supply={token.total_supply}
+                  available={token.available}
+                  is_liked={token.is_liked}
+                  disableLinks={false}
                 />
               ))}
             </div>

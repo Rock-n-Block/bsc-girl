@@ -48,12 +48,17 @@ const ProfileLiked: React.FC<ProfileLikedProps> = ({ address }) => {
           <div className="profile__content__items">
             {likedCards.tokens.map((token: any) => (
               <TokenCard
+                key={token.id}
                 id={token.id}
                 owners={token.owners}
-                img={token.media ? `https://${token.media}` : DefaultImg}
-                title={token.name}
+                img={token.media ? token.media : DefaultImg}
+                name={token.name}
                 price={token.price}
-                numberOfCopies={token.numberOfCopies}
+                currency={token.currency.symbol}
+                total_supply={token.total_supply}
+                available={token.available}
+                is_liked={token.is_liked}
+                disableLinks={false}
               />
             ))}
           </div>

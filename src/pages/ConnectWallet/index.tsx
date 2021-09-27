@@ -1,63 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
 import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
 import ArrowLeftRed from '../../assets/img/icons/arrow-left-red.svg';
 import Metamask from '../../assets/img/icons/metamask-logo.svg';
 import WalletConnect from '../../assets/img/icons/wallet-connect-logo.svg';
-import { userApi } from '../../services/api';
-import { ConnectWalletService } from '../../services/connectwallet';
+import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
-import { clogData } from '../../utils/logger';
 
 import './ConnectWallet.scss';
 
 const ConnectWalletPage: React.FC = observer(() => {
+  const walletConnector = useWalletConnectService();
+  const history = useHistory();
   const { user } = useMst();
-  const walletConnector = new ConnectWalletService();
 
   const connectWallet = async (providerName: string): Promise<void> => {
-    walletConnector.initWalletConnect(providerName).then((isConnected) => {
-      if (isConnected) {
-        walletConnector.getAccount(user.address).then((account: any) => {
-          walletConnector
-            .getTokenBalance(account.address, 'BSCGIRLToken')
-            .then((value: any) => {
-              account.balance = value;
-            })
-            .finally(async () => {
-              clogData('user account: ', account);
-              const metMsg: any = await userApi.getMsg();
-
-              const signedMsg = await walletConnector.signMsg(
-                metMsg.data,
-                providerName,
-                account.address,
-              );
-
-              const login: any = await userApi.login({
-                address: account.address,
-                msg: metMsg.data,
-                signedMsg,
-              });
-
-              localStorage.bsc_token = login.data.key;
-              user.setAddress(account.address);
-              user.setBalance(account.balance, 'BSCGIRL');
-              user.getMe();
-            });
-
-          // store.addContract('Staking', connect.getContract('Staking'));
-          // store.addContract('Token', connect.getContract('Token'));
-          // store.addContract('UsdtToken', connect.getContract('UsdtToken'));
-          // store.addContract('Presale', connect.getContract('Presale'));
-          // store.setWeb3(connect.Web3);
-        });
-      } else {
-        user.disconnect();
-      }
-    });
+    walletConnector.connect(providerName);
+    if (user.address) history.push(`/profile/${user.id}`);
   };
 
   return (
