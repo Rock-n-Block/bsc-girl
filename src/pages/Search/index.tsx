@@ -51,7 +51,7 @@ const SearchPage: React.FC = observer(() => {
             {searchResults.tokens && Object.keys(searchResults.tokens).length ? (
               searchResults.tokens.map((token: any) => (
                 <TokenCard
-                  disableLinks
+                  disableLinks={false}
                   id={token.id}
                   owners={token.owners}
                   img={token.media}

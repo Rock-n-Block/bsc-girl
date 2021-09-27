@@ -54,6 +54,9 @@ const Header: React.FC = observer(() => {
               <a href="#my-items" className="main__nav__link" onClick={() => history.push('/')}>
                 My items
               </a>
+              <Link to="/staking" className="main__nav__link">
+                Staking pool
+              </Link>
             </div>
           </div>
           <div className="nav">
@@ -182,9 +185,28 @@ const Header: React.FC = observer(() => {
                   </div>
                 </Link>
                 <div className="nav__top__main">
-                  <div className="nav__top__main__link">Explore</div>
-                  <Link to={`/profile/${user.id}?tab=my-items`} onClick={() => setIsOpen(false)}>
-                    <div className="nav__top__main__link">My items</div>
+                  <a
+                    href="#staking"
+                    className="nav__top__main__link"
+                    onClick={() => {
+                      history.push('/');
+                      setIsOpen(false);
+                    }}
+                  >
+                    Explore
+                  </a>
+                  <a
+                    href="#my-items"
+                    className="nav__top__main__link"
+                    onClick={() => {
+                      history.push('/');
+                      setIsOpen(false);
+                    }}
+                  >
+                    My items
+                  </a>
+                  <Link to="/staking" onClick={() => setIsOpen(false)}>
+                    Staking pool
                   </Link>
                 </div>
                 <Link to={user.address ? '/create' : '/connect'} onClick={() => setIsOpen(false)}>

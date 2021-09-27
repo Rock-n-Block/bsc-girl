@@ -39,6 +39,7 @@ interface IToken {
   serviceFee: number;
   sellers: ISeller[];
   history: any[];
+  is_liked: boolean;
 }
 interface IUser {
   is_verificated: boolean | undefined;
@@ -205,6 +206,7 @@ const TokenPage: React.FC = () => {
       serviceFee: data.service_fee,
       sellers: data.sellers,
       history: data.history,
+      is_liked: data.is_liked,
     });
   }, []);
 
@@ -304,10 +306,10 @@ const TokenPage: React.FC = () => {
   }, [connector.connectorService, user.address]);
 
   useEffect(() => {
-    if (user.likes) {
-      setIsLiked(user.isLiked());
+    if (Object.keys(tokenData).length) {
+      setIsLiked(tokenData.is_liked);
     }
-  }, [tokenData.id, user, user.id]);
+  }, [tokenData, tokenData.id, user, user.id]);
 
   const getDetails = () => {
     if (Object.keys(tokenData).length) {

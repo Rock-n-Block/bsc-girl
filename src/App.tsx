@@ -10,6 +10,7 @@ import {
   HomePage,
   ProfilePage,
   SearchPage,
+  StakingPage,
   TokenPage,
 } from './pages';
 
@@ -49,6 +50,9 @@ export const App: React.FC = () => {
         </Route>
         <Route exact path="/search">
           <SearchPage />
+        </Route>
+        <Route exact path="/staking">
+          <StakingPage />
         </Route>
       </Switch>
       <Footer />
