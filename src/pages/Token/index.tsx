@@ -10,7 +10,7 @@ import { storeApi, userApi } from '../../services/api';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
 // import { weiToEth } from '../../utils/ethOperations';
-import { clog, clogData, throwError } from '../../utils/logger';
+import { clog, clogData } from '../../utils/logger';
 
 import './Token.scss';
 
@@ -25,10 +25,11 @@ interface IToken {
   creator: IUser;
   currency: string;
   description?: string;
-  details?: string;
+  details?: any;
   id: number;
   media: string;
   name: string;
+  updated_at: string;
   owners: IOwner[];
   tags: Array<string>;
   price: number;
@@ -69,10 +70,10 @@ const TokenPage: React.FC = () => {
   const connector = useWalletConnectService();
   const { user } = useMst();
   const { tokenId } = useParams<ITokenId>();
+  const { contract, type } = contracts;
 
   const [activeTab, setActiveTab] = useState<string>('Info');
   const [tokenData, setTokenData] = useState<IToken>({} as IToken);
-  // const [isMore, setMore] = useState(false);
   const [isApproved, setApproved] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isMyToken, setMyToken] = useState<boolean>(false);
@@ -124,7 +125,7 @@ const TokenPage: React.FC = () => {
       const { data: buyTokenData }: any = await storeApi.buyToken(
         tokenId,
         tokenData.standart === 'ERC721' ? 0 : quantity,
-        contracts.contract.BSCGIRLTOKEN.chain[contracts.type].address,
+        contract.BSCGIRLTOKEN.chain[type].address,
         tokenData.creator.id,
       );
 
@@ -145,8 +146,8 @@ const TokenPage: React.FC = () => {
     connector.connectorService
       .approveToken(
         tokenData.currency,
-        18,
-        contracts.contract.EXCHANGE.chain[contracts.type].address,
+        contract[tokenData.currency].params?.decimals || 18,
+        contract.EXCHANGE.chain[type].address,
       )
       .then(() => {
         setLoading(false);
@@ -196,6 +197,7 @@ const TokenPage: React.FC = () => {
       id: data.id,
       media: data.media,
       name: data.name,
+      updated_at: data.updated_at,
       tags: data.tags,
       owners,
       price: data.price,
@@ -221,7 +223,7 @@ const TokenPage: React.FC = () => {
         clog('Congratulations you successfully removed token from sale');
       })
       .catch((err) => {
-        clogData('Put on sale fixed price:', err);
+        clogData('Put on sale fixed price', err);
       })
       .finally(() => {
         setLoading(false);
@@ -239,7 +241,7 @@ const TokenPage: React.FC = () => {
         user.address,
       );
     } catch (err) {
-      clogData('checkApprove error', err);
+      clogData('checkApprove', err);
       return false;
     }
   };
@@ -250,14 +252,14 @@ const TokenPage: React.FC = () => {
       if (!isAppr) {
         await connector.connectorService.createTransaction(
           'setApprovalForAll',
-          [contracts.contract.EXCHANGE.chain[contracts.type].address, true],
-          currency.toUpperCase(),
+          [contract.EXCHANGE.chain[type].address, true],
+          currency,
           false,
           tokenData.collection.address,
         );
       }
     } catch (err: any) {
-      throwError(err);
+      clogData('handleApproveNft', err);
     }
   };
 
@@ -268,7 +270,7 @@ const TokenPage: React.FC = () => {
         handleSetTokenData(tokendata);
       })
       .catch((err: any) => {
-        clogData('get token error:', err);
+        clogData('get token', err);
         history.push('/');
       });
   }, [tokenId, handleSetTokenData, history]);
@@ -288,22 +290,22 @@ const TokenPage: React.FC = () => {
   }, [tokenData, user.id, user.address, user]);
 
   useEffect(() => {
-    if (user.address) {
+    if (user.address && tokenData.currency) {
       connector.connectorService
         .checkTokenAllowance(
-          'BSCGIRLTOKEN',
-          18,
-          contracts.contract.EXCHANGE.chain[contracts.type].address,
+          tokenData.currency,
+          contract[tokenData.currency].params?.decimals || 18,
+          contract.EXCHANGE.chain[type].address,
         )
         .then((res: boolean | ((prevState: boolean) => boolean)) => {
           setApproved(res);
         })
         .catch((err: any) => {
           setApproved(false);
-          clogData('check error:', err);
+          clogData('checkTokenAllowance', err);
         });
     }
-  }, [connector.connectorService, user.address]);
+  }, [connector.connectorService, contract, tokenData.currency, type, user.address]);
 
   useEffect(() => {
     if (Object.keys(tokenData).length) {
@@ -388,21 +390,6 @@ const TokenPage: React.FC = () => {
             ))}
           </div>
         );
-      return (
-        <div className="grey-text">
-          {tokenData.owners.map((owner) => (
-            <div className="person">
-              <div className="person__img">
-                <img className="avatar" src={owner.avatar} alt="person avatar" />
-              </div>
-              <div className="info">
-                Owner
-                <div className="info__position">{owner.name}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      );
     }
     return <div className="grey-text">No info</div>;
   };
@@ -425,7 +412,7 @@ const TokenPage: React.FC = () => {
             <div className="token__content__card__title">{tokenData.name}</div>
             <div className="token__content__card__price">
               <div className="value">
-                {!tokenData.price && !tokenData.selling
+                {!tokenData.price || !tokenData.selling
                   ? 'Not for sale'
                   : `${tokenData.price} ${tokenData.currency || 'BSCGIRL'}`}
                 {tokenData.standart === 'ERC1155' ? (
@@ -436,12 +423,13 @@ const TokenPage: React.FC = () => {
                   ''
                 )}
               </div>
-              <div className="converted">${tokenData.USDPrice}</div>
+              {tokenData.price && tokenData.selling ? (
+                <div className="converted">${tokenData.USDPrice}</div>
+              ) : (
+                ''
+              )}
             </div>
-            {(tokenData.standart === 'ERC721' &&
-              !tokenData.price &&
-              !tokenData.selling &&
-              isMyToken) ||
+            {(tokenData.standart === 'ERC721' && !tokenData.selling && isMyToken) ||
             (tokenData.standart === 'ERC1155' &&
               !tokenData.sellers.find((seller) => seller.id === user.id) &&
               isMyToken) ? (
@@ -529,12 +517,11 @@ const TokenPage: React.FC = () => {
             <div className="token__content__card__description">
               Name: {tokenData.name}
               <br />
-              Strengths: {tokenData.details}
+              Standart: {tokenData.standart}
+              <br />
+              Update at: {tokenData.updated_at}
             </div>
             <div className="token__content__card__btns">
-              <button type="button" className="token__content__card__read-more">
-                Read more
-              </button>
               <div
                 className="token__content__card__like"
                 role="button"
@@ -581,17 +568,17 @@ const TokenPage: React.FC = () => {
               >
                 History
               </div>
-              <div
-                className={`token__content__details__navbar__link ${
-                  activeTab === 'Details' ? 'active' : undefined
-                }`}
-                role="button"
-                tabIndex={0}
-                onClick={() => setActiveTab('Details')}
-                onKeyPress={() => {}}
-              >
-                Details
-              </div>
+              {/* <div */}
+              {/*   className={`token__content__details__navbar__link ${ */}
+              {/*     activeTab === 'Details' ? 'active' : undefined */}
+              {/*   }`} */}
+              {/*   role="button" */}
+              {/*   tabIndex={0} */}
+              {/*   onClick={() => setActiveTab('Details')} */}
+              {/*   onKeyPress={() => {}} */}
+              {/* > */}
+              {/*   Details */}
+              {/* </div> */}
             </div>
             {getDetails()}
           </div>
@@ -599,7 +586,8 @@ const TokenPage: React.FC = () => {
             <PutOnSaleModal
               tokenId={tokenData.id}
               handleSetTokenData={handleSetTokenData}
-              handleApproveNft={() => handleApproveNft(tokenData.currency)}
+              handleApproveNft={handleApproveNft}
+              closePutOnSale={() => setPutOnSaleModal(false)}
             />
           ) : (
             ''

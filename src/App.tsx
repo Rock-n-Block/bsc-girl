@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { Footer, Header } from './components';
@@ -17,12 +17,6 @@ import {
 import './styles/index.scss';
 
 export const App: React.FC = () => {
-  const [collectible, setCollectible] = useState('');
-
-  const chooseCollectible = (value: string) => {
-    setCollectible(value);
-  };
-
   return (
     <div className="bsc-girl">
       <Header />
@@ -37,10 +31,13 @@ export const App: React.FC = () => {
           <ProfilePage />
         </Route>
         <Route exact path="/create">
-          <CreatePage chooseCollectible={chooseCollectible} />
+          <CreatePage />
         </Route>
-        <Route exact path={`/create-${collectible}`}>
-          <CreateCollectiblePage collectible={collectible} />
+        <Route exact path="/create/single">
+          <CreateCollectiblePage isSingle />
+        </Route>
+        <Route exact path="/create/multiple">
+          <CreateCollectiblePage isSingle={false} />
         </Route>
         <Route exact path="/edit-profile">
           <EditProfilePage />

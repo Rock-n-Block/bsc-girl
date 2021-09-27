@@ -12,6 +12,7 @@ interface SaleFixedPriceFormProps {
   tokenId: number;
   handleSetTokenData: (data: any) => void;
   handleApproveNft: (currency: string) => {};
+  closeModal: () => void;
 }
 
 const PutOnSaleForm: React.FC<SaleFixedPriceFormProps> = ({
@@ -19,6 +20,7 @@ const PutOnSaleForm: React.FC<SaleFixedPriceFormProps> = ({
   tokenId,
   handleSetTokenData,
   handleApproveNft,
+  closeModal,
 }) => {
   const FormWithFormik = withFormik<any, IPutOnSale>({
     enableReinitialize: true,
@@ -47,10 +49,11 @@ const PutOnSaleForm: React.FC<SaleFixedPriceFormProps> = ({
         .then(({ data }) => {
           handleSetTokenData(data);
           clog('Congratulations');
+          closeModal();
         })
         .catch((err) => {
           // modals.info.setMsg('Something went wrong', 'error');
-          clogData('put on sale error: ', err);
+          clogData('put on sale ', err);
         })
         .finally(() => {
           setFieldValue('isLoading', false);

@@ -7,6 +7,19 @@
   }
 }
 
+.gradient-box {
+  padding: 2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: $gradient;
+  border: transparent;
+  border-radius: 30px;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+}
+
 .gradient-button {
   padding: 1px;
   display: flex;
@@ -64,6 +77,28 @@
   background: linear-gradient(180deg, #f48989 0%, rgba(255, 255, 255, 0) 100%);
   opacity: 0.2;
   transform: rotate(180deg);
+}
+
+.grey-box {
+  margin: 0 10px;
+  padding: 13px 15px;
+
+  min-width: 165px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #f9f9f9;
+  border: 1px solid #e6e6e6;
+  box-sizing: border-box;
+  border-radius: 30px;
+
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 @keyframes preloader-rotate {

@@ -11,6 +11,11 @@ body {
   font-weight: 500;
 }
 
+div, button, a, input {
+  outline: none;
+  text-decoration: none;
+}
+
 .container {
   position: relative;
   box-sizing: border-box;

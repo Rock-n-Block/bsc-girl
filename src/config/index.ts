@@ -789,7 +789,7 @@ export const contracts: IContracts = {
     },
     BSCGIRLMOON: {
       params: {
-        decimals: 8,
+        decimals: isProduction ? 8 : 18,
       },
       chain: {
         mainnet: {
@@ -1706,29 +1706,22 @@ export const contracts: IContracts = {
           ],
         },
         testnet: {
-          address: '',
+          address: '0x3b7D5aBf1e2C804c5Fb7ebD9824ef89ff9332401',
           abi: [
             {
-              inputs: [{ internalType: 'address', name: '_exchange', type: 'address' }],
+              inputs: [
+                { internalType: 'address', name: '_exchange', type: 'address' },
+                { internalType: 'string', name: '_CONTRACT_URI', type: 'string' },
+              ],
               stateMutability: 'nonpayable',
               type: 'constructor',
             },
             {
               anonymous: false,
               inputs: [
-                {
-                  indexed: false,
-                  internalType: 'address',
-                  name: 'newToken',
-                  type: 'address',
-                },
+                { indexed: false, internalType: 'address', name: 'newToken', type: 'address' },
                 { indexed: false, internalType: 'string', name: 'name', type: 'string' },
-                {
-                  indexed: false,
-                  internalType: 'string',
-                  name: 'symbol',
-                  type: 'string',
-                },
+                { indexed: false, internalType: 'string', name: 'symbol', type: 'string' },
                 { indexed: true, internalType: 'address', name: 'signer', type: 'address' },
               ],
               name: 'ERC721Made',
@@ -1753,12 +1746,7 @@ export const contracts: IContracts = {
               anonymous: false,
               inputs: [
                 { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  indexed: true,
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { indexed: true, internalType: 'address', name: 'account', type: 'address' },
                 { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
               ],
               name: 'RoleGranted',
@@ -1768,12 +1756,7 @@ export const contracts: IContracts = {
               anonymous: false,
               inputs: [
                 { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  indexed: true,
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { indexed: true, internalType: 'address', name: 'account', type: 'address' },
                 { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
               ],
               name: 'RoleRevoked',
@@ -1810,11 +1793,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'grantRole',
               outputs: [],
@@ -1824,11 +1803,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'hasRole',
               outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
@@ -1838,17 +1813,9 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'string', name: 'name', type: 'string' },
-                {
-                  internalType: 'string',
-                  name: 'symbol',
-                  type: 'string',
-                },
+                { internalType: 'string', name: 'symbol', type: 'string' },
                 { internalType: 'string', name: 'baseURI', type: 'string' },
-                {
-                  internalType: 'address',
-                  name: 'signer',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'signer', type: 'address' },
                 { internalType: 'bytes', name: 'signature', type: 'bytes' },
               ],
               name: 'makeERC721',
@@ -1859,11 +1826,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'renounceRole',
               outputs: [],
@@ -1873,11 +1836,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'revokeRole',
               outputs: [],
@@ -2087,22 +2046,20 @@ export const contracts: IContracts = {
           ],
         },
         testnet: {
-          address: '0x46d41844553A34C30B181346E65324d803723CFf',
+          address: '0xaF9B9dE2f0C47E699fb38038Bebd3C1717C8DCf6',
           abi: [
             {
-              inputs: [{ internalType: 'address', name: '_exchange', type: 'address' }],
+              inputs: [
+                { internalType: 'address', name: '_exchange', type: 'address' },
+                { internalType: 'string', name: '_CONTRACT_URI', type: 'string' },
+              ],
               stateMutability: 'nonpayable',
               type: 'constructor',
             },
             {
               anonymous: false,
               inputs: [
-                {
-                  indexed: false,
-                  internalType: 'address',
-                  name: 'newToken',
-                  type: 'address',
-                },
+                { indexed: false, internalType: 'address', name: 'newToken', type: 'address' },
                 { indexed: true, internalType: 'address', name: 'signer', type: 'address' },
               ],
               name: 'ERC1155Made',
@@ -2127,12 +2084,7 @@ export const contracts: IContracts = {
               anonymous: false,
               inputs: [
                 { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  indexed: true,
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { indexed: true, internalType: 'address', name: 'account', type: 'address' },
                 { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
               ],
               name: 'RoleGranted',
@@ -2142,12 +2094,7 @@ export const contracts: IContracts = {
               anonymous: false,
               inputs: [
                 { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  indexed: true,
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { indexed: true, internalType: 'address', name: 'account', type: 'address' },
                 { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
               ],
               name: 'RoleRevoked',
@@ -2184,11 +2131,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'grantRole',
               outputs: [],
@@ -2198,11 +2141,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'hasRole',
               outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
@@ -2211,12 +2150,9 @@ export const contracts: IContracts = {
             },
             {
               inputs: [
+                { internalType: 'string', name: 'name', type: 'string' },
                 { internalType: 'string', name: 'uri', type: 'string' },
-                {
-                  internalType: 'address',
-                  name: 'signer',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'signer', type: 'address' },
                 { internalType: 'bytes', name: 'signature', type: 'bytes' },
               ],
               name: 'makeERC1155',
@@ -2227,11 +2163,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'renounceRole',
               outputs: [],
@@ -2241,11 +2173,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'revokeRole',
               outputs: [],
@@ -2688,18 +2616,13 @@ export const contracts: IContracts = {
           ],
         },
         testnet: {
-          address: '0x0CA49462Cf78dD4b414C1ef60d938BE3cf3150bB',
+          address: '0x7C32A04F98AC1ae370F7DB4eb6e03e7F594E660F',
           abi: [
             { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
             {
               anonymous: false,
               inputs: [
-                {
-                  indexed: false,
-                  internalType: 'address',
-                  name: 'seller',
-                  type: 'address',
-                },
+                { indexed: false, internalType: 'address', name: 'seller', type: 'address' },
                 { indexed: false, internalType: 'address', name: 'buyer', type: 'address' },
                 {
                   indexed: false,
@@ -2708,12 +2631,7 @@ export const contracts: IContracts = {
                   type: 'address',
                 },
                 { indexed: false, internalType: 'uint256', name: 'sellId', type: 'uint256' },
-                {
-                  indexed: false,
-                  internalType: 'uint256',
-                  name: 'sellAmount',
-                  type: 'uint256',
-                },
+                { indexed: false, internalType: 'uint256', name: 'sellAmount', type: 'uint256' },
                 {
                   indexed: false,
                   internalType: 'address',
@@ -2721,12 +2639,7 @@ export const contracts: IContracts = {
                   type: 'address',
                 },
                 { indexed: false, internalType: 'uint256', name: 'buyId', type: 'uint256' },
-                {
-                  indexed: false,
-                  internalType: 'uint256',
-                  name: 'buyAmount',
-                  type: 'uint256',
-                },
+                { indexed: false, internalType: 'uint256', name: 'buyAmount', type: 'uint256' },
                 {
                   indexed: false,
                   internalType: 'address[]',
@@ -2746,12 +2659,7 @@ export const contracts: IContracts = {
             {
               anonymous: false,
               inputs: [
-                {
-                  indexed: false,
-                  internalType: 'address',
-                  name: 'seller',
-                  type: 'address',
-                },
+                { indexed: false, internalType: 'address', name: 'seller', type: 'address' },
                 { indexed: false, internalType: 'address', name: 'buyer', type: 'address' },
                 {
                   indexed: false,
@@ -2760,12 +2668,7 @@ export const contracts: IContracts = {
                   type: 'address',
                 },
                 { indexed: false, internalType: 'uint256', name: 'sellId', type: 'uint256' },
-                {
-                  indexed: false,
-                  internalType: 'uint256',
-                  name: 'sellAmount',
-                  type: 'uint256',
-                },
+                { indexed: false, internalType: 'uint256', name: 'sellAmount', type: 'uint256' },
                 {
                   indexed: false,
                   internalType: 'address',
@@ -2773,12 +2676,7 @@ export const contracts: IContracts = {
                   type: 'address',
                 },
                 { indexed: false, internalType: 'uint256', name: 'buyId', type: 'uint256' },
-                {
-                  indexed: false,
-                  internalType: 'uint256',
-                  name: 'buyAmount',
-                  type: 'uint256',
-                },
+                { indexed: false, internalType: 'uint256', name: 'buyAmount', type: 'uint256' },
                 {
                   indexed: false,
                   internalType: 'address[]',
@@ -2814,12 +2712,7 @@ export const contracts: IContracts = {
               anonymous: false,
               inputs: [
                 { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  indexed: true,
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { indexed: true, internalType: 'address', name: 'account', type: 'address' },
                 { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
               ],
               name: 'RoleGranted',
@@ -2829,12 +2722,7 @@ export const contracts: IContracts = {
               anonymous: false,
               inputs: [
                 { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  indexed: true,
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { indexed: true, internalType: 'address', name: 'account', type: 'address' },
                 { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
               ],
               name: 'RoleRevoked',
@@ -2864,11 +2752,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'grantRole',
               outputs: [],
@@ -2878,11 +2762,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'hasRole',
               outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
@@ -2892,24 +2772,12 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'idOrder', type: 'bytes32' },
-                {
-                  internalType: 'address[2]',
-                  name: 'SellerBuyer',
-                  type: 'address[2]',
-                },
+                { internalType: 'address[2]', name: 'SellerBuyer', type: 'address[2]' },
                 {
                   components: [
-                    {
-                      internalType: 'address',
-                      name: 'tokenAddress',
-                      type: 'address',
-                    },
+                    { internalType: 'address', name: 'tokenAddress', type: 'address' },
                     { internalType: 'uint256', name: 'id', type: 'uint256' },
-                    {
-                      internalType: 'uint256',
-                      name: 'amount',
-                      type: 'uint256',
-                    },
+                    { internalType: 'uint256', name: 'amount', type: 'uint256' },
                   ],
                   internalType: 'struct Exchange.NftTokenInfo',
                   name: 'tokenToBuy',
@@ -2917,56 +2785,32 @@ export const contracts: IContracts = {
                 },
                 {
                   components: [
-                    {
-                      internalType: 'address',
-                      name: 'tokenAddress',
-                      type: 'address',
-                    },
+                    { internalType: 'address', name: 'tokenAddress', type: 'address' },
                     { internalType: 'uint256', name: 'id', type: 'uint256' },
-                    {
-                      internalType: 'uint256',
-                      name: 'amount',
-                      type: 'uint256',
-                    },
+                    { internalType: 'uint256', name: 'amount', type: 'uint256' },
                   ],
                   internalType: 'struct Exchange.NftTokenInfo',
                   name: 'tokenToSell',
                   type: 'tuple',
                 },
                 { internalType: 'address[]', name: 'feeAddresses', type: 'address[]' },
-                {
-                  internalType: 'uint256[]',
-                  name: 'feeAmounts',
-                  type: 'uint256[]',
-                },
+                { internalType: 'uint256[]', name: 'feeAmounts', type: 'uint256[]' },
                 { internalType: 'bytes', name: 'signature', type: 'bytes' },
               ],
               name: 'makeExchangeERC1155',
               outputs: [],
-              stateMutability: 'nonpayable',
+              stateMutability: 'payable',
               type: 'function',
             },
             {
               inputs: [
                 { internalType: 'bytes32', name: 'idOrder', type: 'bytes32' },
-                {
-                  internalType: 'address[2]',
-                  name: 'SellerBuyer',
-                  type: 'address[2]',
-                },
+                { internalType: 'address[2]', name: 'SellerBuyer', type: 'address[2]' },
                 {
                   components: [
-                    {
-                      internalType: 'address',
-                      name: 'tokenAddress',
-                      type: 'address',
-                    },
+                    { internalType: 'address', name: 'tokenAddress', type: 'address' },
                     { internalType: 'uint256', name: 'id', type: 'uint256' },
-                    {
-                      internalType: 'uint256',
-                      name: 'amount',
-                      type: 'uint256',
-                    },
+                    { internalType: 'uint256', name: 'amount', type: 'uint256' },
                   ],
                   internalType: 'struct Exchange.NftTokenInfo',
                   name: 'tokenToBuy',
@@ -2974,49 +2818,29 @@ export const contracts: IContracts = {
                 },
                 {
                   components: [
-                    {
-                      internalType: 'address',
-                      name: 'tokenAddress',
-                      type: 'address',
-                    },
+                    { internalType: 'address', name: 'tokenAddress', type: 'address' },
                     { internalType: 'uint256', name: 'id', type: 'uint256' },
-                    {
-                      internalType: 'uint256',
-                      name: 'amount',
-                      type: 'uint256',
-                    },
+                    { internalType: 'uint256', name: 'amount', type: 'uint256' },
                   ],
                   internalType: 'struct Exchange.NftTokenInfo',
                   name: 'tokenToSell',
                   type: 'tuple',
                 },
                 { internalType: 'address[]', name: 'feeAddresses', type: 'address[]' },
-                {
-                  internalType: 'uint256[]',
-                  name: 'feeAmounts',
-                  type: 'uint256[]',
-                },
+                { internalType: 'uint256[]', name: 'feeAmounts', type: 'uint256[]' },
                 { internalType: 'bytes', name: 'signature', type: 'bytes' },
               ],
               name: 'makeExchangeERC721',
               outputs: [],
-              stateMutability: 'nonpayable',
+              stateMutability: 'payable',
               type: 'function',
             },
             {
               inputs: [
                 { internalType: 'address', name: '', type: 'address' },
-                {
-                  internalType: 'address',
-                  name: '',
-                  type: 'address',
-                },
+                { internalType: 'address', name: '', type: 'address' },
                 { internalType: 'uint256[]', name: '', type: 'uint256[]' },
-                {
-                  internalType: 'uint256[]',
-                  name: '',
-                  type: 'uint256[]',
-                },
+                { internalType: 'uint256[]', name: '', type: 'uint256[]' },
                 { internalType: 'bytes', name: '', type: 'bytes' },
               ],
               name: 'onERC1155BatchReceived',
@@ -3027,17 +2851,9 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'address', name: '', type: 'address' },
-                {
-                  internalType: 'address',
-                  name: '',
-                  type: 'address',
-                },
+                { internalType: 'address', name: '', type: 'address' },
                 { internalType: 'uint256', name: '', type: 'uint256' },
-                {
-                  internalType: 'uint256',
-                  name: '',
-                  type: 'uint256',
-                },
+                { internalType: 'uint256', name: '', type: 'uint256' },
                 { internalType: 'bytes', name: '', type: 'bytes' },
               ],
               name: 'onERC1155Received',
@@ -3048,17 +2864,9 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'address', name: '', type: 'address' },
-                {
-                  internalType: 'address',
-                  name: '',
-                  type: 'address',
-                },
+                { internalType: 'address', name: '', type: 'address' },
                 { internalType: 'uint256', name: '', type: 'uint256' },
-                {
-                  internalType: 'bytes',
-                  name: '',
-                  type: 'bytes',
-                },
+                { internalType: 'bytes', name: '', type: 'bytes' },
               ],
               name: 'onERC721Received',
               outputs: [{ internalType: 'bytes4', name: '', type: 'bytes4' }],
@@ -3068,11 +2876,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'renounceRole',
               outputs: [],
@@ -3082,11 +2886,7 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'bytes32', name: 'role', type: 'bytes32' },
-                {
-                  internalType: 'address',
-                  name: 'account',
-                  type: 'address',
-                },
+                { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'revokeRole',
               outputs: [],
@@ -3111,8 +2911,280 @@ export const contracts: IContracts = {
           abi: [],
         },
         testnet: {
-          address: '',
-          abi: [],
+          address: '0x292B13985E1BD8d1C041aa42aB51980230b4835f',
+          abi: [
+            {
+              inputs: [
+                { internalType: 'address[12]', name: '_stakingTokens', type: 'address[12]' },
+                { internalType: 'address[12]', name: '_rewardTokens', type: 'address[12]' },
+                { internalType: 'address[12]', name: '_feeKeeper', type: 'address[12]' },
+                { internalType: 'address[12]', name: '_rewardKeeper', type: 'address[12]' },
+                { internalType: 'uint256[12]', name: '_timeLockUp', type: 'uint256[12]' },
+                { internalType: 'uint8[12]', name: '_fee', type: 'uint8[12]' },
+                { internalType: 'uint16[12]', name: '_APY', type: 'uint16[12]' },
+              ],
+              stateMutability: 'nonpayable',
+              type: 'constructor',
+            },
+            {
+              anonymous: false,
+              inputs: [
+                { indexed: false, internalType: 'address', name: 'investor', type: 'address' },
+                { indexed: false, internalType: 'uint8', name: 'poolId', type: 'uint8' },
+                { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
+              ],
+              name: 'DecreaseForUser',
+              type: 'event',
+            },
+            {
+              anonymous: false,
+              inputs: [
+                { indexed: false, internalType: 'address', name: 'investor', type: 'address' },
+                { indexed: false, internalType: 'uint8', name: 'poolId', type: 'uint8' },
+                { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
+                { indexed: false, internalType: 'uint256', name: 'timeGotReward', type: 'uint256' },
+              ],
+              name: 'GetRewardForUser',
+              type: 'event',
+            },
+            {
+              anonymous: false,
+              inputs: [
+                { indexed: false, internalType: 'address', name: 'investor', type: 'address' },
+                { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
+                { indexed: false, internalType: 'uint8', name: 'poolId', type: 'uint8' },
+              ],
+              name: 'IncreaseStakeForUser',
+              type: 'event',
+            },
+            {
+              anonymous: false,
+              inputs: [
+                { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
+                {
+                  indexed: true,
+                  internalType: 'bytes32',
+                  name: 'previousAdminRole',
+                  type: 'bytes32',
+                },
+                { indexed: true, internalType: 'bytes32', name: 'newAdminRole', type: 'bytes32' },
+              ],
+              name: 'RoleAdminChanged',
+              type: 'event',
+            },
+            {
+              anonymous: false,
+              inputs: [
+                { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
+                { indexed: true, internalType: 'address', name: 'account', type: 'address' },
+                { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
+              ],
+              name: 'RoleGranted',
+              type: 'event',
+            },
+            {
+              anonymous: false,
+              inputs: [
+                { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
+                { indexed: true, internalType: 'address', name: 'account', type: 'address' },
+                { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
+              ],
+              name: 'RoleRevoked',
+              type: 'event',
+            },
+            {
+              anonymous: false,
+              inputs: [
+                { indexed: false, internalType: 'address', name: 'investor', type: 'address' },
+                { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
+                { indexed: false, internalType: 'uint8', name: 'poolId', type: 'uint8' },
+                { indexed: false, internalType: 'uint256', name: 'start', type: 'uint256' },
+              ],
+              name: 'StakeTokenForUser',
+              type: 'event',
+            },
+            {
+              inputs: [],
+              name: 'DEFAULT_ADMIN_ROLE',
+              outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'uint8', name: '_poolId', type: 'uint8' },
+                { internalType: 'uint256', name: '_amount', type: 'uint256' },
+                { internalType: 'uint256', name: '_start', type: 'uint256' },
+              ],
+              name: 'calculateReward',
+              outputs: [{ internalType: 'uint256', name: 'rewardAmount', type: 'uint256' }],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'uint256', name: '_stake', type: 'uint256' },
+                { internalType: 'uint8', name: '_poolId', type: 'uint8' },
+              ],
+              name: 'createStake',
+              outputs: [],
+              stateMutability: 'payable',
+              type: 'function',
+            },
+            {
+              inputs: [{ internalType: 'uint8', name: '_poolId', type: 'uint8' }],
+              name: 'getPoolInfo',
+              outputs: [
+                { internalType: 'address', name: 'rewardsToken_', type: 'address' },
+                { internalType: 'address', name: 'stakingToken_', type: 'address' },
+                { internalType: 'address', name: 'feeKeeper_', type: 'address' },
+                { internalType: 'uint256', name: 'amountStaked_', type: 'uint256' },
+                { internalType: 'uint256', name: 'timeLockUp_', type: 'uint256' },
+                { internalType: 'uint256', name: 'fee_', type: 'uint256' },
+                { internalType: 'uint256', name: 'APY_', type: 'uint256' },
+                { internalType: 'address[]', name: 'stakeholders_', type: 'address[]' },
+              ],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'address', name: '_investor', type: 'address' },
+                { internalType: 'uint8', name: '_poolId', type: 'uint8' },
+              ],
+              name: 'getProcessInfoForUser',
+              outputs: [
+                {
+                  components: [
+                    { internalType: 'uint256', name: 'amount', type: 'uint256' },
+                    { internalType: 'uint256', name: 'rewardGot', type: 'uint256' },
+                    { internalType: 'uint256', name: 'start', type: 'uint256' },
+                  ],
+                  internalType: 'struct Staking.UserInfo',
+                  name: '',
+                  type: 'tuple',
+                },
+              ],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
+              inputs: [{ internalType: 'bytes32', name: 'role', type: 'bytes32' }],
+              name: 'getRoleAdmin',
+              outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+                { internalType: 'address', name: 'account', type: 'address' },
+              ],
+              name: 'grantRole',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+                { internalType: 'address', name: 'account', type: 'address' },
+              ],
+              name: 'hasRole',
+              outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'uint8', name: '_poolId', type: 'uint8' },
+                { internalType: 'uint256', name: '_amount', type: 'uint256' },
+              ],
+              name: 'increaseStake',
+              outputs: [],
+              stateMutability: 'payable',
+              type: 'function',
+            },
+            {
+              inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+              name: 'pools',
+              outputs: [
+                { internalType: 'address', name: 'rewardsToken', type: 'address' },
+                { internalType: 'address', name: 'stakingToken', type: 'address' },
+                { internalType: 'address', name: 'feeKeeper', type: 'address' },
+                { internalType: 'address', name: 'rewardKeeper', type: 'address' },
+                { internalType: 'uint256', name: 'amountStaked', type: 'uint256' },
+                { internalType: 'uint256', name: 'timeLockUp', type: 'uint256' },
+                { internalType: 'uint8', name: 'fee', type: 'uint8' },
+                { internalType: 'uint16', name: 'APY', type: 'uint16' },
+              ],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'address', name: '', type: 'address' },
+                { internalType: 'uint8', name: '', type: 'uint8' },
+              ],
+              name: 'processForInvestor',
+              outputs: [
+                { internalType: 'uint256', name: 'amount', type: 'uint256' },
+                { internalType: 'uint256', name: 'rewardGot', type: 'uint256' },
+                { internalType: 'uint256', name: 'start', type: 'uint256' },
+              ],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'address', name: '_investor', type: 'address' },
+                { internalType: 'uint8', name: '_poolId', type: 'uint8' },
+                { internalType: 'uint256', name: '_amount', type: 'uint256' },
+              ],
+              name: 'removePartOfStake',
+              outputs: [],
+              stateMutability: 'payable',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+                { internalType: 'address', name: 'account', type: 'address' },
+              ],
+              name: 'renounceRole',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+                { internalType: 'address', name: 'account', type: 'address' },
+              ],
+              name: 'revokeRole',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+            {
+              inputs: [{ internalType: 'bytes4', name: 'interfaceId', type: 'bytes4' }],
+              name: 'supportsInterface',
+              outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'uint8', name: '_poolId', type: 'uint8' },
+                { internalType: 'address', name: '_investor', type: 'address' },
+              ],
+              name: 'withdrawReward',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+            { stateMutability: 'payable', type: 'receive' },
+          ],
         },
       },
     },

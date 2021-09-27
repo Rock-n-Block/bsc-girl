@@ -16,17 +16,17 @@ import CreateComponent, { ICreateForm } from '../component';
 interface CreateProps {
   isSingle: boolean;
   walletConnector: any;
-  bscRate: number;
+  bscRate: any;
 }
 
 const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector, bscRate }) => {
   const history = useHistory();
   const [isModalOpen, setModalOpen] = useState(false);
-  let step = 'approve';
   const [approveStatus, setApproveStatus] = useState({ text: 'In progress...', img: Loader });
   const [uploadStatus, setUploadStatus] = useState({ text: 'Start now', img: Pencil });
   const [signStatus, setSignStatus] = useState({ text: 'Start now', img: Bag });
   const { user } = useMst();
+  let step = 'approve';
 
   const closeModal = () => {
     setModalOpen(false);
@@ -66,7 +66,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
           amount: '',
         },
       ],
-      bscRate: bscRate || 0,
+      bscRate,
       closeModal,
       isModalOpen,
       // eslint-disable-next-line object-shorthand
@@ -97,7 +97,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
       formData.append('creator_royalty', values.tokenRoyalties.toString());
       formData.append('standart', isSingle ? 'ERC721' : 'ERC1155');
       formData.append('currency', values.currency);
-      formData.append('collection', '2');
+      formData.append('collection', isSingle ? '3' : '4');
       formData.append('selling', 'true');
 
       if (values.tokenProperties[0].size) {
@@ -112,39 +112,6 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
       }
       goToNextStep();
 
-      const collectionData = new FormData();
-      collectionData.append('name', 'multipleTokensCollection');
-      collectionData.append('avatar', values.img);
-      collectionData.append('symbol', 'bscgirl');
-      collectionData.append('standart', 'ERC1155');
-      collectionData.append('creator', localStorage.bsc_token);
-
-      // storeApi
-      //   .createCollection(collectionData)
-      //   .then(({ data }) => {
-      //     walletConnector
-      //       .sendTransaction(user.address, data)
-      //       .then((res: any) => {
-      //         collectionData.append('tx_hash', res.transactionHash);
-      //
-      //         storeApi
-      //           .saveCollection(collectionData)
-      //           .then(() => {
-      //             clog('Congrats you created your own NFT collection! It will be added soon.');
-      //           })
-      //           .catch((err: any) => {
-      //             // modals.info.setMsg('An error occurred while creating the collection', 'error');
-      //             clogData('saveCollection error:', err);
-      //           });
-      //       })
-      //       .catch((err: any) => {
-      //         clogData('sendTransaction error:', err);
-      //       });
-      //   })
-      //   .catch((err: any) => {
-      //     clogData('createCollection error:', err);
-      //   });
-
       storeApi
         .createToken(formData)
         .then(({ data }) => {
@@ -153,7 +120,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
           walletConnector
             .sendTransaction(user.address, data.initial_tx)
             .then(() => {
-              history.push(`/token/${data.id}`);
+              history.push(data.id ? `/token/${data.id}` : '/');
               clog('Congrats you create your own NFT!');
               goToNextStep();
             })
@@ -163,7 +130,6 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
             });
         })
         .catch((error) => {
-          clogData('formData price:', formData.get('price'));
           clogData('createToken error:', error);
         });
     },

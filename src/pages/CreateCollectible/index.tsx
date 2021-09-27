@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
@@ -10,22 +10,24 @@ import { clogData } from '../../utils/logger';
 
 import './CreateCollectible.scss';
 
-type TypeCreateCollectibleProps = {
-  collectible: string;
+type TypeCreateProps = {
+  isSingle: boolean;
 };
 
-const CreateCollectiblePage: React.FC<TypeCreateCollectibleProps> = ({ collectible }) => {
+const CreateCollectiblePage: React.FC<TypeCreateProps> = ({ isSingle }) => {
   const walletConnector = useWalletConnectService();
-  const [bscRate, setBscRate] = useState(1);
+  const [bscRate, setBscRate] = useState({});
 
-  ratesApi
-    .getRates()
-    .then(({ data }) => {
-      setBscRate(data[0].rate);
-    })
-    .catch((error) => {
-      clogData('getRates Error:', error);
-    });
+  useEffect(() => {
+    ratesApi
+      .getRates()
+      .then(({ data }) => {
+        setBscRate(data);
+      })
+      .catch((error) => {
+        clogData('getRates Error:', error);
+      });
+  }, []);
 
   return (
     <div className="container">
@@ -36,11 +38,11 @@ const CreateCollectiblePage: React.FC<TypeCreateCollectibleProps> = ({ collectib
             <img src={ArrowLeftBlack} alt="arrow left black" className="link-black" />
           </Link>
           Create&nbsp;
-          <div className="red">{collectible}</div>
+          <div className="red">{isSingle ? 'single' : 'multiple'}</div>
           &nbsp;collectible
         </div>
         <CreateForm
-          isSingle={collectible === 'single'}
+          isSingle={isSingle}
           walletConnector={walletConnector.connectorService}
           bscRate={bscRate}
         />

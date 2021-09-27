@@ -15,6 +15,12 @@ interface IProperties {
   amount: string | number;
 }
 
+interface IRate {
+  rate: string;
+  symbol: string;
+  image: string;
+}
+
 export interface ICreateForm {
   img: any;
   preview: string;
@@ -26,7 +32,7 @@ export interface ICreateForm {
   numberOfCopies: number | string;
   tokenProperties: IProperties[];
   isSingle?: boolean;
-  bscRate?: number;
+  bscRate: IRate[];
   isModalOpen: boolean;
   approveStatus: { text: string; img: string };
   uploadStatus: { text: string; img: string };
@@ -172,13 +178,13 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                       .toFixed()}{' '}
                 {values.currency}
               </div>
-              {values.bscRate ? (
+              {values.bscRate.length ? (
                 <div className="result__usd">
                   $
                   {new BigNumber(+values.price)
                     .multipliedBy(new BigNumber(100 - serviceFee))
                     .dividedBy(100)
-                    .multipliedBy(values.bscRate)
+                    .multipliedBy(values?.bscRate[values.currency === 'BSCGIRL' ? 2 : 0].rate)
                     .toFixed(2)}
                 </div>
               ) : (
@@ -268,12 +274,15 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                 React.Fragment
               )}
             </div>
-            <div className="create-form__fields__group">
+            <>
               <FieldArray
                 name="tokenProperties"
                 render={() => {
                   return values.tokenProperties?.map((item, index) => (
-                    <>
+                    <div
+                      key={`tokenProperties[${index + 1}]`}
+                      className="create-form__fields__group"
+                    >
                       <Form.Item
                         name={`tokenProperties[${index}].size`}
                         className="field"
@@ -330,11 +339,11 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                           />
                         </div>
                       </Form.Item>
-                    </>
+                    </div>
                   ));
                 }}
               />
-            </div>
+            </>
             <button type="button" onClick={onSubmit} className="gradient-button btn">
               Create item
             </button>

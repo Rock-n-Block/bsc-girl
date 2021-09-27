@@ -8,11 +8,7 @@ import SingleImg from '../../assets/img/single.svg';
 
 import './Create.scss';
 
-type TypeCreatePageProps = {
-  chooseCollectible: (value: string) => void;
-};
-
-const CreatePage: React.FC<TypeCreatePageProps> = ({ chooseCollectible }) => {
+const CreatePage: React.FC = () => {
   return (
     <div className="container">
       <div className="create">
@@ -28,28 +24,16 @@ const CreatePage: React.FC<TypeCreatePageProps> = ({ chooseCollectible }) => {
           to sell one collectible multiple times
         </div>
         <div className="create__items">
-          <Link to="/create-single">
-            <div
-              className="item"
-              role="button"
-              tabIndex={0}
-              onClick={() => chooseCollectible('single')}
-              onKeyPress={() => {}}
-            >
+          <Link to="/create/single">
+            <div className="item">
               <div className="item__content">
                 <img src={SingleImg} alt="single collectible" />
                 <div className="item__content__text">Single</div>
               </div>
             </div>
           </Link>
-          <Link to="/create-multiple">
-            <div
-              className="item"
-              role="button"
-              tabIndex={0}
-              onClick={() => chooseCollectible('multiple')}
-              onKeyPress={() => {}}
-            >
+          <Link to="/create/multiple">
+            <div className="item">
               <div className="item__content">
                 <img src={MultipleImg} alt="multiple collectible" />
                 <div className="item__content__text">Multiple</div>
