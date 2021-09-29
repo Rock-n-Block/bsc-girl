@@ -11,9 +11,8 @@ import LogoInst from '../../assets/img/icons/logo-inst.svg';
 import LogoMini from '../../assets/img/icons/logo-mini.svg';
 import LogoTW from '../../assets/img/icons/logo-tw.svg';
 import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
-import LogoBSC from '../../assets/img/icons/logo.svg';
 import SearchIcon from '../../assets/img/icons/search-icon.svg';
-import LogoBSCMobile from '../../assets/img/logo.png';
+import LogoBSC from '../../assets/img/logo.png';
 import { useMst } from '../../store/store';
 
 import './Header.scss';
@@ -152,7 +151,7 @@ const Header: React.FC = observer(() => {
             )}
           </div>
           <Link to="/" target="_top" onClick={() => setIsOpen(false)}>
-            <img src={LogoBSCMobile} alt="bsc-girl logo" className="logo" />
+            <img src={LogoBSC} alt="bsc-girl logo" className="logo" />
           </Link>
           {!isOpen ? (
             <Link

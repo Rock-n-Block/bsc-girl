@@ -26,6 +26,7 @@
 
     &__logo {
       margin-right: 20px;
+      padding-top: 5px;
 
       width: 158px;
 
@@ -175,6 +176,11 @@
 
       width: 40px;
       height: 40px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       border: 2px solid #e6e8ec;
       border-radius: 50%;
 
@@ -184,8 +190,14 @@
       }
 
       img {
-        width: 100%;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
+
+        &:hover {
+          width: 50px;
+          height: 50px;
+        }
       }
     }
 

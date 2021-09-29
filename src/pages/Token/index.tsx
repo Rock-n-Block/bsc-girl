@@ -115,8 +115,8 @@ const TokenPage: React.FC = () => {
   };
 
   const handleBuy = async (quantity = 1) => {
-    if (+user.balance.bscgirl < +tokenData.price) {
-      clog("You don't have enough BSCGIRL");
+    if (+user.balance[tokenData.currency.toLowerCase()] < +tokenData.price) {
+      clog(`You don't have enough ${tokenData.currency}`);
       return;
     }
     setLoading(true);
@@ -125,7 +125,7 @@ const TokenPage: React.FC = () => {
       const { data: buyTokenData }: any = await storeApi.buyToken(
         tokenId,
         tokenData.standart === 'ERC721' ? 0 : quantity,
-        contract.BSCGIRLTOKEN.chain[type].address,
+        contract[tokenData.currency].chain[type].address,
         tokenData.creator.id,
       );
 
@@ -154,7 +154,7 @@ const TokenPage: React.FC = () => {
         setApproved(true);
       })
       .catch((err: any) => {
-        clogData('error approve', err);
+        clogData('approve', err);
         setLoading(false);
         setApproved(false);
         clog('Something went wrong');
@@ -174,7 +174,7 @@ const TokenPage: React.FC = () => {
         }
       })
       .catch((err: any) => {
-        clogData('handle like error:', err);
+        clogData('handle like', err);
         clog('Something went wrong');
       });
   };
@@ -246,14 +246,14 @@ const TokenPage: React.FC = () => {
     }
   };
 
-  const handleApproveNft = async (currency: string): Promise<void> => {
+  const handleApproveNft = async (): Promise<void> => {
     try {
-      const isAppr = await handleCheckApproveNft();
+      const isAppr: boolean = await handleCheckApproveNft();
       if (!isAppr) {
         await connector.connectorService.createTransaction(
           'setApprovalForAll',
           [contract.EXCHANGE.chain[type].address, true],
-          currency,
+          'COLLECTION',
           false,
           tokenData.collection.address,
         );

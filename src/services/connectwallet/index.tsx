@@ -2,7 +2,6 @@ import React, { createContext, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import { ConnectWallet } from '@amfi/connect-wallet';
 import { ContractWeb3 } from '@amfi/connect-wallet/dist/interface';
-import WalletConnectProvider from '@walletconnect/web3-provider';
 import BigNumber from 'bignumber.js/bignumber';
 import { observer } from 'mobx-react';
 import Web3 from 'web3';
@@ -34,6 +33,8 @@ class ConnectWalletService extends React.Component<any, any> {
   }
 
   componentDidMount() {
+    this.connectWallet.addChains(blockchains);
+
     if (localStorage.connector && localStorage.bsc_token) {
       this.connect(localStorage.connector);
     }
@@ -127,7 +128,6 @@ class ConnectWalletService extends React.Component<any, any> {
           this.getAccount({
             address: rootStore.user.address,
           }).then((account: any) => {
-            clogData('getAccount account:', account);
             this.getTokenBalance(account.address, 'BSCGIRL')
               .then((value: any) => {
                 rootStore.user.setBalance(
@@ -142,22 +142,31 @@ class ConnectWalletService extends React.Component<any, any> {
                 });
               })
               .finally(async () => {
-                if (!localStorage.bsc_token) {
-                  const metMsg: any = await userApi.getMsg();
+                try {
+                  if (!localStorage.bsc_token) {
+                    const metMsg: any = await userApi.getMsg();
 
-                  const signedMsg = await this.signMsg(metMsg.data, providerName, account.address);
+                    const signedMsg = await this.signMsg(
+                      metMsg.data,
+                      providerName,
+                      account.address,
+                    );
 
-                  const login: any = await userApi.login({
-                    address: account.address,
-                    msg: metMsg.data,
-                    signedMsg,
-                  });
+                    const login: any = await userApi.login({
+                      address: account.address,
+                      msg: metMsg.data,
+                      signedMsg,
+                    });
 
-                  localStorage.bsc_token = login.data.key;
+                    localStorage.bsc_token = login.data.key;
+                  }
+                  localStorage.connector = providerName;
+                  rootStore.user.setAddress(account.address);
+                  await rootStore.user.getMe();
+                } catch {
+                  clog('something wrong with signing message, please try again later');
+                  rootStore.user.disconnect();
                 }
-                localStorage.connector = providerName;
-                rootStore.user.setAddress(account.address);
-                await rootStore.user.getMe();
               });
           });
         } else {
@@ -170,8 +179,6 @@ class ConnectWalletService extends React.Component<any, any> {
   };
 
   public async initWalletConnect(connectName: string): Promise<boolean> {
-    this.connectWallet.addChains(blockchains);
-
     const { provider, network, settings } = connectWalletInfo;
     clog(`${provider[connectName]}, ${network}, ${settings}`);
 
@@ -193,8 +200,7 @@ class ConnectWalletService extends React.Component<any, any> {
   }
 
   public disconnect(): void {
-    if (this.connector instanceof WalletConnectProvider) this.connector.disconnect();
-    this.connectWallet.resetConect();
+    this.connector = undefined;
   }
 
   public Web3(): Web3 {
@@ -204,7 +210,7 @@ class ConnectWalletService extends React.Component<any, any> {
   createTransaction(
     method: string,
     data: Array<any>,
-    contract: 'BSCGIRL' | 'BSCGIRLMOON',
+    contract: string,
     tx?: any,
     tokenAddress?: string,
     walletAddress?: string,
@@ -258,12 +264,27 @@ class ConnectWalletService extends React.Component<any, any> {
     return +new BigNumber(totalSupply).dividedBy(new BigNumber(10).pow(decimals)).toString(10);
   }
 
-  async checkNftTokenAllowance(tokenAddress: string, address: string) {
-    const contract = new (this.Web3().eth.Contract)([], tokenAddress);
+  async checkNftTokenAllowance(tokenAddress: string, walletAddress: string) {
+    let contract: any;
 
-    return contract.methods
-      .isApprovedForAll(address, contracts.contract.EXCHANGE.chain[contracts.type].address)
-      .call();
+    await this.connectWallet
+      .addContract({
+        name: 'COLLECTION',
+        address: tokenAddress,
+        abi: contracts.contract.COLLECTION.chain[contracts.type].abi,
+      })
+      .then(() => {
+        contract = this.getContract('COLLECTION');
+        return contract.methods
+          .isApprovedForAll(
+            walletAddress,
+            contracts.contract.EXCHANGE.chain[contracts.type].address,
+          )
+          .call();
+      })
+      .catch(() => {
+        return false;
+      });
   }
 
   async checkTokenAllowance(

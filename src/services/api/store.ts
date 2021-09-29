@@ -71,7 +71,7 @@ export default {
     const data: any = {
       AuthToken: localStorage.bsc_token,
       selling: !remove,
-      currency: currency || '',
+      currency: currency || 'BSCGIRL',
       price: 0,
     };
     if (price) {

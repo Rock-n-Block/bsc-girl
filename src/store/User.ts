@@ -72,6 +72,7 @@ export const User = types
       self.id = '';
       delete localStorage.bsc_token;
       delete localStorage.connector;
+      delete localStorage.walletconnect;
     };
     const getMe = flow(function* getMe() {
       try {

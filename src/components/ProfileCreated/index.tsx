@@ -51,7 +51,7 @@ const ProfileCreated: React.FC<ProfileCreatedProps> = ({ address }) => {
               <TokenCard
                 key={token.id}
                 id={token.id}
-                owners={token.owners}
+                owners={token.standart === 'ERC1155' ? token.owners : [token.owners]}
                 img={token.media ? token.media : DefaultImg}
                 name={token.name}
                 price={token.price}

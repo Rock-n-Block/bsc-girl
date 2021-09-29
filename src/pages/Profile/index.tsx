@@ -5,11 +5,8 @@ import { observer } from 'mobx-react';
 import Coins from '../../assets/img/icons/coins-icon.svg';
 import Edit from '../../assets/img/icons/edit-icon.svg';
 import Exit from '../../assets/img/icons/exit-icon.svg';
-import FacebookLogo from '../../assets/img/icons/profile-logo-fb.svg';
 import InstLogo from '../../assets/img/icons/profile-logo-inst.svg';
 import TwitterLogo from '../../assets/img/icons/profile-logo-tw.svg';
-// import More from '../../assets/img/icons/profile-icon-more.svg';
-// import Share from '../../assets/img/icons/profile-icon-share.svg';
 import Verified from '../../assets/img/icons/verification.svg';
 import {
   ProfileCollectibles,
@@ -39,7 +36,6 @@ interface INewUser {
   customUrl: string | null;
   twitter: string | null;
   instagram: string | null;
-  facebook: string | null;
   site: string | null;
   cover: string | null;
   follows: any[];
@@ -51,6 +47,7 @@ interface INewUser {
 
 const ProfilePage: React.FC = observer(() => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isShowCopied, setShowCopied] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<INewUser>();
 
   const [collectibles, setCollectibles] = useState<any>({});
@@ -68,20 +65,22 @@ const ProfilePage: React.FC = observer(() => {
   const links: TypeLink[] = [
     {
       name: 'twitter',
-      href: user.twitter ? `https://twitter.com/${currentUser?.twitter}` : '',
+      href: currentUser?.twitter ? `https://twitter.com/${currentUser?.twitter}` : '',
       img: TwitterLogo,
     },
     {
       name: 'instagram',
-      href: user.instagram ? `https://www.instagram.com/${currentUser?.instagram}` : '',
+      href: currentUser?.instagram ? `https://www.instagram.com/${currentUser?.instagram}` : '',
       img: InstLogo,
     },
-    {
-      name: 'facebook',
-      href: user.facebook || '',
-      img: FacebookLogo,
-    },
   ];
+
+  const onHandleCopyAddress = () => {
+    navigator.clipboard.writeText(currentUser?.address ?? '').then(() => {
+      setShowCopied(true);
+      setTimeout(() => setShowCopied(false), 2000);
+    });
+  };
 
   const loadUser = useCallback(() => {
     userApi
@@ -96,7 +95,6 @@ const ProfilePage: React.FC = observer(() => {
           customUrl: data.custom_url,
           twitter: data.twitter,
           instagram: data.instagram,
-          facebook: data.facebook,
           site: data.site,
           cover: data.cover,
           follows: data.follows,
@@ -140,7 +138,6 @@ const ProfilePage: React.FC = observer(() => {
         customUrl: user.custom_url,
         twitter: user.twitter,
         instagram: user.instagram,
-        facebook: user.facebook,
         site: user.site,
         cover: user.cover,
         follows: user.follows,
@@ -228,18 +225,23 @@ const ProfilePage: React.FC = observer(() => {
                 </button>
               </div>
             ) : (
-              React.Fragment
+              ''
             )}
           </div>
           <div className="profile__info">
             <div className="profile__info__name">{currentUser?.displayName || 'UserName'}</div>
             <div className="profile__info__bio">{currentUser?.bio || 'No biography info'}</div>
-            <div className="gradient-button">
+            {isShowCopied ? (
+              <div className="profile__info__copied">Address copied to clipboard</div>
+            ) : (
+              ''
+            )}
+            <button type="button" onClick={onHandleCopyAddress} className="gradient-button">
               <div className="id">
                 {currentUser?.address ? getShortAddress() : ''}
                 <img src={Coins} alt="coins" />
               </div>
-            </div>
+            </button>
             <div className="profile__info__links">
               {links.map((link) => {
                 if (link.href)

@@ -11,7 +11,7 @@ interface SaleFixedPriceFormProps {
   totalSupply: number;
   tokenId: number;
   handleSetTokenData: (data: any) => void;
-  handleApproveNft: (currency: string) => {};
+  handleApproveNft: () => {};
   closeModal: () => void;
 }
 
@@ -37,27 +37,27 @@ const PutOnSaleForm: React.FC<SaleFixedPriceFormProps> = ({
       return validateForm({ values, notRequired });
     },
     handleSubmit: async (values, { setFieldValue }) => {
+      clogData('currency:', values.currency);
       setFieldValue('isLoading', true);
       try {
-        handleApproveNft(values.currency);
+        handleApproveNft();
       } catch (err) {
         setFieldValue('isLoading', false);
+        clogData('approveNft', err);
         return;
       }
       storeApi
-        .putOnSale(tokenId, +values.price)
+        .putOnSale(tokenId, +values.price, values.currency)
         .then(({ data }) => {
           handleSetTokenData(data);
           clog('Congratulations');
           closeModal();
         })
         .catch((err) => {
-          // modals.info.setMsg('Something went wrong', 'error');
           clogData('put on sale ', err);
         })
         .finally(() => {
           setFieldValue('isLoading', false);
-          // modals.putOnSale.close();
         });
     },
     displayName: 'PutOnSale',

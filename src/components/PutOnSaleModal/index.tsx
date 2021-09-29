@@ -9,7 +9,7 @@ import './PutOnSaleModal.scss';
 interface IPutOnSaleModal {
   tokenId: number;
   handleSetTokenData: (data: any) => void;
-  handleApproveNft: (currency: string) => Promise<void>;
+  handleApproveNft: () => Promise<void>;
   closePutOnSale: () => void;
 }
 
