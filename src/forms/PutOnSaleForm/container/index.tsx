@@ -49,6 +49,7 @@ const PutOnSaleForm: React.FC<SaleFixedPriceFormProps> = ({
       storeApi
         .putOnSale(tokenId, +values.price, values.currency)
         .then(({ data }) => {
+          clogData('putOnSale response:', data);
           handleSetTokenData(data);
           clog('Congratulations');
           closeModal();

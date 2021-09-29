@@ -28,7 +28,7 @@ export default {
     if (sellerId) {
       data.sellerId = sellerId;
     }
-    return axios.post(`/store/buy/${localStorage.bsc_token}/`, data);
+    return axios.post(`/store/buy/`, data);
   },
   getLiked: (address: string, page: number): Promise<any> =>
     axios.get(`store/liked/${address}/${page}/`),
@@ -69,7 +69,6 @@ export default {
     remove?: boolean,
   ): Promise<any> => {
     const data: any = {
-      AuthToken: localStorage.bsc_token,
       selling: !remove,
       currency: currency || 'BSCGIRL',
       price: 0,

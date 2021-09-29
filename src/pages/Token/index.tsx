@@ -81,6 +81,7 @@ const TokenPage: React.FC = () => {
   const [isPutOnSaleModalOpen, setPutOnSaleModal] = useState<boolean>(false);
 
   const createBuyTransaction = async (buyTokenData: any) => {
+    clogData('buyTokenData:', buyTokenData);
     try {
       await connector.connectorService.createTransaction(
         buyTokenData.initial_tx.method,
@@ -126,7 +127,7 @@ const TokenPage: React.FC = () => {
         tokenId,
         tokenData.standart === 'ERC721' ? 0 : quantity,
         contract[tokenData.currency].chain[type].address,
-        tokenData.creator.id,
+        tokenData.owners[0].id,
       );
 
       await createBuyTransaction(buyTokenData);
