@@ -1,11 +1,15 @@
 @import 'src/styles/index';
 
 .create {
-  margin: 110px auto 100px;
+  margin: 120px auto 100px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @include b(520) {
+    margin-top: 110px;
+  }
 
   &__title {
     display: flex;

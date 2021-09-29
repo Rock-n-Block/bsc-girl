@@ -320,7 +320,7 @@ const TokenPage: React.FC = () => {
         return (
           <div className="token__content__details__data">
             <div className="person">
-              <Link to={`profile/${tokenData.owners[0].id}`}>
+              <Link to={`/profile/${tokenData.owners[0].id}`}>
                 <div className="person__img">
                   <img className="avatar" src={tokenData.owners[0].avatar} alt="person avatar" />
                   {tokenData.owners[0].is_verificated ? (
@@ -332,21 +332,31 @@ const TokenPage: React.FC = () => {
               </Link>
               <div className="info">
                 Owner
-                <div className="info__position">{tokenData.owners[0].name}</div>
+                <div className="info__position">
+                  {tokenData.owners[0].name.length > 16
+                    ? `${tokenData.owners[0].name.substr(0, 15)}...`
+                    : tokenData.owners[0].name}
+                </div>
               </div>
             </div>
             <div className="person">
-              <div className="person__img">
-                <img className="avatar" src={tokenData.creator.avatar} alt="person avatar" />
-                {tokenData.creator.is_verificated ? (
-                  <img className="verified" src={Verified} alt="verified" />
-                ) : (
-                  ''
-                )}
-              </div>
+              <Link to={`/profile/${tokenData.creator.id}`}>
+                <div className="person__img">
+                  <img className="avatar" src={tokenData.creator.avatar} alt="person avatar" />
+                  {tokenData.creator.is_verificated ? (
+                    <img className="verified" src={Verified} alt="verified" />
+                  ) : (
+                    ''
+                  )}
+                </div>
+              </Link>
               <div className="info">
                 Artist
-                <div className="info__position">{tokenData.creator.name}</div>
+                <div className="info__position">
+                  {tokenData.creator.name.length > 16
+                    ? `${tokenData.creator.name.substr(0, 15)}...`
+                    : tokenData.creator.name}
+                </div>
               </div>
             </div>
             <div className="warning">{tokenData.royalty}% of sales will go to creator</div>
@@ -357,7 +367,7 @@ const TokenPage: React.FC = () => {
           <div className="token__content__details__data">
             {tokenData.owners.map((owner) => (
               <div className="person">
-                <Link id={`${owner.id}`} to={`profile/${owner.id}`}>
+                <Link id={`${owner.id}`} to={`/profile/${owner.id}`}>
                   <div className="person__img">
                     <img className="avatar" src={owner.avatar} alt="person avatar" />
                     {owner.is_verificated ? (
@@ -369,7 +379,9 @@ const TokenPage: React.FC = () => {
                 </Link>
                 <div className="info">
                   Owner
-                  <div className="info__position">{owner.name}</div>
+                  <div className="info__position">
+                    {owner.name.length > 16 ? `${owner.name.substr(0, 15)}...` : owner.name}
+                  </div>
                 </div>
               </div>
             ))}
@@ -380,12 +392,16 @@ const TokenPage: React.FC = () => {
           <div className="token__content__details__data">
             {tokenData.history.map((item: any) => (
               <div className="person">
-                <div className="person__img">
-                  <img className="avatar" src={item.avatar} alt="person avatar" />
-                </div>
+                <Link to={`/profile/${item.id}`}>
+                  <div className="person__img">
+                    <img className="avatar" src={item.avatar} alt="person avatar" />
+                  </div>
+                </Link>
                 <div className="info">
                   {item.method}
-                  <div className="info__position">{item.name}</div>
+                  <div className="info__position">
+                    {item.name.length > 16 ? `${item.name.substr(0, 15)}...` : item.name}
+                  </div>
                 </div>
               </div>
             ))}
@@ -518,9 +534,14 @@ const TokenPage: React.FC = () => {
             <div className="token__content__card__description">
               Name: {tokenData.name}
               <br />
+              Description: {tokenData.description}
+              <br />
               Standart: {tokenData.standart}
               <br />
-              Update at: {tokenData.updated_at}
+              Update at:{' '}
+              {tokenData.updated_at
+                ? `${tokenData.updated_at.substr(0, 10)} ${tokenData.updated_at.substr(11, 8)}`
+                : ''}
             </div>
             <div className="token__content__card__btns">
               <div

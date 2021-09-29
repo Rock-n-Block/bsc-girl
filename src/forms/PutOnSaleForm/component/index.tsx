@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form } from 'antd';
 import { FormikProps } from 'formik';
 import { observer } from 'mobx-react';
 
-import ArrowGradient from '../../../assets/img/icons/arrow-gradient.svg';
 import { InputNumber } from '../../../components';
 import { ratesApi } from '../../../services/api';
 import { clogData } from '../../../utils/logger';
@@ -18,8 +17,6 @@ export interface IPutOnSale {
 
 const PutOnSaleComponent: React.FC<FormikProps<IPutOnSale>> = observer(
   ({ handleChange, handleBlur, values, handleSubmit, touched, errors }) => {
-    const [isCheckoutOpen, setCheckout] = useState<boolean>(false);
-
     const onSubmit = () => {
       handleSubmit();
     };
@@ -59,48 +56,7 @@ const PutOnSaleComponent: React.FC<FormikProps<IPutOnSale>> = observer(
                 onBlur={handleBlur}
                 positiveOnly
               />
-              <div className="gradient-button">
-                <div
-                  className="checkout"
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setCheckout(!isCheckoutOpen)}
-                  onKeyPress={() => {}}
-                >
-                  <div className="checkout__text">{values.currency}</div>
-                  <div className="checkout__arrow">
-                    <img
-                      className={isCheckoutOpen ? 'checkout__arrow__up' : ''}
-                      src={ArrowGradient}
-                      alt="gradient arrow"
-                    />
-                  </div>
-                  <div className={isCheckoutOpen ? 'open' : 'close'}>
-                    <div
-                      className="open__item"
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => {
-                        values.currency = 'BSCGIRLMOON';
-                      }}
-                      onKeyPress={() => setCheckout(false)}
-                    >
-                      BSCGIRLMOON
-                    </div>
-                    <div
-                      className="open__item"
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => {
-                        values.currency = 'BSCGIRL';
-                      }}
-                      onKeyPress={() => setCheckout(false)}
-                    >
-                      BSCGIRL
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div className="checkout__text">{values.currency}</div>
             </div>
           </div>
         </Form.Item>

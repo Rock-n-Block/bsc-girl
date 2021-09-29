@@ -20,10 +20,17 @@ import './Header.scss';
 const Header: React.FC = observer(() => {
   const [isShownCurrency, setShownCurrency] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  // const ref: LegacyRef<HTMLDivElement | null>;
   const { user } = useMst();
 
   const location = useLocation();
   const history = useHistory();
+
+  document.addEventListener('mousedown', (event) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (event.target?.className !== 'currency__item') setShownCurrency(false);
+  });
 
   const handleKeyDown = (e: any) => {
     if (e.target.value) {

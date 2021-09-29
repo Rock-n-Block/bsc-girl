@@ -60,7 +60,7 @@ const ProfilePage: React.FC = observer(() => {
   const params = new URLSearchParams(useLocation().search);
   const [activeTab, setActiveTab] = useState(params.get('tab') ?? 'my-items');
 
-  const self = user.id === +(userId ?? '0');
+  const self = user.id.toString() === (userId ?? '0');
 
   const links: TypeLink[] = [
     {

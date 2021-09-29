@@ -14,7 +14,7 @@ const EditProfile: React.FC = observer(() => {
   const history = useHistory();
 
   const props: IProfile = {
-    displayName: user.name || '',
+    displayName: user.display_name || '',
     customUrl: user.custom_url || '',
     bio: user.bio || '',
     twitter: user.twitter || '',
@@ -22,7 +22,7 @@ const EditProfile: React.FC = observer(() => {
     email: user.email || '',
     site: user.site || '',
     img: '',
-    preview: `https://${user.avatar}` || '',
+    preview: user.avatar || '',
     isLoading: false,
   };
   const FormWithFormik = withFormik<any, IProfile>({

@@ -1,6 +1,8 @@
 @import 'src/styles/index';
 
 .footer {
+  position: relative;
+  z-index: 2;
   padding: 40px 0;
   width: 100%;
   border-top: 1px solid #e6e8ec;

@@ -1,7 +1,7 @@
 @import "src/styles/mixins";
 
 .search-page {
-  margin: 60px 0 50px;
+  margin: 120px 0 50px;
 
   width: 100%;
 
@@ -29,6 +29,12 @@
 
       @include b(500) {
         overflow-x: scroll;
+      }
+
+      .no-items {
+        font-weight: 700;
+        font-size: 18px;
+        color: $soft-red;
       }
     }
   }

@@ -2,8 +2,8 @@
   padding: 10px 10px 23px;
 
   box-sizing: border-box;
-  min-width: 275px;
-  max-width: 275px;
+  width: 275px;
+  height: 402px;
 
   display: flex;
   flex-direction: column;
@@ -105,6 +105,7 @@
 
     img {
       max-width: 100%;
+      max-height: 256px;
 
       border-radius: 30px;
     }

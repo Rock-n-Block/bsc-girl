@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
-import { NoItemsFound, TokenCard } from '../../components';
+import { TokenCard } from '../../components';
 import { storeApi } from '../../services/api';
 import { clogData } from '../../utils/logger';
 
@@ -64,7 +64,7 @@ const SearchPage: React.FC = observer(() => {
                 />
               ))
             ) : (
-              <NoItemsFound />
+              <div className="no-items">No items found, try another text for search</div>
             )}
           </div>
         </div>

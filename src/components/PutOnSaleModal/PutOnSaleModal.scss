@@ -4,15 +4,20 @@
   position: relative;
   left: calc(50% - 224px);
   top: calc(50% - 396px);
+  box-sizing: border-box;
   margin-top: 150px;
   padding: 32px;
   display: flex;
   flex-direction: column;
   width: 448px;
-  height: 396px;
   background: #fff;
   box-shadow: 0 64px 64px -48px rgba(31, 47, 70, 0.12);
   border-radius: 20px;
+
+  @include b(448) {
+    left: unset;
+    width: 100%;
+  }
 
   &__header {
     margin-bottom: 32px;
@@ -60,6 +65,7 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      align-items: center;
       background: #fffafa;
       border-radius: 30px;
 
@@ -70,6 +76,10 @@
         font-weight: 700;
         font-size: 16px;
         line-height: 24px;
+
+        @include b(400) {
+          width: 150px;
+        }
       }
 
       .checkout {

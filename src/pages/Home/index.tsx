@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { Explore, Popular, Preview, ProfileCollectibles } from '../../components';
-import { populars } from '../../data';
+import { Explore, Preview, ProfileCollectibles } from '../../components';
+// import { populars } from '../../data';
 import { storeApi } from '../../services/api';
 import { useMst } from '../../store/store';
 import { IToken } from '../../types';
@@ -30,7 +30,7 @@ const Home: React.FC = observer(() => {
             <ProfileCollectibles tokens={tokens} />
           </div>
         </div>
-        <Popular items={populars} />
+        {/* <Popular items={populars} /> */}
         <div id="explore">
           <Explore />
         </div>

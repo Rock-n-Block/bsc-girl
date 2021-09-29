@@ -144,15 +144,19 @@
 
       .show {
         position: absolute;
-        left: 0;
+        left: -25px;
         top: 0;
         margin: -4px;
         padding: 4px;
-        min-width: 150px;
+        min-width: 200px;
         background: #fff;
         border: 2px solid #e6e8ec;
         border-radius: 20px;
         animation: 1s ease-in;
+
+        &:hover {
+          padding: 3px;
+        }
       }
 
       &__item {

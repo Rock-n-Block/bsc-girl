@@ -184,7 +184,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                   {new BigNumber(+values.price)
                     .multipliedBy(new BigNumber(100 - serviceFee))
                     .dividedBy(100)
-                    .multipliedBy(values?.bscRate[values.currency === 'BSCGIRL' ? 2 : 0].rate)
+                    .multipliedBy(values?.bscRate[values.currency === 'BSCGIRL' ? 1 : 2].rate)
                     .toFixed(2)}
                 </div>
               ) : (

@@ -9,7 +9,7 @@
   justify-content: space-between;
 
   @include b(900) {
-    margin-top: 20px;
+    margin-top: 80px;
     flex-wrap: wrap;
   }
 
@@ -195,6 +195,10 @@
 
         &__link {
           padding-bottom: 8px;
+          width: calc(100% / 3);
+          display: flex;
+          justify-content: center;
+          align-items: center;
           font-family: 'Poppins', sans-serif;
           font-weight: 700;
           font-size: 14px;

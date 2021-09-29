@@ -1,12 +1,12 @@
 @import 'src/styles/index';
 
 .create-collectible {
-  margin: 110px 80px 120px;
+  margin: 120px 80px 120px;
 
   width: 100%;
 
   @include b(1024) {
-    margin: 45px 0 60px;
+    margin: 105px 0 60px;
   }
 
   .ant-form-item-explain .ant-form-item-explain-error {
@@ -82,7 +82,7 @@
     }
 
     .create-form {
-      padding-right: 37px;
+      padding: 0 37px 5px 5px;
 
       overflow-x: auto;
 

@@ -1,10 +1,11 @@
 @import 'src/styles/index';
 
 .edit-profile {
-  margin: 110px 80px 120px;
+  margin: 120px 80px 120px;
+  width: 100%;
 
   @include b(900) {
-    margin: 45px auto 60px;
+    margin: 105px auto 60px;
   }
 
   &__header {
@@ -216,6 +217,10 @@
           line-height: 21px;
           color: $soft-red;
           cursor: pointer;
+
+          &:hover {
+            box-shadow: -3px 3px 6px $soft-red;
+          }
         }
       }
     }

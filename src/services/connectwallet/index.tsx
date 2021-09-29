@@ -35,7 +35,7 @@ class ConnectWalletService extends React.Component<any, any> {
   componentDidMount() {
     this.connectWallet.addChains(blockchains);
 
-    if (localStorage.connector && localStorage.bsc_token) {
+    if (localStorage.connector && localStorage.bsc_token && !rootStore.user.address) {
       this.connect(localStorage.connector);
     }
   }
@@ -96,9 +96,11 @@ class ConnectWalletService extends React.Component<any, any> {
               }
             },
             (err: any) => {
-              clogData('getAccount wallet connect - get user account err: ', err);
+              clogData('getAccount wallet connect - get user account err: ', err.message.message);
+              rootStore.user.disconnect();
+              this.disconnect();
               if (err.code && err.code === 6) {
-                clogData(`⚠️ User account disconnected!`, 'success');
+                clog(`⚠️ User account disconnected!`);
                 setTimeout(() => {
                   window.location.reload();
                 }, 3000);
