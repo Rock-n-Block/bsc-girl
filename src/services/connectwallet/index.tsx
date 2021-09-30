@@ -223,6 +223,8 @@ class ConnectWalletService extends React.Component<any, any> {
       method,
     );
 
+    clogData('transactionMethod:', transactionMethod);
+
     let signature;
     if (transactionMethod.inputs.length) {
       signature = this.encodeFunctionCall(transactionMethod, data);
@@ -232,7 +234,9 @@ class ConnectWalletService extends React.Component<any, any> {
       tx.from = walletAddress || rootStore.user.address;
       tx.data = signature;
 
-      return this.sendTransaction(tx);
+      clogData('tx to send:', tx);
+
+      return this.sendTransaction('', tx);
     }
     return this.sendTransaction(walletAddress, {
       to: tokenAddress || contracts.contract[contract].chain[contracts.type].address,

@@ -97,7 +97,7 @@ const TokenPage: React.FC = () => {
           ],
           buyTokenData.initial_tx.data.signature,
         ],
-        tokenData.currency,
+        'BEP20',
         {
           gas: buyTokenData.initial_tx.gas,
           gasPrice: buyTokenData.initial_tx.gasPrice,
