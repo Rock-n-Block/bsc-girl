@@ -68,6 +68,13 @@
 
         border-radius: 50%;
       }
+
+      &__verified {
+        position: absolute;
+        right: 0;
+        bottom: -50px;
+        max-width: 50px;
+      }
     }
 
     .btns {

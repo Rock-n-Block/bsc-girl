@@ -66,7 +66,7 @@ const EditProfile: React.FC = observer(() => {
           const verifyData = new FormData();
           verifyData.append('url', values.customUrl ? values.customUrl : '');
           verifyData.append('address', user.address);
-          verifyData.append('role', 'user');
+          verifyData.append('role', 'creator');
           verifyData.append('bio', values.bio ? values.bio : '');
           verifyData.append('twitter', values.twitter ? values.twitter : '');
           verifyData.append('media', values.img);
