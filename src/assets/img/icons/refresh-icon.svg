@@ -1,22 +1,8 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10 19L9.29289 18.2929L8.58579 19L9.29289 19.7071L10 19ZM13.2929 14.2929L9.29289 18.2929L10.7071 19.7071L14.7071 15.7071L13.2929 14.2929ZM9.29289 19.7071L13.2929 23.7071L14.7071 22.2929L10.7071 18.2929L9.29289 19.7071Z" fill="url(#paint0_linear)"/>
-<path d="M18.0622 8.5C18.6766 9.56413 19 10.7712 19 12C19 13.2288 18.6766 14.4359 18.0622 15.5C17.4478 16.5641 16.5641 17.4478 15.5 18.0622C14.4359 18.6766 13.2288 19 12 19" stroke="url(#paint1_linear)" stroke-width="2" stroke-linecap="round"/>
-<path d="M14 5L14.7071 5.70711L15.4142 5L14.7071 4.29289L14 5ZM10.7071 9.70711L14.7071 5.70711L13.2929 4.29289L9.29289 8.29289L10.7071 9.70711ZM14.7071 4.29289L10.7071 0.292893L9.29289 1.70711L13.2929 5.70711L14.7071 4.29289Z" fill="url(#paint2_linear)"/>
-<path d="M5.93782 15.5C5.32344 14.4359 5 13.2288 5 12C5 10.7712 5.32344 9.56413 5.93782 8.5C6.5522 7.43587 7.43587 6.5522 8.5 5.93782C9.56413 5.32344 10.7712 5 12 5" stroke="url(#paint3_linear)" stroke-width="2" stroke-linecap="round"/>
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="10" cy="10" r="10" fill="url(#paint0_linear)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.04622 8.20034C4.81051 5.767 7.08329 4 9.77137 4C11.2062 4 12.5228 4.50348 13.5547 5.34303C13.63 4.86531 14.0436 4.5 14.5425 4.5C15.0948 4.5 15.5425 4.94772 15.5425 5.5V8.5C15.5425 8.99375 15.1821 9.4136 14.694 9.48845C14.206 9.56329 13.7364 9.27072 13.5884 8.79966C13.0784 7.1759 11.5609 6 9.77137 6C7.98185 6 6.46432 7.1759 5.95431 8.79966C5.78882 9.32656 5.22752 9.61954 4.70061 9.45405C4.1737 9.28855 3.88072 8.72725 4.04622 8.20034ZM14.8421 10.546C15.369 10.7114 15.662 11.2728 15.4965 11.7997C14.7322 14.233 12.4594 16 9.77137 16C8.33649 16 7.01995 15.4965 5.98801 14.657C5.9127 15.1347 5.49915 15.5 5.00027 15.5C4.44798 15.5 4.00027 15.0523 4.00027 14.5V11.5C4.00027 11.0062 4.36064 10.5864 4.84869 10.5116C5.33674 10.4367 5.80636 10.7293 5.95431 11.2003C6.46432 12.8241 7.98185 14 9.77137 14C11.5609 14 13.0784 12.8241 13.5884 11.2003C13.7539 10.6734 14.3152 10.3805 14.8421 10.546Z" fill="white"/>
 <defs>
-<linearGradient id="paint0_linear" x1="10" y1="19" x2="14" y2="19" gradientUnits="userSpaceOnUse">
-<stop stop-color="#DE7FE5"/>
-<stop offset="1" stop-color="#F5B2BC"/>
-</linearGradient>
-<linearGradient id="paint1_linear" x1="19" y1="12" x2="5" y2="12" gradientUnits="userSpaceOnUse">
-<stop stop-color="#DE7FE5"/>
-<stop offset="1" stop-color="#F5B2BC"/>
-</linearGradient>
-<linearGradient id="paint2_linear" x1="14" y1="5" x2="10" y2="5" gradientUnits="userSpaceOnUse">
-<stop stop-color="#DE7FE5"/>
-<stop offset="1" stop-color="#F5B2BC"/>
-</linearGradient>
-<linearGradient id="paint3_linear" x1="5" y1="12" x2="19" y2="12" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear" x1="0" y1="10" x2="20" y2="10" gradientUnits="userSpaceOnUse">
 <stop stop-color="#DE7FE5"/>
 <stop offset="1" stop-color="#F5B2BC"/>
 </linearGradient>

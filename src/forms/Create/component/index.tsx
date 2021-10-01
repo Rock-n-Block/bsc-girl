@@ -27,6 +27,7 @@ export interface ICreateForm {
   price: number | string;
   currency: string;
   tokenName: string;
+  isOnSale: boolean;
   tokenDescription: string;
   tokenRoyalties: number | string;
   numberOfCopies: number | string;
@@ -37,6 +38,7 @@ export interface ICreateForm {
   uploadStatus: { text: string; img: string };
   signStatus: { text: string; img: string };
   closeModal: () => void;
+  setOnSale: (value: boolean) => void;
 }
 
 const { TextArea } = Input;
@@ -206,6 +208,18 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
               ) : (
                 ''
               )}
+            </div>
+          </div>
+          <div className="create-form__item">
+            <span>Put on sale </span>
+            <div
+              className={`create-form__item__switcher ${values.isOnSale ? 'active' : ''}`}
+              role="button"
+              tabIndex={0}
+              onKeyPress={() => {}}
+              onClick={() => values.setOnSale(!values.isOnSale)}
+            >
+              <div className={`switch-dot ${values.isOnSale ? 'on' : 'off'}`} />
             </div>
           </div>
           <div className="create-form__fields">

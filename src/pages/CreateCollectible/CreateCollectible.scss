@@ -325,6 +325,51 @@
         }
       }
 
+      &__item {
+        margin: 40px 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 33px;
+
+        &__switcher {
+          position: relative;
+          margin-left: 20px;
+          width: 38px;
+          height: 21px;
+          background: #fff;
+          border: 0.8px solid $soft-red;
+          box-sizing: border-box;
+          border-radius: 11.2px;
+          cursor: pointer;
+
+          .switch-dot {
+            position: absolute;
+            top: -1px;
+            width: 21px;
+            height: 21px;
+            background: #fff;
+            border: 0.8px solid $soft-red;
+            border-radius: 50%;
+          }
+
+          .on {
+            right: -1px;
+          }
+
+          .off {
+            left: -1px;
+          }
+        }
+      }
+
+      .active {
+        background: $soft-red;
+      }
+
       &__collection {
         margin-top: 60px;
 

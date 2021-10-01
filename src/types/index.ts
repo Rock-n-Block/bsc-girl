@@ -56,3 +56,12 @@ export interface IToken {
   price: number;
   is_liked: boolean;
 }
+
+export interface IStakingItem {
+  name: string;
+  currency: string;
+  img: string;
+  apy: number | string;
+  profit: number | string;
+  date: string;
+}

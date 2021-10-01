@@ -21,6 +21,7 @@ interface CreateProps {
 
 const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector, bscRate }) => {
   const history = useHistory();
+  const [isOnSale, setOnSale] = useState(false);
   const [approveStatus, setApproveStatus] = useState({ text: 'In progress...', img: Loader });
   const [uploadStatus, setUploadStatus] = useState({ text: 'Start now', img: Pencil });
   const [signStatus, setSignStatus] = useState({ text: 'Start now', img: Bag });
@@ -56,6 +57,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
       price: '',
       currency: 'BSCGIRL',
       tokenName: '',
+      isOnSale,
       tokenDescription: '',
       tokenRoyalties: '',
       numberOfCopies: '',
@@ -67,6 +69,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
       ],
       bscRate,
       closeModal,
+      setOnSale: (value: boolean) => setOnSale(value),
       // eslint-disable-next-line object-shorthand
       approveStatus: approveStatus,
       // eslint-disable-next-line object-shorthand
@@ -96,7 +99,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
       formData.append('standart', isSingle ? 'ERC721' : 'ERC1155');
       formData.append('currency', values.currency);
       formData.append('collection', isSingle ? '3' : '4');
-      formData.append('selling', 'true');
+      formData.append('selling', isOnSale.toString());
 
       if (values.tokenProperties[0].size) {
         const details: any = {};

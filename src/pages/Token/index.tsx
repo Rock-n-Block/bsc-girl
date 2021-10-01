@@ -114,7 +114,7 @@ const TokenPage: React.FC = () => {
 
   const handleBuy = async (quantity = 1) => {
     if (+user.balance[tokenData.currency.toLowerCase()] < +tokenData.price) {
-      clog(`You don't have enough ${tokenData.currency}`);
+      modals.info.setMsg(`You don't have enough ${tokenData.currency}`, 'error');
       return;
     }
     setLoading(true);
@@ -126,6 +126,7 @@ const TokenPage: React.FC = () => {
         contract[tokenData.currency]?.chain[type]?.address ?? '',
         tokenData.owners[0].id.toString(),
       );
+      clogData('tokenAddress:', contract[tokenData.currency]?.chain[type]?.address);
 
       await createBuyTransaction(buyTokenData);
       setLoading(false);
