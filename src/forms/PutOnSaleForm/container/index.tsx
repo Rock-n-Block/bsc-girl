@@ -9,7 +9,7 @@ import PutOnSaleComponent, { IPutOnSale } from '../component';
 
 interface SaleFixedPriceFormProps {
   totalSupply: number;
-  tokenId: number;
+  tokenData: any;
   handleSetTokenData: (data: any) => void;
   handleApproveNft: () => Promise<any>;
   closeModal: () => void;
@@ -17,7 +17,7 @@ interface SaleFixedPriceFormProps {
 
 const PutOnSaleForm: React.FC<SaleFixedPriceFormProps> = ({
   totalSupply,
-  tokenId,
+  tokenData,
   handleSetTokenData,
   handleApproveNft,
   closeModal,
@@ -27,7 +27,7 @@ const PutOnSaleForm: React.FC<SaleFixedPriceFormProps> = ({
     mapPropsToValues: () => {
       return {
         price: '',
-        currency: 'BSCGIRL',
+        currency: tokenData.currency,
         totalSupply,
         isLoading: false,
       };
@@ -43,7 +43,7 @@ const PutOnSaleForm: React.FC<SaleFixedPriceFormProps> = ({
         handleApproveNft()
           .then(() => {
             storeApi
-              .putOnSale(tokenId, +values.price, values.currency)
+              .putOnSale(tokenData.id, +values.price, values.currency)
               .then(({ data }) => {
                 clogData('putOnSale response:', data);
                 handleSetTokenData(data);

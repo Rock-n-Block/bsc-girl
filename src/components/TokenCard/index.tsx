@@ -109,7 +109,7 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({
         <div className="card__info">
           <div className="card__info__price">
             <div className="card__info__price__value">
-              {new BigNumber(price).toFixed(3)} {currency.toUpperCase()}
+              {new BigNumber(price).toFixed(3)} {currency ? currency.toUpperCase() : ''}
             </div>
             {total_supply && total_supply > 1 ? (
               <div className="card__info__price__count">

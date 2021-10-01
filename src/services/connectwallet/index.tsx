@@ -63,25 +63,26 @@ class ConnectWalletService extends React.Component<any, any> {
     });
   }
 
+  public async getBnbBalance(address: string) {
+    return this.Web3().eth.getBalance(address);
+  }
+
   public async getTokenBalance(address: string, tokenName: string): Promise<string | number> {
     return this.connectWallet
       .Contract(tokenName)
       .methods.balanceOf(address)
       .call()
       .then((balance: string | number) => {
-        clogData('user data: ', { address, balance });
         return balance;
       });
   }
 
   public async getAccount(account: { address?: string }): Promise<any> {
-    clogData('start catch account', account);
     return new Promise((resolve: any, reject: any) => {
       this.checkNetwork()
         .then(() => {
           this.connectWallet.getAccounts().subscribe(
             (userAccount: any) => {
-              clogData('user account: ', userAccount);
               if (!account || userAccount.address !== account.address) {
                 resolve(userAccount);
                 clog(
@@ -100,19 +101,20 @@ class ConnectWalletService extends React.Component<any, any> {
               rootStore.user.disconnect();
               this.disconnect();
               if (err.code && err.code === 6) {
-                clog(`⚠️ User account disconnected!`);
+                rootStore.modals.error.setErr(`User account disconnected!`);
                 setTimeout(() => {
                   window.location.reload();
                 }, 3000);
               } else {
-                clog(`⚠️ something went wrong`);
+                rootStore.modals.error.setErr(err.message.message);
               }
               reject(err);
             },
           );
         })
         .catch((err) => {
-          clogData(`⚠️ something went wrong`, err);
+          rootStore.modals.error.setErr(`⚠️ something went wrong`);
+          clogData('checkNetwork', err);
         });
     });
   }
@@ -129,54 +131,65 @@ class ConnectWalletService extends React.Component<any, any> {
         if (isConnected) {
           this.getAccount({
             address: rootStore.user.address,
-          }).then((account: any) => {
-            this.getTokenBalance(account.address, 'BSCGIRL')
-              .then((value: any) => {
-                rootStore.user.setBalance(
-                  new BigNumber(value).dividedBy(new BigNumber(10).pow(18)).toString(10),
-                  'BSCGIRL',
-                );
-                this.getTokenBalance(account.address, 'BSCGIRLMOON').then((balance: any) => {
+          })
+            .then((account: any) => {
+              this.getTokenBalance(account.address, 'BSCGIRL')
+                .then((value: any) => {
                   rootStore.user.setBalance(
-                    new BigNumber(balance).dividedBy(new BigNumber(10).pow(18)).toString(10),
-                    'BSCGIRLMOON',
+                    new BigNumber(value).dividedBy(new BigNumber(10).pow(18)).toFixed(0),
+                    'BSCGIRL',
                   );
-                });
-              })
-              .finally(async () => {
-                try {
-                  if (!localStorage.bsc_token) {
-                    const metMsg: any = await userApi.getMsg();
-
-                    const signedMsg = await this.signMsg(
-                      metMsg.data,
-                      providerName,
-                      account.address,
+                  this.getTokenBalance(account.address, 'BSCGIRLMOON').then((balance: any) => {
+                    rootStore.user.setBalance(
+                      new BigNumber(balance).dividedBy(new BigNumber(10).pow(18)).toFixed(0),
+                      'BSCGIRLMOON',
                     );
 
-                    const login: any = await userApi.login({
-                      address: account.address,
-                      msg: metMsg.data,
-                      signedMsg,
+                    this.getBnbBalance(account.address).then((data) => {
+                      rootStore.user.setBalance(
+                        new BigNumber(data).dividedBy(new BigNumber(10).pow(18)).toFixed(3),
+                        'BNB',
+                      );
                     });
+                  });
+                })
+                .finally(async () => {
+                  try {
+                    if (!localStorage.bsc_token) {
+                      const metMsg: any = await userApi.getMsg();
 
-                    localStorage.bsc_token = login.data.key;
+                      const signedMsg = await this.signMsg(
+                        metMsg.data,
+                        providerName,
+                        account.address,
+                      );
+
+                      const login: any = await userApi.login({
+                        address: account.address,
+                        msg: metMsg.data,
+                        signedMsg,
+                      });
+
+                      localStorage.bsc_token = login.data.key;
+                    }
+                    localStorage.connector = providerName;
+                    rootStore.user.setAddress(account.address);
+                    await rootStore.user.getMe();
+                  } catch (err: any) {
+                    rootStore.modals.error.setErr(err.message);
+                    rootStore.user.disconnect();
                   }
-                  localStorage.connector = providerName;
-                  rootStore.user.setAddress(account.address);
-                  await rootStore.user.getMe();
-                } catch {
-                  clog('something wrong with signing message, please try again later');
-                  rootStore.user.disconnect();
-                }
-              });
-          });
+                });
+            })
+            .catch((err: any) => {
+              rootStore.modals.error.setErr(`Getting account ${err.message}`);
+            });
         } else {
           rootStore.user.disconnect();
         }
       });
-    } catch (err) {
-      throwError(`connect error: ${err}`);
+    } catch (err: any) {
+      rootStore.modals.error.setErr(`connect error: ${err.message}`);
     }
   };
 
@@ -256,6 +269,7 @@ class ConnectWalletService extends React.Component<any, any> {
     message = Web3.utils.keccak256(message);
     clogData('message', message);
     const params = [address, message];
+    rootStore.modals.error.setErr('Please sign message by your wallet on your device');
     return this.connector.connector.request({
       method: 'eth_sign',
       params,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { Footer, Header } from './components';
+import { ErrorModal, Footer, Header, InfoModal } from './components';
 import {
   ConnectWalletPage,
   CreateCollectiblePage,
@@ -53,6 +53,8 @@ export const App: React.FC = () => {
         </Route>
       </Switch>
       <Footer />
+      <ErrorModal />
+      <InfoModal />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import axios from '../../core/axios';
 
 export default {
+  burnToken: (data: any, id: number): Promise<any> => axios.post(`store/${id}/burn/`, data),
   createToken: (data: any): Promise<any> => axios.post('store/create_token/', data),
   createCollection: (data: any): Promise<any> => axios.post('store/create_collection/', data),
   saveToken: (data: any): Promise<any> => axios.post('store/save_token/', data),
@@ -18,7 +19,7 @@ export default {
     id: number | string,
     amount: number,
     tokenAddress: string,
-    sellerId?: number,
+    sellerId?: number | string,
   ): Promise<any> => {
     const data: any = {
       id,

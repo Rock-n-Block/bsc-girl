@@ -1,14 +1,14 @@
 @import 'src/styles/index';
 
 .connect {
-  margin: 170px auto;
+  margin: 120px auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: 'Poppins', sans-serif;
 
   @include b(900) {
-    margin: 120px auto;
+    margin: 100px auto;
   }
 
   &__title {

@@ -28,7 +28,7 @@
       margin-right: 20px;
       padding-top: 5px;
 
-      width: 158px;
+      width: 150px;
 
       cursor: pointer;
     }
@@ -70,7 +70,7 @@
       flex-direction: row;
       align-items: center;
 
-      width: 250px;
+      width: 200px;
       height: 40px;
 
       border: 2px solid #e6e8ec;
@@ -96,6 +96,7 @@
       input {
         border: none;
         outline: none;
+        width: 100%;
       }
 
       input::placeholder {
@@ -118,7 +119,7 @@
       margin-left: 15px;
       padding: 4px;
 
-      min-width: 150px;
+      min-width: 160px;
       min-height: 40px;
 
       display: flex;
@@ -246,6 +247,7 @@
 
 .header-mobile {
   display: none;
+  box-sizing: border-box;
 
   @include b(1030) {
     position: fixed;
@@ -296,23 +298,25 @@
 
   .nav {
     position: fixed;
-    z-index: 100;
+    z-index: 1000;
     top: 50px;
 
     padding: 0 10px 20px;
 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 
     width: 100%;
-    height: 92vh;
+    height: 100vh;
 
     background: #fff;
 
     &__top {
-      margin-top: 44px;
+      margin-top: 20px;
+      padding: 0 15px;
+      width: 90%;
 
       a {
         text-decoration: none;
@@ -320,10 +324,10 @@
 
       .currency {
         position: relative;
-        margin-bottom: 20px;
+        margin: 0 auto 20px;
         padding: 4px;
 
-        width: 100%;
+        max-width: 370px;
 
         display: flex;
         flex-direction: column;
@@ -352,12 +356,13 @@
             margin-right: 4px;
 
             width: 32px;
+            height: 32px;
           }
         }
       }
 
       .profile-link {
-        margin: 0 auto 37px;
+        margin: 0 auto 20px;
         padding: 4px;
 
         display: flex;
@@ -375,7 +380,6 @@
         line-height: 21px;
 
         color: #000;
-        background: $soft-red;
         border: 2px solid #e6e8ec;
         border-radius: 30px;
 
@@ -398,23 +402,23 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 30px;
+        gap: 15px;
 
         &__link {
           font-family: 'Poppins', sans-serif;
-          font-size: 20px;
+          font-size: 16px;
           font-weight: 800;
-          line-height: 30px;
+          line-height: 24px;
 
           color: #f48989;
         }
       }
 
       button {
-        margin: 10px;
+        margin: 10px auto;
 
         width: 370px;
-        height: 62px;
+        height: 40px;
 
         font-family: 'Poppins', sans-serif;
         font-size: 14px;
@@ -454,7 +458,9 @@
         }
 
         input {
-          border: none;
+          padding-left: 10px;
+          border: 2px solid #e6e8ec;
+          border-radius: 30px;
         }
       }
     }
@@ -464,24 +470,9 @@
       flex-direction: column;
       align-items: center;
 
-      .links {
-        margin-bottom: 53px;
-
-        a {
-          margin: 0 12px;
-
-          font-family: 'Poppins', sans-serif;
-          font-size: 14px;
-          font-weight: 400;
-          line-height: 16px;
-          text-decoration: none;
-
-          color: #959595;
-        }
-      }
-
       .contacts {
-        padding: 0 50px 32px;
+        margin: 20px auto 0;
+        padding: 0 50px 10px;
 
         display: flex;
         flex-direction: row;
@@ -493,7 +484,7 @@
       }
 
       .copyright {
-        margin-top: 30px;
+        margin-top: 10px;
 
         font-family: 'Poppins', sans-serif;
         font-size: 14px;

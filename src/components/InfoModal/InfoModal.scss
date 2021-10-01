@@ -1,0 +1,44 @@
+@import "src/styles/index";
+
+.info-modal {
+  position: absolute;
+  left: calc(50% - 175px);
+  top: 150px;
+  z-index: 999;
+  box-sizing: border-box;
+  margin: 200px auto;
+  max-width: 350px;
+
+  &__content {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__text {
+      text-align: center;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 24px;
+      color: $soft-red;
+    }
+
+    &__btn {
+      margin: 20px auto 15px;
+      padding: 15px;
+      width: 150px;
+      background: #fff;
+      border: 2px solid $soft-red;
+      border-radius: 30px;
+      cursor: pointer;
+
+      font-weight: 700;
+      font-size: 20px;
+      color: $soft-red;
+    }
+  }
+}

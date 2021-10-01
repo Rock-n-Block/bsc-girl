@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form } from 'antd';
+import BigNumber from 'bignumber.js/bignumber';
 import { FormikProps } from 'formik';
 import { observer } from 'mobx-react';
 
@@ -17,24 +18,27 @@ export interface IPutOnSale {
 
 const PutOnSaleComponent: React.FC<FormikProps<IPutOnSale>> = observer(
   ({ handleChange, handleBlur, values, handleSubmit, touched, errors }) => {
+    const [rate, setRate] = useState(0);
+
     const onSubmit = () => {
       handleSubmit();
     };
 
-    const getUsd = (): any => {
+    useEffect(() => {
       let result = 0;
       ratesApi
         .getRates()
-        .then((data: any) => {
-          data.forEach((item: any) => {
-            if (item.symbol === values.currency.toLowerCase()) result = +values.price * item.rate;
-          });
-          return result;
+        .then(({ data }) => {
+          if (values.currency === 'BSCGIRLMOON') result = data[0].rate;
+          else if (values.currency === 'BSCGIRL') result = data[1].rate;
+          else result = data[2].rate;
+          setRate(result);
         })
         .catch((err: any) => {
           clogData('getRates error:', err);
         });
-    };
+    }, [values.currency]);
+
     return (
       <Form name="put-on-sale" className="put-on-sale-form" layout="vertical">
         <Form.Item
@@ -65,14 +69,25 @@ const PutOnSaleComponent: React.FC<FormikProps<IPutOnSale>> = observer(
           <p className="put-on-sale-form__fee__result">
             You will receive&nbsp;
             <span className="red">
-              {values.price}&nbsp;{values.currency}&nbsp;
+              {new BigNumber(values.price)
+                .times(100 - 3)
+                .dividedBy(100)
+                .toString(10) ?? 0}
+              &nbsp;{values.currency}
+              &nbsp;
             </span>
-            {`$${getUsd() || '0'}`}
+            {`$${
+              new BigNumber(values.price)
+                .times(100 - 3)
+                .dividedBy(100)
+                .times(rate)
+                .toFixed(2) ?? 0
+            }`}
           </p>
         </section>
         <div className="put-on-sale-form__submit">
           <button type="button" onClick={onSubmit} className="put-on-sale-form__submit-btn">
-            Put on sale
+            {values.isLoading ? 'In process...' : 'Put on sale'}
           </button>
         </div>
       </Form>

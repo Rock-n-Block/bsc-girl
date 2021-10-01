@@ -97,7 +97,7 @@ const Explore: React.FC = () => {
                   img={token.media ? token.media : DefaultImg}
                   name={token.name}
                   price={token.price}
-                  currency={token.currency.symbol}
+                  currency={token.currency?.symbol ?? token.currency}
                   total_supply={token.total_supply}
                   available={token.available}
                   is_liked={token.is_liked}

@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 
 import LikeActive from '../../assets/img/icons/like-active.svg';
 import Like from '../../assets/img/icons/like.svg';
 import Verified from '../../assets/img/icons/verification.svg';
-import { PutOnSaleModal } from '../../components';
+import { CheckoutModal, MultiBuyModal, PutOnSaleModal } from '../../components';
 import { contracts } from '../../config';
 import { storeApi, userApi } from '../../services/api';
 import { useWalletConnectService } from '../../services/connectwallet';
@@ -44,7 +44,7 @@ interface IToken {
 }
 interface IUser {
   is_verificated: boolean | undefined;
-  id: number;
+  id: number | string;
   avatar: string;
   name: string;
 }
@@ -61,14 +61,12 @@ export interface IAucOwner extends IUser {
 export interface IOwner extends IUser {
   quantity: number;
   price?: number;
-  auction?: boolean;
-  is_verificated: boolean;
 }
 
 const TokenPage: React.FC = () => {
   const history = useHistory();
   const connector = useWalletConnectService();
-  const { user } = useMst();
+  const { modals, user } = useMst();
   const { tokenId } = useParams<ITokenId>();
   const { contract, type } = contracts;
 
@@ -78,7 +76,6 @@ const TokenPage: React.FC = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isMyToken, setMyToken] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [isPutOnSaleModalOpen, setPutOnSaleModal] = useState<boolean>(false);
 
   const createBuyTransaction = async (buyTokenData: any) => {
     clogData('buyTokenData:', buyTokenData);
@@ -107,11 +104,11 @@ const TokenPage: React.FC = () => {
         },
       );
       setLoading(false);
-      clog('Congratulations');
-    } catch (err) {
-      clogData('createTransaction error:', err);
+      modals.info.setMsg('Congrats you have buy token', 'success');
+    } catch (err: any) {
+      modals.closeAll();
+      modals.error.setErr('Something went wrong');
       setLoading(false);
-      clog('Something went wrong');
     }
   };
 
@@ -126,20 +123,21 @@ const TokenPage: React.FC = () => {
       const { data: buyTokenData }: any = await storeApi.buyToken(
         tokenId,
         tokenData.standart === 'ERC721' ? 0 : quantity,
-        contract[tokenData.currency].chain[type].address,
-        tokenData.owners[0].id,
+        contract[tokenData.currency]?.chain[type]?.address ?? '',
+        tokenData.owners[0].id.toString(),
       );
 
       await createBuyTransaction(buyTokenData);
       setLoading(false);
     } catch (err: any) {
-      clogData('Something went wrong: ', err);
+      modals.closeAll();
+      modals.error.setErr(err.message);
       setLoading(false);
     }
   };
 
   const handlePutOnSale = (): void => {
-    setPutOnSaleModal(true);
+    modals.putOnSale.open();
   };
 
   const handleApprove = (): void => {
@@ -147,7 +145,7 @@ const TokenPage: React.FC = () => {
     connector.connectorService
       .approveToken(
         tokenData.currency,
-        contract[tokenData.currency].params?.decimals || 18,
+        tokenData.currency !== 'BNB' ? contract[tokenData.currency].params?.decimals || 18 : 18,
         contract.EXCHANGE.chain[type].address,
       )
       .then(() => {
@@ -180,7 +178,7 @@ const TokenPage: React.FC = () => {
       });
   };
 
-  const handleSetTokenData = useCallback((data: any): void => {
+  const handleSetTokenData = (data: any): void => {
     let owners = [];
     if (data.standart === 'ERC1155') {
       owners = data.owners;
@@ -192,7 +190,7 @@ const TokenPage: React.FC = () => {
       available: data.available,
       collection: data.collection,
       creator: data.creator,
-      currency: data.currency.symbol.toUpperCase(),
+      currency: (data.currency?.symbol ?? data.currency).toUpperCase(),
       description: data.description,
       details: data.details,
       id: data.id,
@@ -211,7 +209,7 @@ const TokenPage: React.FC = () => {
       history: data.history,
       is_liked: data.is_liked,
     });
-  }, []);
+  };
 
   clogData('tokenData:', tokenData);
 
@@ -232,7 +230,7 @@ const TokenPage: React.FC = () => {
   };
 
   const handleOpenCheckout = (): void => {
-    // modals.multibuy.open();
+    modals.multibuy.open();
   };
 
   const handleCheckApproveNft = async () => {
@@ -264,7 +262,7 @@ const TokenPage: React.FC = () => {
     }
   };
 
-  const handleGetTokenData = React.useCallback((): void => {
+  useEffect(() => {
     storeApi
       .getToken(tokenId)
       .then(({ data: tokendata }: any) => {
@@ -274,11 +272,7 @@ const TokenPage: React.FC = () => {
         clogData('get token', err);
         history.push('/');
       });
-  }, [tokenId, handleSetTokenData, history]);
-
-  useEffect(() => {
-    handleGetTokenData();
-  }, [handleGetTokenData, user.address]);
+  }, [history, tokenId, user.address]);
 
   useEffect(() => {
     if (Object.keys(tokenData).length && user.id) {
@@ -295,7 +289,7 @@ const TokenPage: React.FC = () => {
       connector.connectorService
         .checkTokenAllowance(
           tokenData.currency,
-          contract[tokenData.currency].params?.decimals || 18,
+          tokenData.currency !== 'BNB' ? contract[tokenData.currency].params?.decimals || 18 : 18,
           contract.EXCHANGE.chain[type].address,
         )
         .then((res: boolean | ((prevState: boolean) => boolean)) => {
@@ -313,103 +307,6 @@ const TokenPage: React.FC = () => {
       setIsLiked(tokenData.is_liked);
     }
   }, [tokenData, tokenData.id, user, user.id]);
-
-  const getDetails = () => {
-    if (Object.keys(tokenData).length) {
-      if (activeTab === 'Info')
-        return (
-          <div className="token__content__details__data">
-            <div className="person">
-              <Link to={`/profile/${tokenData.owners[0].id}`}>
-                <div className="person__img">
-                  <img className="avatar" src={tokenData.owners[0].avatar} alt="person avatar" />
-                  {tokenData.owners[0].is_verificated ? (
-                    <img className="verified" src={Verified} alt="verified" />
-                  ) : (
-                    ''
-                  )}
-                </div>
-              </Link>
-              <div className="info">
-                Owner
-                <div className="info__position">
-                  {tokenData.owners[0].name.length > 16
-                    ? `${tokenData.owners[0].name.substr(0, 15)}...`
-                    : tokenData.owners[0].name}
-                </div>
-              </div>
-            </div>
-            <div className="person">
-              <Link to={`/profile/${tokenData.creator.id}`}>
-                <div className="person__img">
-                  <img className="avatar" src={tokenData.creator.avatar} alt="person avatar" />
-                  {tokenData.creator.is_verificated ? (
-                    <img className="verified" src={Verified} alt="verified" />
-                  ) : (
-                    ''
-                  )}
-                </div>
-              </Link>
-              <div className="info">
-                Artist
-                <div className="info__position">
-                  {tokenData.creator.name.length > 16
-                    ? `${tokenData.creator.name.substr(0, 15)}...`
-                    : tokenData.creator.name}
-                </div>
-              </div>
-            </div>
-            <div className="warning">{tokenData.royalty}% of sales will go to creator</div>
-          </div>
-        );
-      if (activeTab === 'Owners')
-        return (
-          <div className="token__content__details__data">
-            {tokenData.owners.map((owner) => (
-              <div className="person">
-                <Link id={`${owner.id}`} to={`/profile/${owner.id}`}>
-                  <div className="person__img">
-                    <img className="avatar" src={owner.avatar} alt="person avatar" />
-                    {owner.is_verificated ? (
-                      <img className="verified" src={Verified} alt="verified" />
-                    ) : (
-                      ''
-                    )}
-                  </div>
-                </Link>
-                <div className="info">
-                  Owner
-                  <div className="info__position">
-                    {owner.name.length > 16 ? `${owner.name.substr(0, 15)}...` : owner.name}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        );
-      if (activeTab === 'History')
-        return (
-          <div className="token__content__details__data">
-            {tokenData.history.map((item: any) => (
-              <div className="person">
-                <Link to={`/profile/${item.id}`}>
-                  <div className="person__img">
-                    <img className="avatar" src={item.avatar} alt="person avatar" />
-                  </div>
-                </Link>
-                <div className="info">
-                  {item.method}
-                  <div className="info__position">
-                    {item.name.length > 16 ? `${item.name.substr(0, 15)}...` : item.name}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        );
-    }
-    return <div className="grey-text">No info</div>;
-  };
 
   return (
     <div className="container">
@@ -602,14 +499,141 @@ const TokenPage: React.FC = () => {
               {/*   Details */}
               {/* </div> */}
             </div>
-            {getDetails()}
+            {tokenData.owners && tokenData.owners.length ? (
+              <div className="token__content__details__data">
+                {activeTab === 'Info' ? (
+                  <>
+                    <div className="person">
+                      <Link to={`/profile/${tokenData.owners[0].id}`}>
+                        <div className="person__img">
+                          <img
+                            className="avatar"
+                            src={tokenData.owners[0].avatar}
+                            alt="person avatar"
+                          />
+                          {tokenData.owners[0].is_verificated ? (
+                            <img className="verified" src={Verified} alt="verified" />
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      </Link>
+                      <div className="info">
+                        Owner
+                        <div className="info__position">
+                          {tokenData.owners[0].name.length > 16
+                            ? `${tokenData.owners[0].name.substr(0, 15)}...`
+                            : tokenData.owners[0].name}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="person">
+                      <Link to={`/profile/${tokenData.creator.id}`}>
+                        <div className="person__img">
+                          <img
+                            className="avatar"
+                            src={tokenData.creator.avatar}
+                            alt="person avatar"
+                          />
+                          {tokenData.creator.is_verificated ? (
+                            <img className="verified" src={Verified} alt="verified" />
+                          ) : (
+                            ''
+                          )}
+                        </div>
+                      </Link>
+                      <div className="info">
+                        Artist
+                        <div className="info__position">
+                          {tokenData.creator.name.length > 16
+                            ? `${tokenData.creator.name.substr(0, 15)}...`
+                            : tokenData.creator.name}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="warning">{tokenData.royalty}% of sales will go to creator</div>
+                  </>
+                ) : (
+                  ''
+                )}
+                {activeTab === 'Owners' ? (
+                  <>
+                    <div className="token__content__details__data">
+                      {tokenData.owners.map((owner) => (
+                        <div className="person">
+                          <Link id={`${owner.id}`} to={`/profile/${owner.id}`}>
+                            <div className="person__img">
+                              <img className="avatar" src={owner.avatar} alt="person avatar" />
+                              {owner.is_verificated ? (
+                                <img className="verified" src={Verified} alt="verified" />
+                              ) : (
+                                ''
+                              )}
+                            </div>
+                          </Link>
+                          <div className="info">
+                            Owner
+                            <div className="info__position">
+                              {owner.name.length > 16
+                                ? `${owner.name.substr(0, 15)}...`
+                                : owner.name}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  ''
+                )}
+                {activeTab === 'History' ? (
+                  <>
+                    <div className="token__content__details__data">
+                      {tokenData.history.map((item: any) => (
+                        <div className="person">
+                          <Link to={`/profile/${item.id}`}>
+                            <div className="person__img">
+                              <img className="avatar" src={item.avatar} alt="person avatar" />
+                            </div>
+                          </Link>
+                          <div className="info">
+                            {item.method}
+                            <div className="info__position">
+                              {item.name.length > 16 ? `${item.name.substr(0, 15)}...` : item.name}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  ''
+                )}
+              </div>
+            ) : (
+              ''
+            )}
           </div>
-          {isPutOnSaleModalOpen ? (
-            <PutOnSaleModal
-              tokenId={tokenData.id}
-              handleSetTokenData={handleSetTokenData}
-              handleApproveNft={handleApproveNft}
-              closePutOnSale={() => setPutOnSaleModal(false)}
+          {(tokenData.standart === 'ERC721' && isMyToken && !tokenData.selling) ||
+          (tokenData.standart === 'ERC1155' &&
+            !tokenData.sellers.find((seller) => seller.id === user.id) &&
+            isMyToken) ? (
+            <>
+              <PutOnSaleModal
+                tokenData={tokenData}
+                handleSetTokenData={handleSetTokenData}
+                handleApproveNft={handleApproveNft}
+              />
+            </>
+          ) : (
+            ''
+          )}
+          <CheckoutModal handleBuy={handleBuy} isLoading={isLoading} />
+          {tokenData.standart === 'ERC1155' ? (
+            <MultiBuyModal
+              sellers={tokenData.sellers}
+              token={tokenData}
+              collection={tokenData.collection}
             />
           ) : (
             ''

@@ -54,7 +54,7 @@ const Preview: React.FC<TypePreviewProps> = observer(({ tokens }) => {
         available: tokens[query].available,
         total_supply: tokens[query].total_supply,
         price: tokens[query].price,
-        currency: tokens[query].currency.symbol.toUpperCase(),
+        currency: tokens[query].currency?.symbol?.toUpperCase() ?? tokens[query].currency,
         is_liked: tokens[query].is_liked,
       });
     }

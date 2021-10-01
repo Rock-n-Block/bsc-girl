@@ -2,11 +2,11 @@ import React from 'react';
 import Modal from 'react-modal';
 
 import Close from '../../assets/img/icons/close-icon.svg';
+import { useMst } from '../../store/store';
 
 import './CreateModal.scss';
 
 type TypeCreateModalProps = {
-  isOpen: boolean;
   closeModal: () => void;
   approveStatus: { text: string; img: string };
   uploadStatus: { text: string; img: string };
@@ -14,12 +14,12 @@ type TypeCreateModalProps = {
 };
 
 const CreateModal: React.FC<TypeCreateModalProps> = ({
-  isOpen,
   closeModal,
   approveStatus,
   uploadStatus,
   signStatus,
 }) => {
+  const { modals } = useMst();
   const steps = [
     {
       title: 'Approve',
@@ -57,7 +57,7 @@ const CreateModal: React.FC<TypeCreateModalProps> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
+      isOpen={modals.createModal.isOpen}
       onAfterOpen={afterOpen}
       onRequestClose={closeModal}
       ariaHideApp={false}

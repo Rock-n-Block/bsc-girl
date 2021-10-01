@@ -13,6 +13,7 @@ const Follower = types.model({
 export const Balance = types.model({
   bscgirl: types.optional(types.string, '0'),
   bscgirlmoon: types.optional(types.string, '0'),
+  bnb: types.optional(types.string, '0'),
 });
 
 export const User = types
@@ -53,7 +54,7 @@ export const User = types
         self.balance.bscgirl = value;
       } else if (currency === 'BSCGIRLMOON') {
         self.balance.bscgirlmoon = value;
-      }
+      } else self.balance.bnb = value;
     };
     const addLike = () => {
       self.likes += 1;

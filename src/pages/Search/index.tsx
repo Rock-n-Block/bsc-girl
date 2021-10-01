@@ -57,7 +57,7 @@ const SearchPage: React.FC = observer(() => {
                   img={token.media}
                   name={token.name}
                   price={token.price}
-                  currency={token.currency.symbol}
+                  currency={token.currency?.symbol ?? token?.currency?.toUpperCase()}
                   total_supply={token.total_supply}
                   available={token.available}
                   is_liked={token.is_liked}

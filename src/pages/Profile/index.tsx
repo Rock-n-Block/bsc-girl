@@ -17,7 +17,7 @@ import {
 import { storeApi, userApi } from '../../services/api';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
-import { clog, clogData } from '../../utils/logger';
+import { clogData } from '../../utils/logger';
 
 import './Profile.scss';
 
@@ -52,7 +52,7 @@ const ProfilePage: React.FC = observer(() => {
 
   const [collectibles, setCollectibles] = useState<any>({});
 
-  const { user } = useMst();
+  const { modals, user } = useMst();
   const walletConnector = useWalletConnectService();
 
   const { userId } = useParams<{ userId: string | undefined }>();
@@ -161,7 +161,7 @@ const ProfilePage: React.FC = observer(() => {
       .then(({ data }) => {
         setIsLoading(false);
         user.setCover(data);
-        clog('Congrats you changed the cover!');
+        modals.info.setMsg('Congrats you changed the cover!', 'success');
         setCurrentUser((prevState: any) => {
           return {
             ...prevState,
@@ -184,7 +184,7 @@ const ProfilePage: React.FC = observer(() => {
   }, [activeTab, history]);
   useEffect(() => {
     loadCollectibles();
-  }, [loadCollectibles]);
+  });
 
   const getShortAddress = () => {
     const addr = currentUser?.address || '';

@@ -16,6 +16,12 @@ div, button, a, input {
   text-decoration: none;
 }
 
+button {
+  &:hover {
+    box-shadow: -3px 3px 6px $soft-red;
+  }
+}
+
 .container {
   position: relative;
   box-sizing: border-box;

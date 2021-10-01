@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import LogoBSCGIRLMOON from '../../assets/img/bscgirlmoon-logo.png';
 import Burger from '../../assets/img/icons/burger.svg';
 import CloseBtn from '../../assets/img/icons/close-btn.svg';
+import LogoBNB from '../../assets/img/icons/logo-bnb.svg';
 import LogoDS from '../../assets/img/icons/logo-ds.svg';
 import LogoFB from '../../assets/img/icons/logo-fb.svg';
 import LogoInst from '../../assets/img/icons/logo-inst.svg';
@@ -20,7 +21,6 @@ import './Header.scss';
 const Header: React.FC = observer(() => {
   const [isShownCurrency, setShownCurrency] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  // const ref: LegacyRef<HTMLDivElement | null>;
   const { user } = useMst();
 
   const location = useLocation();
@@ -91,12 +91,17 @@ const Header: React.FC = observer(() => {
                 ) : (
                   <div className="show">
                     <div className="currency__item">
-                      <img src={LogoMini} alt="logo avatar" />
+                      <img src={LogoBNB} alt="logo bnb" />
+                      {user.balance.bnb}
+                      &nbsp; BNB
+                    </div>
+                    <div className="currency__item">
+                      <img src={LogoMini} alt="logo bscgirl" />
                       {user.balance.bscgirl}
                       &nbsp; BSCGIRL
                     </div>
                     <div className="currency__item">
-                      <img src={LogoBSCGIRLMOON} alt="logo avatar" />
+                      <img src={LogoBSCGIRLMOON} alt="logo bscgirlmoon" />
                       {user.balance.bscgirlmoon}
                       &nbsp; BSCGIRLMOON
                     </div>
@@ -176,6 +181,10 @@ const Header: React.FC = observer(() => {
               <div className="nav__top">
                 <div className="currency">
                   <div className="currency__item">
+                    <img src={LogoBNB} alt="logo bnb" />
+                    {user.balance.bnb}&nbsp;BNB
+                  </div>
+                  <div className="currency__item">
                     <img src={LogoMini} alt="logo bscgirl" />
                     {user.balance.bscgirl}&nbsp;BSCGIRL
                   </div>
@@ -211,7 +220,11 @@ const Header: React.FC = observer(() => {
                   >
                     My items
                   </a>
-                  <Link to="/staking" onClick={() => setIsOpen(false)}>
+                  <Link
+                    to="/staking"
+                    className="nav__top__main__link"
+                    onClick={() => setIsOpen(false)}
+                  >
                     Staking pool
                   </Link>
                 </div>
@@ -232,17 +245,6 @@ const Header: React.FC = observer(() => {
                 </div>
               </div>
               <div className="nav__bottom">
-                <div className="links">
-                  <Link to="/create" onClick={() => setIsOpen(false)}>
-                    Create
-                  </Link>
-                  <Link to="/how" onClick={() => setIsOpen(false)}>
-                    How it works
-                  </Link>
-                  <Link to="/support" onClick={() => setIsOpen(false)}>
-                    Support
-                  </Link>
-                </div>
                 <div className="contacts">
                   <a href="https://www.facebook.com/">
                     <img src={LogoFB} alt="logo Facebook" />

@@ -8,31 +8,64 @@
     margin-top: 70px;
     width: 100%;
 
-    .scroll {
-      display: grid;
-      grid-template-columns: repeat(4, 275px);
-      grid-column-gap: 20px;
-      grid-row-gap: 30px;
-      justify-content: space-between;
+    &__content {
+      margin-top: 30px;
 
-      @include b(1440) {
-        margin: 0 auto;
-        grid-template-columns: repeat(3, 275px);
-        justify-content: space-between;
-      }
-    }
-
-    @include b(990) {
-      height: 402px;
-      display: flex;
-      flex-direction: row;
-      overflow-x: auto;
+      width: 100%;
 
       .scroll {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        gap: 20px;
+        overflow-x: hidden;
+
+        width: 100%;
+      }
+
+      &__items {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-column-gap: 20px;
+        grid-row-gap: 30px;
+
+        @include b(1440) {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        @include b(900) {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include b(640) {
+          display: inline-flex;
+          overflow-x: scroll;
+
+          width: 89vw;
+          gap: 20px;
+        }
+      }
+
+      &__empty {
+        padding-top: 30px;
+
+        text-align: center;
+
+        .text {
+          font-family: 'Poppins', sans-serif;
+          font-size: 25px;
+          font-weight: 700;
+          line-height: 37px;
+
+          color: $soft-red;
+        }
+
+        .advice {
+          margin-top: 10px;
+
+          font-family: 'Poppins', sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 21px;
+
+          color: #959595;
+        }
       }
     }
   }

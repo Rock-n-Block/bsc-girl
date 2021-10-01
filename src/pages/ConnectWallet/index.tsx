@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
 import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
@@ -7,18 +7,14 @@ import ArrowLeftRed from '../../assets/img/icons/arrow-left-red.svg';
 import Metamask from '../../assets/img/icons/metamask-logo.svg';
 import WalletConnect from '../../assets/img/icons/wallet-connect-logo.svg';
 import { useWalletConnectService } from '../../services/connectwallet';
-import { useMst } from '../../store/store';
 
 import './ConnectWallet.scss';
 
 const ConnectWalletPage: React.FC = observer(() => {
   const walletConnector = useWalletConnectService();
-  const history = useHistory();
-  const { user } = useMst();
 
   const connectWallet = async (providerName: string): Promise<void> => {
     walletConnector.connect(providerName);
-    if (user.address) history.push(`/profile/${user.id}`);
   };
 
   return (

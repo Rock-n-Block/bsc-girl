@@ -33,7 +33,6 @@ export interface ICreateForm {
   tokenProperties: IProperties[];
   isSingle?: boolean;
   bscRate: IRate[];
-  isModalOpen: boolean;
   approveStatus: { text: string; img: string };
   uploadStatus: { text: string; img: string };
   signStatus: { text: string; img: string };
@@ -54,6 +53,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
     isSingle,
   }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [rate, setRate] = useState(1);
     const { user } = useMst();
     const serviceFee = 3;
 
@@ -63,6 +63,13 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
 
     const handleChooseCurrency = (currency: string) => {
       values.currency = currency;
+      let result;
+      if (currency === 'BNB') {
+        result = 2;
+      } else if (currency === 'BSCGIRLMOON') {
+        result = 0;
+      } else result = 1;
+      setRate(result);
     };
 
     const handleChangeProperty = (e: any, index: any, type: any) => {
@@ -153,6 +160,15 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                             >
                               BSCGIRLMOON
                             </div>
+                            <div
+                              className="choose-currency__items__item"
+                              role="button"
+                              tabIndex={0}
+                              onKeyPress={() => {}}
+                              onClick={() => handleChooseCurrency('BNB')}
+                            >
+                              BNB
+                            </div>
                           </div>
                         </div>
                       ) : (
@@ -184,7 +200,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                   {new BigNumber(+values.price)
                     .multipliedBy(new BigNumber(100 - serviceFee))
                     .dividedBy(100)
-                    .multipliedBy(values?.bscRate[values.currency === 'BSCGIRL' ? 1 : 2].rate)
+                    .multipliedBy(values.bscRate[rate].rate)
                     .toFixed(2)}
                 </div>
               ) : (
@@ -372,7 +388,6 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
           </div>
         </div>
         <CreateModal
-          isOpen={values.isModalOpen}
           closeModal={values.closeModal}
           approveStatus={values.approveStatus}
           uploadStatus={values.uploadStatus}

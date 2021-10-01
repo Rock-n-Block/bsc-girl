@@ -2,11 +2,11 @@
 
 .modal {
   position: relative;
-  z-index: 99;
-  margin: auto auto;
+  z-index: 999;
+  margin: 100px auto 0;
   padding: 32px;
   max-width: 448px;
-  height: 601px;
+  max-height: 601px;
   display: flex;
   flex-direction: column;
   background: #fff;

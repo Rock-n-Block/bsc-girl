@@ -9,7 +9,7 @@ import Loader from '../../../assets/img/icons/loader.svg';
 import Pencil from '../../../assets/img/icons/pencil.svg';
 import { storeApi } from '../../../services/api';
 import { useMst } from '../../../store/store';
-import { clog, clogData } from '../../../utils/logger';
+import { clogData } from '../../../utils/logger';
 import { validateForm } from '../../../utils/validate';
 import CreateComponent, { ICreateForm } from '../component';
 
@@ -21,15 +21,14 @@ interface CreateProps {
 
 const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector, bscRate }) => {
   const history = useHistory();
-  const [isModalOpen, setModalOpen] = useState(false);
   const [approveStatus, setApproveStatus] = useState({ text: 'In progress...', img: Loader });
   const [uploadStatus, setUploadStatus] = useState({ text: 'Start now', img: Pencil });
   const [signStatus, setSignStatus] = useState({ text: 'Start now', img: Bag });
-  const { user } = useMst();
+  const { modals, user } = useMst();
   let step = 'approve';
 
   const closeModal = () => {
-    setModalOpen(false);
+    modals.createModal.close();
   };
 
   const goToNextStep = () => {
@@ -68,7 +67,6 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
       ],
       bscRate,
       closeModal,
-      isModalOpen,
       // eslint-disable-next-line object-shorthand
       approveStatus: approveStatus,
       // eslint-disable-next-line object-shorthand
@@ -86,7 +84,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
     },
 
     handleSubmit: (values) => {
-      setModalOpen(true);
+      modals.createModal.open();
       const formData = new FormData();
       formData.append('media', values.img);
       formData.append('format', 'gif');
@@ -121,15 +119,18 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
             .sendTransaction(user.address, data.initial_tx)
             .then(() => {
               history.push(data.id ? `/token/${data.id}` : '/');
-              clog('Congrats you create your own NFT!');
+              modals.info.setMsg('Congrats you create your own NFT!', 'success');
               goToNextStep();
             })
             .catch((err: any) => {
-              clog('Something went wrong');
-              clogData('err', err);
+              modals.create.close();
+              modals.error.setErr('Something went wrong');
+              clogData('sendTransaction', err);
             });
         })
         .catch((error) => {
+          modals.create.close();
+          modals.error.setErr('Something went wrong');
           clogData('createToken error:', error);
         });
     },

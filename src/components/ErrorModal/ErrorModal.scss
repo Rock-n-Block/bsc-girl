@@ -1,0 +1,26 @@
+@import "src/styles/index";
+
+.error {
+  position: relative;
+  z-index: 999;
+  margin: 200px auto;
+  padding: 20px;
+  box-sizing: border-box;
+
+  width: 350px;
+
+  background: #fff;
+
+  border: 5px solid $soft-red;
+  border-radius: 30px;
+
+  &__content {
+    &__text {
+      text-align: center;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 28px;
+      color: $soft-red;
+    }
+  }
+}

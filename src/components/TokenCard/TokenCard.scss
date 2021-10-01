@@ -2,8 +2,8 @@
   padding: 10px 10px 23px;
 
   box-sizing: border-box;
-  width: 275px;
-  height: 402px;
+  min-width: 275px;
+  max-height: 402px;
 
   display: flex;
   flex-direction: column;

@@ -10,7 +10,7 @@ import { validateForm } from '../../../utils/validate';
 import ProfileComponent, { IProfile } from '../component';
 
 const EditProfile: React.FC = observer(() => {
-  const { user } = useMst();
+  const { modals, user } = useMst();
   const history = useHistory();
 
   const props: IProfile = {
@@ -61,7 +61,7 @@ const EditProfile: React.FC = observer(() => {
         .update(formData)
         .then(({ data }) => {
           user.update(data);
-          clog('Congrats you successfully changed your profile');
+          modals.info.setMsg('Congrats you successfully changed your profile', 'success');
 
           const verifyData = new FormData();
           verifyData.append('url', values.customUrl ? values.customUrl : '');
@@ -77,7 +77,10 @@ const EditProfile: React.FC = observer(() => {
           userApi
             .verifyMe(verifyData)
             .then(() => {
-              clog('Congrats you have successfully submitted a verification request');
+              modals.info.setMsg(
+                'Congrats you have successfully submitted a verification request',
+                'success',
+              );
             })
             .catch((err: any) => {
               if (err.message === 'Request failed with status code 400') {
@@ -89,7 +92,7 @@ const EditProfile: React.FC = observer(() => {
             });
         })
         .catch((err) => {
-          clog('Something went wrong');
+          modals.error.setErr('Something went wrong');
           clog(err);
         })
         .finally(() => {
