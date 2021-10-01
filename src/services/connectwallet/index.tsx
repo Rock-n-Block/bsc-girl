@@ -68,13 +68,7 @@ class ConnectWalletService extends React.Component<any, any> {
   }
 
   public async getTokenBalance(address: string, tokenName: string): Promise<string | number> {
-    return this.connectWallet
-      .Contract(tokenName)
-      .methods.balanceOf(address)
-      .call()
-      .then((balance: string | number) => {
-        return balance;
-      });
+    return this.connectWallet.Contract(tokenName).methods.balanceOf(address).call();
   }
 
   public async getAccount(account: { address?: string }): Promise<any> {
@@ -135,13 +129,15 @@ class ConnectWalletService extends React.Component<any, any> {
             .then((account: any) => {
               this.getTokenBalance(account.address, 'BSCGIRL')
                 .then((value: any) => {
+                  clog(value);
                   rootStore.user.setBalance(
-                    new BigNumber(value).dividedBy(new BigNumber(10).pow(18)).toFixed(0),
+                    new BigNumber(value).dividedBy(new BigNumber(10).pow(8)).toFixed(0),
                     'BSCGIRL',
                   );
                   this.getTokenBalance(account.address, 'BSCGIRLMOON').then((balance: any) => {
+                    clog(balance);
                     rootStore.user.setBalance(
-                      new BigNumber(balance).dividedBy(new BigNumber(10).pow(18)).toFixed(0),
+                      new BigNumber(balance).dividedBy(new BigNumber(10).pow(8)).toFixed(0),
                       'BSCGIRLMOON',
                     );
 
