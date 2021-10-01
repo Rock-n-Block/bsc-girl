@@ -89,6 +89,9 @@ const EditProfile: React.FC = observer(() => {
                 clogData('error', err.message);
               }
               clog(err.message);
+            })
+            .finally(() => {
+              setTimeout(() => window.location.reload(), 1000);
             });
         })
         .catch((err) => {

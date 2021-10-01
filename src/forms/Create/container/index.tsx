@@ -21,7 +21,6 @@ interface CreateProps {
 
 const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector, bscRate }) => {
   const history = useHistory();
-  const [isOnSale, setOnSale] = useState(false);
   const [approveStatus, setApproveStatus] = useState({ text: 'In progress...', img: Loader });
   const [uploadStatus, setUploadStatus] = useState({ text: 'Start now', img: Pencil });
   const [signStatus, setSignStatus] = useState({ text: 'Start now', img: Bag });
@@ -55,9 +54,10 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
       img: '',
       preview: '',
       price: '',
+      format: '',
       currency: 'BSCGIRL',
       tokenName: '',
-      isOnSale,
+      selling: false,
       tokenDescription: '',
       tokenRoyalties: '',
       numberOfCopies: '',
@@ -69,7 +69,6 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
       ],
       bscRate,
       closeModal,
-      setOnSale: (value: boolean) => setOnSale(value),
       // eslint-disable-next-line object-shorthand
       approveStatus: approveStatus,
       // eslint-disable-next-line object-shorthand
@@ -90,7 +89,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
       modals.createModal.open();
       const formData = new FormData();
       formData.append('media', values.img);
-      formData.append('format', 'gif');
+      formData.append('format', values.format);
       formData.append('name', values.tokenName);
       formData.append('total_supply', isSingle ? '1' : values.numberOfCopies.toString());
       formData.append('description', values.tokenDescription);
@@ -99,7 +98,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
       formData.append('standart', isSingle ? 'ERC721' : 'ERC1155');
       formData.append('currency', values.currency);
       formData.append('collection', isSingle ? '3' : '4');
-      formData.append('selling', isOnSale.toString());
+      formData.append('selling', values.selling.toString());
 
       if (values.tokenProperties[0].size) {
         const details: any = {};

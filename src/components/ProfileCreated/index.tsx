@@ -60,6 +60,7 @@ const ProfileCreated: React.FC<ProfileCreatedProps> = ({ address }) => {
                 available={token.available}
                 is_liked={token.is_liked}
                 disableLinks={false}
+                onSale={token.selling}
               />
             ))}
           </div>

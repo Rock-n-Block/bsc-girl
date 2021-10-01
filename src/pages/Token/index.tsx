@@ -10,7 +10,7 @@ import { storeApi, userApi } from '../../services/api';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
 // import { weiToEth } from '../../utils/ethOperations';
-import { clog, clogData } from '../../utils/logger';
+import { clogData } from '../../utils/logger';
 
 import './Token.scss';
 
@@ -28,6 +28,7 @@ interface IToken {
   details?: any;
   id: number;
   media: string;
+  format: string;
   name: string;
   updated_at: string;
   owners: IOwner[];
@@ -146,7 +147,7 @@ const TokenPage: React.FC = () => {
     connector.connectorService
       .approveToken(
         tokenData.currency,
-        tokenData.currency !== 'BNB' ? contract[tokenData.currency].params?.decimals || 18 : 18,
+        tokenData.currency !== 'BNB' ? contract[tokenData.currency].params?.decimals || 8 : 18,
         contract.EXCHANGE.chain[type].address,
       )
       .then(() => {
@@ -157,7 +158,7 @@ const TokenPage: React.FC = () => {
         clogData('approve', err);
         setLoading(false);
         setApproved(false);
-        clog('Something went wrong');
+        modals.err.setErr('Something went wrong');
       });
   };
 
@@ -175,7 +176,7 @@ const TokenPage: React.FC = () => {
       })
       .catch((err: any) => {
         clogData('handle like', err);
-        clog('Something went wrong');
+        modals.error.setErr('Something went wrong');
       });
   };
 
@@ -196,6 +197,7 @@ const TokenPage: React.FC = () => {
       details: data.details,
       id: data.id,
       media: data.media,
+      format: data.format,
       name: data.name,
       updated_at: data.updated_at,
       tags: data.tags,
@@ -212,18 +214,16 @@ const TokenPage: React.FC = () => {
     });
   };
 
-  clogData('tokenData:', tokenData);
-
   const handleRemoveFromSale = (): void => {
     setLoading(true);
     storeApi
       .putOnSale(+tokenId, null, '', true)
       .then(({ data }) => {
         handleSetTokenData(data);
-        clog('Congratulations you successfully removed token from sale');
+        modals.info.setMsg('Congratulations you successfully removed token from sale', 'success');
       })
       .catch((err) => {
-        clogData('Put on sale fixed price', err);
+        clogData('Remove from sale fixed price', err);
       })
       .finally(() => {
         setLoading(false);
@@ -283,7 +283,7 @@ const TokenPage: React.FC = () => {
     } else {
       setMyToken(false);
     }
-  }, [tokenData, user.id, user.address, user]);
+  }, [tokenData, user]);
 
   useEffect(() => {
     if (user.address && tokenData.currency) {
@@ -307,13 +307,33 @@ const TokenPage: React.FC = () => {
     if (Object.keys(tokenData).length) {
       setIsLiked(tokenData.is_liked);
     }
-  }, [tokenData, tokenData.id, user, user.id]);
+  }, [tokenData, user]);
 
   return (
     <div className="container">
       <div className="token">
         <div className="token__image">
-          <img src={tokenData.media} alt="token" />
+          {tokenData.format === 'video' ? (
+            <video controls>
+              <source src={tokenData.media} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+              <track kind="captions" />
+            </video>
+          ) : (
+            ''
+          )}
+          {tokenData.format === 'audio' ? (
+            <audio controls>
+              <source src={tokenData.media} />
+              <track kind="captions" />
+            </audio>
+          ) : (
+            ''
+          )}
+          {tokenData.format !== ('video' || 'audio') ? (
+            <img src={tokenData.media} alt="token" />
+          ) : (
+            ''
+          )}
         </div>
         <div className="token__content">
           <div className="token__content__card">
@@ -351,7 +371,7 @@ const TokenPage: React.FC = () => {
               <button
                 type="button"
                 className="token__content__card__btn gradient-button"
-                onClick={handlePutOnSale}
+                onClick={() => handlePutOnSale()}
               >
                 {isLoading ? 'In progress...' : 'Put on sale'}
               </button>
@@ -368,7 +388,7 @@ const TokenPage: React.FC = () => {
               <button
                 type="button"
                 className="token__content__card__btn gradient-button"
-                onClick={handleRemoveFromSale}
+                onClick={() => handleRemoveFromSale()}
               >
                 {isLoading ? 'In progress...' : 'Remove from sale'}
               </button>
@@ -416,7 +436,7 @@ const TokenPage: React.FC = () => {
                       <button
                         type="button"
                         className="token__content__card__btn gradient-button"
-                        onClick={handleApprove}
+                        onClick={() => handleApprove()}
                       >
                         {isLoading ? 'In progress...' : 'Approve Token'}
                       </button>
@@ -446,7 +466,7 @@ const TokenPage: React.FC = () => {
                 className="token__content__card__like"
                 role="button"
                 tabIndex={0}
-                onClick={handleLike}
+                onClick={() => handleLike()}
                 onKeyPress={() => {}}
               >
                 <img src={isLiked ? LikeActive : Like} alt="like" />

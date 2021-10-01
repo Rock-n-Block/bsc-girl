@@ -17,7 +17,6 @@ const Explore: React.FC = () => {
   const [tags, setTags] = useState<Array<string>>(['all']);
   const sortItems: Array<ISortItem> = [
     { key: 'recent', value: 'Most Recent' },
-    { key: 'popular', value: 'Popular' },
     { key: 'highest', value: 'Price High' },
     { key: 'cheapest', value: 'Price Low' },
   ];
@@ -101,6 +100,7 @@ const Explore: React.FC = () => {
                   total_supply={token.total_supply}
                   available={token.available}
                   is_liked={token.is_liked}
+                  onSale={token.selling}
                   disableLinks={false}
                 />
               ))}

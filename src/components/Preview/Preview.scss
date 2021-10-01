@@ -56,16 +56,19 @@
       &__1 {
         img {
           width: 30px;
+          height: 30px;
           border-radius: 50%;
         }
 
         &:hover {
           width: 40px;
+          height: 40px;
           position: relative;
           z-index: 5;
 
           img {
             width: 40px;
+            height: 40px;
           }
         }
       }
@@ -76,6 +79,7 @@
 
         img {
           width: 30px;
+          height: 30px;
           border-radius: 50%;
         }
 
@@ -85,6 +89,7 @@
 
           img {
             width: 40px;
+            height: 40px;
           }
         }
       }
@@ -95,6 +100,7 @@
 
         img {
           width: 30px;
+          height: 30px;
           border-radius: 50%;
         }
 
@@ -104,6 +110,7 @@
 
           img {
             width: 40px;
+            height: 40px;
           }
         }
       }

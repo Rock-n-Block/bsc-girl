@@ -13,6 +13,8 @@ interface IUploader {
   // eslint-disable-next-line react/require-default-props
   type?: 'area' | 'button';
   // eslint-disable-next-line react/require-default-props
+  setFormat?: (file: any) => void;
+  // eslint-disable-next-line react/require-default-props
   handleUpload?: (file: any) => void;
   // eslint-disable-next-line react/require-default-props
   className?: string;
@@ -25,15 +27,16 @@ const UploaderButton: React.FC<IUploader> = ({
   isLoading = false,
   className,
   handleUpload,
+  setFormat,
 }) => {
   const { user } = useMst();
   const location = useLocation();
   const formik = useFormikContext();
-  const [imageUrl, setImageUrl] = React.useState('');
+  // const [imageUrl, setImageUrl] = React.useState('');
   const getBase64 = (img: any, callback: any) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      formik.setFieldValue('preview', reader.result);
+      if (type === 'area') formik.setFieldValue('preview', reader.result);
       callback(reader.result);
     });
     reader.readAsDataURL(img);
@@ -43,9 +46,11 @@ const UploaderButton: React.FC<IUploader> = ({
       file.type === 'image/jpeg' ||
       file.type === 'image/png' ||
       file.type === 'image/webp' ||
-      file.type === 'image/gif';
+      file.type === 'image/gif' ||
+      (type === 'area' && file.type === 'audio/mpeg') ||
+      (type === 'area' && file.type === 'video/mp4');
     if (!isValidType) {
-      message.error('You can only upload JPG/PNG/WEBP/GIF file!');
+      message.error('You can only upload JPG/PNG/WEBP/GIF/MP3/MP4 file!');
     }
     const isLt2M = file.size / 1024 / 1024 <= 30;
     if (!isLt2M) {
@@ -58,7 +63,9 @@ const UploaderButton: React.FC<IUploader> = ({
       file.type === 'image/jpeg' ||
       file.type === 'image/png' ||
       file.type === 'image/webp' ||
-      file.type === 'image/gif';
+      file.type === 'image/gif' ||
+      (type === 'area' && file.type === 'audio/mpeg') ||
+      (type === 'area' && file.type === 'video/mp4');
     if (!isValidType) {
       return;
     }
@@ -66,15 +73,13 @@ const UploaderButton: React.FC<IUploader> = ({
     if (!isLt2M) {
       return;
     }
+    if (type === 'area' && setFormat) setFormat(file.type.slice(0, file.type.indexOf('/')));
     if (handleUpload) {
       handleUpload(file.originFileObj);
-    } else {
-      formik.setFieldValue('img', file.originFileObj);
-      getBase64(file.originFileObj, (url: any) => setImageUrl(url));
-    }
+    } else formik.setFieldValue('img', file.originFileObj);
+    getBase64(file.originFileObj, () => {});
   };
   const handleClear = () => {
-    setImageUrl('');
     formik.setFieldValue('img', '');
     formik.setFieldValue('preview', '');
   };
@@ -88,22 +93,16 @@ const UploaderButton: React.FC<IUploader> = ({
             multiple={false}
             showUploadList={false}
           >
-            {imageUrl ? (
-              <>
-                <img src={imageUrl} alt="" className="uploader__img" />
-                <div
-                  className="create-form__upload__clear"
-                  onClick={handleClear}
-                  onKeyDown={() => {}}
-                  role="button"
-                  tabIndex={0}
-                >
-                  <img src={Close} alt="close" />
-                </div>
-              </>
-            ) : (
-              <p>PNG, GIF, WEBP. Max 30mb.</p>
-            )}
+            <div
+              className="create-form__upload__clear"
+              onClick={handleClear}
+              onKeyDown={() => {}}
+              role="button"
+              tabIndex={0}
+            >
+              <img src={Close} alt="close" />
+            </div>
+            <p>PNG, GIF, WEBP, MP3, MP4. Max 30mb.</p>
           </Dragger>
         </>
       ) : (

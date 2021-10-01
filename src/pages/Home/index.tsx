@@ -12,11 +12,18 @@ import './Home.scss';
 const Home: React.FC = observer(() => {
   const { user } = useMst();
   const [tokens, setTokens] = useState<IToken[]>([]);
+  const [advTokens, setAdvTokens] = useState<IToken[]>([]);
 
   useEffect(() => {
+    const array: IToken[] = [];
     if (user.address)
       storeApi.getCollectibles(user.address, 1).then(({ data }) => {
+        // eslint-disable-next-line array-callback-return
+        data.map((token: any) => {
+          if (token.selling) array.push(token);
+        });
         setTokens(data);
+        setAdvTokens(array);
       });
   }, [user.address]);
 
@@ -24,7 +31,7 @@ const Home: React.FC = observer(() => {
     <div>
       <div className="gradient-bg" />
       <div className="home">
-        <Preview tokens={tokens} />
+        <Preview tokens={advTokens} />
         <div className="container" id="my-items">
           <div className="cards">
             <ProfileCollectibles tokens={tokens} />

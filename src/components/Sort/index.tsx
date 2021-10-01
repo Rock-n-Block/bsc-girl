@@ -16,7 +16,6 @@ export interface ISortItem {
 const Sort: React.FC<ISort> = ({ items, onChange }) => {
   const [isOpen, setOpen] = useState(false);
   const [activeSort, setActiveSort] = useState<ISortItem>(items[0]);
-  const [isActive, setActive] = useState(false);
 
   const handleChangeSort = (sort: ISortItem): void => {
     if (sort !== activeSort) {
@@ -59,18 +58,6 @@ const Sort: React.FC<ISort> = ({ items, onChange }) => {
             />
           </div>
         ))}
-        <div className="switch">
-          text
-          <div
-            className={`switch__btn ${isActive ? 'active' : undefined}`}
-            role="button"
-            tabIndex={0}
-            onClick={() => setActive(!isActive)}
-            onKeyPress={() => {}}
-          >
-            <div className={`switch__btn__circle ${isActive ? 'colored' : undefined}`} />
-          </div>
-        </div>
       </div>
     </div>
   );

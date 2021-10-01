@@ -61,6 +61,7 @@ const SearchPage: React.FC = observer(() => {
                   total_supply={token.total_supply}
                   available={token.available}
                   is_liked={token.is_liked}
+                  onSale={token.selling}
                 />
               ))
             ) : (

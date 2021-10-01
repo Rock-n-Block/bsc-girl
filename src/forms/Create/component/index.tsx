@@ -8,6 +8,7 @@ import DefaultImg from '../../../assets/img/card-default.png';
 import ArrowGradient from '../../../assets/img/icons/arrow-gradient.svg';
 import { CreateModal, InputNumber, TokenCard, UploaderButton } from '../../../components';
 import { useMst } from '../../../store/store';
+import { clogData } from '../../../utils/logger';
 import { validateField } from '../../../utils/validate';
 
 interface IProperties {
@@ -26,8 +27,9 @@ export interface ICreateForm {
   preview: string;
   price: number | string;
   currency: string;
+  selling: boolean;
+  format: string;
   tokenName: string;
-  isOnSale: boolean;
   tokenDescription: string;
   tokenRoyalties: number | string;
   numberOfCopies: number | string;
@@ -38,7 +40,6 @@ export interface ICreateForm {
   uploadStatus: { text: string; img: string };
   signStatus: { text: string; img: string };
   closeModal: () => void;
-  setOnSale: (value: boolean) => void;
 }
 
 const { TextArea } = Input;
@@ -55,6 +56,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
     isSingle,
   }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isActive, setActive] = useState(values.selling);
     const [rate, setRate] = useState(1);
     const { user } = useMst();
     const serviceFee = 3;
@@ -96,18 +98,46 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
       handleChange(e);
     };
 
+    clogData('values.selling:', values.selling);
+
     return (
       <Form name="create-form" className="create-collectible__main">
         <div className="create-form">
           <div className="create-form__title">Upload file</div>
-          <Form.Item
-            name="img"
-            className="create-form__upload"
-            validateStatus={validateField('img', touched, errors)}
-            help={!touched.img ? false : errors.img}
-          >
-            <UploaderButton />
-          </Form.Item>
+          {values.img ? (
+            <>
+              {values.format === 'image' ? (
+                <img src={values.img} alt="token preview" className="uploader__img" />
+              ) : (
+                ''
+              )}
+              {values.format === 'video' ? (
+                <video controls>
+                  <source src={values.img} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+                  <track kind="captions" />
+                </video>
+              ) : (
+                ''
+              )}
+              {values.format === 'audio' ? (
+                <audio controls>
+                  <source src={values.img} />
+                  <track kind="captions" />
+                </audio>
+              ) : (
+                ''
+              )}
+            </>
+          ) : (
+            <Form.Item
+              name="img"
+              className="create-form__upload"
+              validateStatus={validateField('img', touched, errors)}
+              help={!touched.img ? false : errors.img}
+            >
+              <UploaderButton setFormat={(value: string) => setFieldValue('format', value)} />
+            </Form.Item>
+          )}
           <div className="create-form__enter-price">
             <Form.Item
               name="enter-price"
@@ -210,18 +240,23 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
               )}
             </div>
           </div>
-          <div className="create-form__item">
-            <span>Put on sale </span>
-            <div
-              className={`create-form__item__switcher ${values.isOnSale ? 'active' : ''}`}
-              role="button"
-              tabIndex={0}
-              onKeyPress={() => {}}
-              onClick={() => values.setOnSale(!values.isOnSale)}
-            >
-              <div className={`switch-dot ${values.isOnSale ? 'on' : 'off'}`} />
+          <Form.Item name="putOnSale">
+            <div className="create-form__item">
+              <span>Put on sale </span>
+              <div
+                className={`create-form__item__switcher ${values.selling ? 'active' : ''}`}
+                role="button"
+                tabIndex={0}
+                onKeyPress={() => {}}
+                onClick={() => {
+                  values.selling = !values.selling;
+                  setActive(!isActive);
+                }}
+              >
+                <div className={`switch-dot ${values.selling ? 'on' : 'off'}`} />
+              </div>
             </div>
-          </div>
+          </Form.Item>
           <div className="create-form__fields">
             <Form.Item
               name="tokenName"
@@ -398,6 +433,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
               is_liked={false}
               available={+values.numberOfCopies}
               id=""
+              onSale
             />
           </div>
         </div>

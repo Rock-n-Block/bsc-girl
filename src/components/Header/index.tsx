@@ -57,9 +57,13 @@ const Header: React.FC = observer(() => {
               <a href="#explore" className="main__nav__link" onClick={() => history.push('/')}>
                 Explore
               </a>
-              <a href="#my-items" className="main__nav__link" onClick={() => history.push('/')}>
-                My items
-              </a>
+              {user.address ? (
+                <a href="#my-items" className="main__nav__link" onClick={() => history.push('/')}>
+                  My items
+                </a>
+              ) : (
+                ''
+              )}
               <Link to="/staking" className="main__nav__link">
                 Staking pool
               </Link>

@@ -7,11 +7,13 @@ import LogoInst from '../../assets/img/icons/logo-inst.svg';
 import LogoTW from '../../assets/img/icons/logo-tw.svg';
 import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
 import Logo from '../../assets/img/icons/logo.svg';
+import { useMst } from '../../store/store';
 
 import './Footer.scss';
 
 const Footer: React.FC = () => {
   const history = useHistory();
+  const { user } = useMst();
 
   return (
     <footer>
@@ -28,9 +30,13 @@ const Footer: React.FC = () => {
                   <a href="#explore" onClick={() => history.push('/')}>
                     Explore
                   </a>
-                  <a href="#my-items" onClick={() => history.push('/')}>
-                    My Items
-                  </a>
+                  {user.address ? (
+                    <a href="#my-items" onClick={() => history.push('/')}>
+                      My Items
+                    </a>
+                  ) : (
+                    ''
+                  )}
                 </div>
               </div>
               <div className="footer__nav__items__item">

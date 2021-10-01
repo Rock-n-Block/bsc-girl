@@ -21,6 +21,7 @@ type TypeTokenCardProps = {
   total_supply: number;
   available: number;
   is_liked: boolean;
+  onSale: boolean;
 };
 
 const TokenCard: React.FC<TypeTokenCardProps> = ({
@@ -34,6 +35,7 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({
   total_supply,
   available,
   is_liked,
+  onSale,
 }) => {
   const [isLiked, setLiked] = useState(is_liked);
   // const [isMyToken, setMyToken] = useState(false);
@@ -105,12 +107,18 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({
         </div>
       )}
       <div className="card__content">
-        <div className="card__title">{name}</div>
+        <Link to={`/token/${id}`}>
+          <div className="card__title">{name}</div>
+        </Link>
         <div className="card__info">
           <div className="card__info__price">
-            <div className="card__info__price__value">
-              {new BigNumber(price).toFixed(3)} {currency ? currency.toUpperCase() : ''}
-            </div>
+            <Link to={`/token/${id}`}>
+              <div className="card__info__price__value">
+                {onSale
+                  ? `${new BigNumber(price).toFixed(3)} ${currency ? currency.toUpperCase() : ''}`
+                  : 'Not for sale'}
+              </div>
+            </Link>
             {total_supply && total_supply > 1 ? (
               <div className="card__info__price__count">
                 {available} of {total_supply}
