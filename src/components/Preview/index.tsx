@@ -6,7 +6,6 @@ import DefaultImg from '../../assets/img/card-default.png';
 import ArrowLeft from '../../assets/img/icons/arrow-left.svg';
 import ArrowRight from '../../assets/img/icons/arrow-right.svg';
 import { IToken } from '../../types';
-import { clogData } from '../../utils/logger';
 
 import './Preview.scss';
 
@@ -17,6 +16,7 @@ type TypePreviewProps = {
 const Preview: React.FC<TypePreviewProps> = observer(({ tokens }) => {
   const [token, setToken] = useState<IToken>({
     media: DefaultImg,
+    format: '',
     name: '',
     description: '',
     standart: '',
@@ -47,6 +47,7 @@ const Preview: React.FC<TypePreviewProps> = observer(({ tokens }) => {
       setToken({
         standart: tokens[query].standart,
         media: tokens[query].media,
+        format: tokens[query].format,
         name: tokens[query].name,
         description: tokens[query].description,
         id: tokens[query].id,
@@ -60,14 +61,34 @@ const Preview: React.FC<TypePreviewProps> = observer(({ tokens }) => {
     }
   }, [tokens, query]);
 
-  clogData('token:', token);
-
   return (
     <div className="container">
       <div className="preview">
-        <div className="preview__img">
-          <img src={token.media} alt="preview art" />
-        </div>
+        <Link to={`/token/${token.id}`}>
+          <div className="preview__img">
+            {token.format === 'video' ? (
+              <video controls>
+                <source src={token.media} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+                <track kind="captions" />
+              </video>
+            ) : (
+              ''
+            )}
+            {token.format === 'audio' ? (
+              <audio controls>
+                <source src={token.media} />
+                <track kind="captions" />
+              </audio>
+            ) : (
+              ''
+            )}
+            {token.format !== ('video' || 'audio') ? (
+              <img src={token.media} alt={token.media} />
+            ) : (
+              ''
+            )}
+          </div>
+        </Link>
         <div className="preview__content">
           <h2>Featured Art</h2>
           {token.owners.length ? (

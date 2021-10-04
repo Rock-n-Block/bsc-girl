@@ -47,6 +47,7 @@ export interface IToken {
   standart: string;
   currency: any;
   media: string;
+  format: string;
   name: string;
   description: string;
   id: number;
@@ -57,11 +58,18 @@ export interface IToken {
   is_liked: boolean;
 }
 
-export interface IStakingItem {
-  name: string;
-  currency: string;
-  img: string;
-  apy: number | string;
-  profit: number | string;
-  date: string;
+export interface IPoolInfo {
+  rewardsToken: string;
+  stakingToken: string;
+  amountStaked: number;
+  timeLockUp: number;
+  fee: number;
+  APY: number;
+  stakeholders: string[];
+}
+
+export interface IUserInfo {
+  amount: number;
+  rewardGot: number;
+  start: number;
 }

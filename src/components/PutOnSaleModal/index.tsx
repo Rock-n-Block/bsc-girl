@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import { observer } from 'mobx-react';
 
 import CloseImg from '../../assets/img/icons/close-icon.svg';
 import { PutOnSaleForm } from '../../forms';
@@ -13,38 +14,36 @@ interface IPutOnSaleModal {
   handleApproveNft: () => Promise<void>;
 }
 
-const PutOnSaleModal: React.FC<IPutOnSaleModal> = ({
-  tokenData,
-  handleSetTokenData,
-  handleApproveNft,
-}) => {
-  const { modals } = useMst();
-  const closePutOnSale = () => {
-    modals.putOnSale.close();
-  };
-  return (
-    <Modal
-      className="put-on-sale"
-      isOpen={!!modals.putOnSale.isOpen}
-      onRequestClose={closePutOnSale}
-      shouldCloseOnOverlayClick
-      ariaHideApp={false}
-    >
-      <div className="put-on-sale__header">
-        <div className="put-on-sale__header__title">Put on sale</div>
-        <button type="button" onClick={closePutOnSale} className="put-on-sale__header__close">
-          <img src={CloseImg} alt="close" />
-        </button>
-      </div>
-      <PutOnSaleForm
-        handleApproveNft={handleApproveNft}
-        totalSupply={0}
-        tokenData={tokenData}
-        handleSetTokenData={handleSetTokenData}
-        closeModal={closePutOnSale}
-      />
-    </Modal>
-  );
-};
+const PutOnSaleModal: React.FC<IPutOnSaleModal> = observer(
+  ({ tokenData, handleSetTokenData, handleApproveNft }) => {
+    const { modals } = useMst();
+    const closePutOnSale = () => {
+      modals.putOnSale.close();
+    };
+    return (
+      <Modal
+        className="put-on-sale"
+        isOpen={!!modals.putOnSale.isOpen}
+        onRequestClose={closePutOnSale}
+        shouldCloseOnOverlayClick
+        ariaHideApp={false}
+      >
+        <div className="put-on-sale__header">
+          <div className="put-on-sale__header__title">Put on sale</div>
+          <button type="button" onClick={closePutOnSale} className="put-on-sale__header__close">
+            <img src={CloseImg} alt="close" />
+          </button>
+        </div>
+        <PutOnSaleForm
+          handleApproveNft={handleApproveNft}
+          totalSupply={0}
+          tokenData={tokenData}
+          handleSetTokenData={handleSetTokenData}
+          closeModal={closePutOnSale}
+        />
+      </Modal>
+    );
+  },
+);
 
 export default PutOnSaleModal;

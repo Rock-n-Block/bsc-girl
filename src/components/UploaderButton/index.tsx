@@ -20,12 +20,15 @@ interface IUploader {
   className?: string;
   // eslint-disable-next-line react/require-default-props
   isLoading?: boolean;
+  // eslint-disable-next-line react/require-default-props
+  values?: any;
 }
 
 const UploaderButton: React.FC<IUploader> = ({
   type = 'area',
   isLoading = false,
   className,
+  values,
   handleUpload,
   setFormat,
 }) => {
@@ -102,7 +105,36 @@ const UploaderButton: React.FC<IUploader> = ({
             >
               <img src={Close} alt="close" />
             </div>
-            <p>PNG, GIF, WEBP, MP3, MP4. Max 30mb.</p>
+            {values.img ? (
+              <>
+                {values.format === 'image' ? (
+                  <img src={values.preview} alt="token preview" className="uploader__img" />
+                ) : (
+                  ''
+                )}
+                {values.format === 'video' ? (
+                  <video controls className="uploader__img">
+                    <source
+                      src={values.preview}
+                      type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
+                    />
+                    <track kind="captions" />
+                  </video>
+                ) : (
+                  ''
+                )}
+                {values.format === 'audio' ? (
+                  <audio controls className="uploader__img">
+                    <source src={values.preview} />
+                    <track kind="captions" />
+                  </audio>
+                ) : (
+                  ''
+                )}
+              </>
+            ) : (
+              <p>PNG, GIF, WEBP, MP3, MP4. Max 30mb.</p>
+            )}
           </Dragger>
         </>
       ) : (

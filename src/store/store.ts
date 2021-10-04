@@ -35,6 +35,9 @@ export const Store = RootModel.create({
     createModal: {
       isOpen: false,
     },
+    stakeModal: {
+      isOpen: false,
+    },
   },
   user: {
     address: '',

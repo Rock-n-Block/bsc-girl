@@ -159,6 +159,19 @@ const InfoModal = types
     },
   }));
 
+const StakeModal = types
+  .model({
+    isOpen: types.optional(types.boolean, false),
+  })
+  .actions((self) => ({
+    open() {
+      self.isOpen = true;
+    },
+    close() {
+      self.isOpen = false;
+    },
+  }));
+
 export const Modals = types
   .model({
     error: ErrorModal,
@@ -169,6 +182,7 @@ export const Modals = types
     multibuy: MultiBuyModal,
     checkAvailability: CheckAvailability,
     createModal: CreateModal,
+    stakeModal: StakeModal,
   })
   .actions((self) => ({
     closeAll() {
@@ -178,5 +192,6 @@ export const Modals = types
       self.multibuy.close();
       self.checkAvailability.close();
       self.createModal.close();
+      self.stakeModal.close();
     },
   }));

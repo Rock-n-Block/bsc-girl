@@ -29,6 +29,7 @@ class ConnectWalletService extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
+
     this.connectWallet = new ConnectWallet();
   }
 
@@ -100,7 +101,7 @@ class ConnectWalletService extends React.Component<any, any> {
                   window.location.reload();
                 }, 3000);
               } else {
-                rootStore.modals.error.setErr(err.message.message);
+                rootStore.modals.error.setErr(err.message.text);
               }
               reject(err);
             },
@@ -129,13 +130,11 @@ class ConnectWalletService extends React.Component<any, any> {
             .then((account: any) => {
               this.getTokenBalance(account.address, 'BSCGIRL')
                 .then((value: any) => {
-                  clog(value);
                   rootStore.user.setBalance(
                     new BigNumber(value).dividedBy(new BigNumber(10).pow(8)).toFixed(0),
                     'BSCGIRL',
                   );
                   this.getTokenBalance(account.address, 'BSCGIRLMOON').then((balance: any) => {
-                    clog(balance);
                     rootStore.user.setBalance(
                       new BigNumber(balance).dividedBy(new BigNumber(10).pow(8)).toFixed(0),
                       'BSCGIRLMOON',

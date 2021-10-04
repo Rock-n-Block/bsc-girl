@@ -94,6 +94,7 @@ const Explore: React.FC = () => {
                   id={token.id}
                   owners={token.standart === 'ERC1155' ? token.owners : [token.owners]}
                   img={token.media ? token.media : DefaultImg}
+                  format={token.format}
                   name={token.name}
                   price={token.price}
                   currency={token.currency?.symbol ?? token.currency}

@@ -15,6 +15,7 @@ type TypeTokenCardProps = {
   id: string;
   owners: any;
   img: string;
+  format: string;
   name: string;
   price: string | number;
   currency: string;
@@ -29,6 +30,7 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({
   id,
   owners,
   img,
+  format,
   name,
   price,
   currency,
@@ -98,7 +100,23 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({
       {!disableLinks ? (
         <Link to={`/token/${id}`}>
           <div className="card__img">
-            <img src={img} alt={img} />
+            {format === 'video' ? (
+              <video controls>
+                <source src={img} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+                <track kind="captions" />
+              </video>
+            ) : (
+              ''
+            )}
+            {format === 'audio' ? (
+              <audio controls>
+                <source src={img} />
+                <track kind="captions" />
+              </audio>
+            ) : (
+              ''
+            )}
+            {format !== ('audio' || 'video') ? <img src={img} alt="token preview" /> : ''}
           </div>
         </Link>
       ) : (

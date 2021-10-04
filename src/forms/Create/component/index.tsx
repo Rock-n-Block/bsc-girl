@@ -104,40 +104,17 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
       <Form name="create-form" className="create-collectible__main">
         <div className="create-form">
           <div className="create-form__title">Upload file</div>
-          {values.img ? (
-            <>
-              {values.format === 'image' ? (
-                <img src={values.img} alt="token preview" className="uploader__img" />
-              ) : (
-                ''
-              )}
-              {values.format === 'video' ? (
-                <video controls>
-                  <source src={values.img} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-                  <track kind="captions" />
-                </video>
-              ) : (
-                ''
-              )}
-              {values.format === 'audio' ? (
-                <audio controls>
-                  <source src={values.img} />
-                  <track kind="captions" />
-                </audio>
-              ) : (
-                ''
-              )}
-            </>
-          ) : (
-            <Form.Item
-              name="img"
+          <Form.Item
+            name="img"
+            validateStatus={validateField('img', touched, errors)}
+            help={!touched.img ? false : errors.img}
+          >
+            <UploaderButton
+              values={values}
               className="create-form__upload"
-              validateStatus={validateField('img', touched, errors)}
-              help={!touched.img ? false : errors.img}
-            >
-              <UploaderButton setFormat={(value: string) => setFieldValue('format', value)} />
-            </Form.Item>
-          )}
+              setFormat={(value: string) => setFieldValue('format', value)}
+            />
+          </Form.Item>
           <div className="create-form__enter-price">
             <Form.Item
               name="enter-price"
@@ -428,6 +405,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
               img={values.preview || DefaultImg}
               name={values.tokenName}
               price={values.price}
+              format={values.format}
               currency={values.currency}
               total_supply={isSingle ? 1 : +values.numberOfCopies}
               is_liked={false}

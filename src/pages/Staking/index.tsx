@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { observer } from 'mobx-react';
 
 import BlueHeart from '../../assets/img/blue-heart.svg';
 import Cloud from '../../assets/img/cloud.svg';
@@ -12,16 +13,17 @@ import Search from '../../assets/img/icons/staking-search.svg';
 import PinkHeart from '../../assets/img/pink-heart.svg';
 import Girl from '../../assets/img/staking-girl.svg';
 import PreviewBg from '../../assets/img/staking-preview-bg.png';
+import { StakingCard } from '../../components';
 
 import './Staking.scss';
 
-const StakingPage: React.FC = () => {
-  const [currentView, setCurrentView] = useState('rows');
+const StakingPage: React.FC = observer(() => {
+  const [currentView, setCurrentView] = useState('cards');
   const [isStakedOnly, setStakedOnly] = useState(false);
   const [isLive, setIsLive] = useState(true);
 
   return (
-    <div>
+    <div className="container">
       <div className="staking">
         <div className="staking__preview">
           <img src={PreviewBg} className="staking__preview__bg" alt="preview background" />
@@ -93,9 +95,18 @@ const StakingPage: React.FC = () => {
             </div>
           </div>
         </div>
+        <div className="staking__content">
+          {currentView === 'cards' ? (
+            <div className="staking__content__cards">
+              <StakingCard poolId={1} />
+            </div>
+          ) : (
+            <div className="staking__content__rows">Rows</div>
+          )}
+        </div>
       </div>
     </div>
   );
-};
+});
 
 export default StakingPage;

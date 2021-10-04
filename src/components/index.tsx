@@ -27,3 +27,5 @@ export { default as InfoModal } from './InfoModal';
 // eslint-disable-next-line import/no-cycle
 export { default as MultiBuyModal } from './MultiBuyModal';
 export { default as CheckoutModal } from './CheckoutModal';
+export { default as StakingCard } from './StakingCard';
+export { default as StakeModal } from './StakeModal';

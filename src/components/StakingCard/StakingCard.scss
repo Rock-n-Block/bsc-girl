@@ -1,0 +1,226 @@
+@import "src/styles/index";
+
+.staking-card {
+  box-sizing: border-box;
+  width: 355px;
+  height: 565px;
+  background: #f9f9f9;
+  border-radius: 40px;
+  font-size: 18px;
+  line-height: 27px;
+
+  &__header {
+    box-sizing: border-box;
+    padding: 30px 15px 30px 32px;
+    height: 124px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: #f9e7e7;
+    border-top-right-radius: 40px;
+    border-top-left-radius: 40px;
+
+    &__info {
+      .title {
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 33px;
+        color: $soft-red;
+      }
+
+      .currency {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        color: #5e8dec;
+      }
+    }
+
+    img {
+      width: 62px;
+      height: 62px;
+    }
+  }
+
+  &__content {
+    margin: 26px 30px;
+    padding-bottom: 26px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid rgba(184, 184, 184, 0.3);
+
+    .apy {
+      padding-bottom: 26px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(184, 184, 184, 0.3);
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 27px;
+      color: $soft-red;
+
+      &__value {
+        display: flex;
+        flex-direction: row;
+
+        img {
+          margin-left: 9px;
+        }
+      }
+    }
+
+    .profit {
+      padding-top: 26px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      &__title {
+        font-weight: 500;
+        color: $soft-red;
+      }
+
+      &__value {
+        font-weight: 500;
+      }
+    }
+
+    .withdraw-fee {
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      &__info {
+        width: 250px;
+        color: #5e8dec;
+      }
+
+      &__date {
+        margin-left: 20px;
+        font-weight: 500;
+        color: $soft-red;
+      }
+    }
+
+    .unlock-wallet {
+      margin-top: 14px;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 21px;
+
+      button {
+        margin-top: 10px;
+        width: 139px;
+        height: 66px;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 26px;
+        border-radius: 40px;
+      }
+    }
+
+    .staked {
+      &__title {
+        font-weight: 500;
+        color: $soft-red;
+      }
+
+      &__amount {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        &__value {
+          color: #5e8dec;
+
+          .usd {
+            font-size: 14px;
+            line-height: 17px;
+            color: #3c4252;
+            opacity: 0.6;
+          }
+        }
+
+        &__edit {
+          display: flex;
+          flex-direction: row;
+
+          &-btn {
+            margin-left: 9.5px;
+            width: 45px;
+            height: 38px;
+            background: #f1ebfd;
+            border: none;
+            border-radius: 19px;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 26px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+  .unlocked {
+    justify-content: space-between;
+  }
+
+  .locked {
+    justify-content: center;
+  }
+
+  &__footer {
+    margin: 26px 30px 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    button {
+      width: 112px;
+      height: 38px;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 26px;
+
+      .auto {
+        box-sizing: border-box;
+        padding: 9px 17px 9px 8px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        border-radius: 28px;
+
+        &__refresh {
+          width: 20px;
+          height: 20px;
+        }
+
+        &__arrow {
+          width: 8px;
+        }
+      }
+
+      .details {
+        box-sizing: border-box;
+        padding: 9px 18px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        border-radius: 28px;
+      }
+    }
+  }
+}

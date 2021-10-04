@@ -21,7 +21,7 @@ interface IMultiBuyModal {
 }
 
 const MultiBuyModal: React.FC<IMultiBuyModal> = observer(({ sellers, token, collection }) => {
-  const { modals } = useMst();
+  const { modals, user } = useMst();
 
   const handleClose = (): void => {
     modals.multibuy.close();
@@ -51,32 +51,38 @@ const MultiBuyModal: React.FC<IMultiBuyModal> = observer(({ sellers, token, coll
         <div className="multibuy__content__title">Owners</div>
         <div className="multibuy__content__box">
           {sellers && sellers.length
-            ? sellers.map((seller: ISeller) => (
-                <div className="seller">
-                  <div className="seller__info">
-                    <img className="seller__info__avatar" src={seller.avatar} alt="seller avatar" />
-                    <div className="seller__info__content">
-                      <span className="seller__info__name">{seller.name}</span>
-                      <span className="seller__info__quantity">
-                        {seller.quantity} {seller.quantity > 1 ? 'Tokens' : 'Token'}
-                      </span>
+            ? sellers
+                .filter((seller: ISeller) => seller.id !== user.id)
+                .map((seller) => (
+                  <div className="seller">
+                    <div className="seller__info">
+                      <img
+                        className="seller__info__avatar"
+                        src={seller.avatar}
+                        alt="seller avatar"
+                      />
+                      <div className="seller__info__content">
+                        <span className="seller__info__name">{seller.name}</span>
+                        <span className="seller__info__quantity">
+                          {seller.quantity} {seller.quantity > 1 ? 'Tokens' : 'Token'}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="seller__item">
+                      <div className="seller__item__price">
+                        <div className="seller__item__price__value">{seller.price}</div>
+                        <div className="seller__item__price__currency">{token.currency}</div>
+                      </div>
+                      <button
+                        className="gradient-button"
+                        type="button"
+                        onClick={() => handleBuy(seller.id, seller.quantity)}
+                      >
+                        Buy
+                      </button>
                     </div>
                   </div>
-                  <div className="seller__item">
-                    <div className="seller__item__price">
-                      <div className="seller__item__price__value">{seller.price}</div>
-                      <div className="seller__item__price__currency">{token.currency}</div>
-                    </div>
-                    <button
-                      className="gradient-button"
-                      type="button"
-                      onClick={() => handleBuy(seller.id, seller.quantity)}
-                    >
-                      Buy
-                    </button>
-                  </div>
-                </div>
-              ))
+                ))
             : ''}
         </div>
       </div>

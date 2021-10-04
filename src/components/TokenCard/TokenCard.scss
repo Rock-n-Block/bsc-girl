@@ -109,6 +109,17 @@
 
       border-radius: 30px;
     }
+
+    video {
+      max-width: 100%;
+      border-radius: 30px;
+      overflow-x: hidden;
+    }
+
+    audio {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
   }
 
   &__title {

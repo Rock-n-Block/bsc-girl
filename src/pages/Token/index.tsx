@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
+import { observer } from 'mobx-react';
 
 import LikeActive from '../../assets/img/icons/like-active.svg';
 import Like from '../../assets/img/icons/like.svg';
@@ -64,7 +65,7 @@ export interface IOwner extends IUser {
   price?: number;
 }
 
-const TokenPage: React.FC = () => {
+const TokenPage: React.FC = observer(() => {
   const history = useHistory();
   const connector = useWalletConnectService();
   const { modals, user } = useMst();
@@ -105,6 +106,7 @@ const TokenPage: React.FC = () => {
         },
       );
       setLoading(false);
+      modals.closeAll();
       modals.info.setMsg('Congrats you have buy token', 'success');
     } catch (err: any) {
       modals.closeAll();
@@ -115,6 +117,7 @@ const TokenPage: React.FC = () => {
 
   const handleBuy = async (quantity = 1) => {
     if (+user.balance[tokenData.currency.toLowerCase()] < +tokenData.price) {
+      modals.closeAll();
       modals.info.setMsg(`You don't have enough ${tokenData.currency}`, 'error');
       return;
     }
@@ -127,7 +130,6 @@ const TokenPage: React.FC = () => {
         contract[tokenData.currency]?.chain[type]?.address ?? '',
         tokenData.owners[0].id.toString(),
       );
-      clogData('tokenAddress:', contract[tokenData.currency]?.chain[type]?.address);
 
       await createBuyTransaction(buyTokenData);
       setLoading(false);
@@ -272,8 +274,9 @@ const TokenPage: React.FC = () => {
       .catch((err: any) => {
         clogData('get token', err);
         history.push('/');
+        modals.error.setErr('Something went wrong');
       });
-  }, [history, tokenId, user.address]);
+  }, [history, modals.error, tokenId]);
 
   useEffect(() => {
     if (Object.keys(tokenData).length && user.id) {
@@ -283,14 +286,14 @@ const TokenPage: React.FC = () => {
     } else {
       setMyToken(false);
     }
-  }, [tokenData, user]);
+  }, [tokenData, user.id]);
 
   useEffect(() => {
     if (user.address && tokenData.currency) {
       connector.connectorService
         .checkTokenAllowance(
           tokenData.currency,
-          tokenData.currency !== 'BNB' ? contract[tokenData.currency].params?.decimals || 18 : 18,
+          tokenData.currency !== 'BNB' ? contract[tokenData.currency].params?.decimals || 8 : 18,
           contract.EXCHANGE.chain[type].address,
         )
         .then((res: boolean | ((prevState: boolean) => boolean)) => {
@@ -308,6 +311,9 @@ const TokenPage: React.FC = () => {
       setIsLiked(tokenData.is_liked);
     }
   }, [tokenData, user]);
+
+  clogData('my token?', isMyToken);
+  clogData('tokenData:', tokenData);
 
   return (
     <div className="container">
@@ -371,7 +377,7 @@ const TokenPage: React.FC = () => {
               <button
                 type="button"
                 className="token__content__card__btn gradient-button"
-                onClick={() => handlePutOnSale()}
+                onClick={handlePutOnSale}
               >
                 {isLoading ? 'In progress...' : 'Put on sale'}
               </button>
@@ -663,6 +669,6 @@ const TokenPage: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default TokenPage;
