@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { observer } from 'mobx-react';
 
-import LogoDS from '../../assets/img/icons/logo-ds.svg';
-import LogoFB from '../../assets/img/icons/logo-fb.svg';
-import LogoInst from '../../assets/img/icons/logo-inst.svg';
 import LogoTW from '../../assets/img/icons/logo-tw.svg';
 import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
 import Logo from '../../assets/img/icons/logo.svg';
@@ -11,7 +9,7 @@ import { useMst } from '../../store/store';
 
 import './Footer.scss';
 
-const Footer: React.FC = () => {
+const Footer: React.FC = observer(() => {
   const history = useHistory();
   const { user } = useMst();
 
@@ -43,23 +41,15 @@ const Footer: React.FC = () => {
                 <div className="title">Community</div>
                 <div className="links">
                   <Link to="/create">Create</Link>
+                  <a href="https://bridge.bscgirl.com/">Bridge</a>
                 </div>
               </div>
             </div>
             <div className="footer__nav__contacts">
-              <a href="https://www.facebook.com/">
-                <img src={LogoFB} alt="logo Facebook" />
-              </a>
-              <a href="https://twitter.com/">
+              <a href="https://twitter.com/BSC_Girl">
                 <img src={LogoTW} alt="logo Twitter" />
               </a>
-              <a href="https://www.instagram.com/">
-                <img src={LogoInst} alt="logo Instagram" />
-              </a>
-              <a href="https://discord.com/">
-                <img src={LogoDS} alt="logo Discord" />
-              </a>
-              <a href="https://www.youtube.com/">
+              <a href="https://youtube.com/user/Belew101">
                 <img src={LogoYoutube} alt="logo Youtube" />
               </a>
             </div>
@@ -70,6 +60,6 @@ const Footer: React.FC = () => {
       <div className="gradient-footer" />
     </footer>
   );
-};
+});
 
 export default Footer;

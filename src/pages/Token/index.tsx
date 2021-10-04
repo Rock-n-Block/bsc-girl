@@ -335,7 +335,7 @@ const TokenPage: React.FC = observer(() => {
           ) : (
             ''
           )}
-          {tokenData.format !== ('video' || 'audio') ? (
+          {tokenData.format === ('gif' || 'image' || 'img') ? (
             <img src={tokenData.media} alt="token" />
           ) : (
             ''
