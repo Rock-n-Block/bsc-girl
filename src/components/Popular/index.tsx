@@ -1,19 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react';
 
 import ArrowDown from '../../assets/img/icons/arrow-down.svg';
 import Verified from '../../assets/img/icons/verification.svg';
+import { activityApi } from '../../services/api';
+import { useMst } from '../../store/store';
+import { clogData } from '../../utils/logger';
+import { NoItemsFound } from '../index';
 
 import './Popular.scss';
 
-type TypePopularsProps = {
-  items: Array<{ img: any; name: string; amount: string }>;
+type TypeTopUser = {
+  id: number;
+  user: {
+    avatar: string;
+    id: string;
+    display_name: string;
+    is_verificated: boolean;
+  };
+  price: number;
 };
 
-const Popular: React.FC<TypePopularsProps> = ({ items }) => {
+const Popular: React.FC = observer(() => {
   const [isFirstOpen, setFirstOpen] = useState(false);
   const [isSecondOpen, setSecondOpen] = useState(false);
   const [topType, setTopType] = useState('Sellers');
-  const [topTime, setTopTime] = useState('1 day');
+  const [topTime, setTopTime] = useState('day');
+  const [users, setUsers] = useState<TypeTopUser[]>([]);
+  const { user } = useMst();
+
+  document.addEventListener('mousedown', (event) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (event.target?.className !== 'open__item') {
+      setFirstOpen(false);
+      setSecondOpen(false);
+    }
+  });
 
   const setType = (type: string): void => {
     setTopType(type);
@@ -24,6 +47,16 @@ const Popular: React.FC<TypePopularsProps> = ({ items }) => {
     setTopTime(time);
     setSecondOpen(false);
   };
+
+  useEffect(() => {
+    const type = topType === 'Sellers' ? 'seller' : 'buyer';
+    activityApi.getTopUsers(type, topTime).then((data: any) => {
+      clogData('topusers data:', data);
+      const items: any[] = [];
+      data.data.map((item: any) => items.unshift(item));
+      setUsers(items);
+    });
+  }, [topTime, topType, user.address]);
 
   return (
     <div className="container">
@@ -53,10 +86,10 @@ const Popular: React.FC<TypePopularsProps> = ({ items }) => {
                 className="open__item"
                 role="button"
                 tabIndex={0}
-                onClick={() => setType('Other')}
+                onClick={() => setType('Buyers')}
                 onKeyPress={() => {}}
               >
-                Other
+                Buyers
               </div>
             </div>
           </div>
@@ -75,50 +108,70 @@ const Popular: React.FC<TypePopularsProps> = ({ items }) => {
                 className="open__item"
                 role="button"
                 tabIndex={0}
-                onClick={() => setTime('1 day')}
+                onClick={() => setTime('day')}
                 onKeyPress={() => {}}
               >
-                1 day
+                day
               </div>
               <div
                 className="open__item"
                 role="button"
                 tabIndex={0}
-                onClick={() => setTime('1 week')}
+                onClick={() => setTime('week')}
                 onKeyPress={() => {}}
               >
-                1 week
+                week
               </div>
               <div
                 className="open__item"
                 role="button"
                 tabIndex={0}
-                onClick={() => setTime('1 month')}
+                onClick={() => setTime('month')}
                 onKeyPress={() => {}}
               >
-                1 month
+                month
               </div>
             </div>
           </div>
         </div>
         <div className="popular__items">
-          {items.map((item, index) => (
-            <div key={`${item.name}-${index + 1}`} className="item">
-              <div className="item__number">{index + 1}.</div>
-              <div className="item__img">
-                <img className="item__img__avatar" src={item.img} alt={`avatar ${item.name}`} />
-                <img className="item__img__verified" src={Verified} alt="verified icon" />
+          {users.length ? (
+            users.map((item, index) => (
+              <div key={item.id} className="item">
+                <div className="item__number">{index + 1}.</div>
+                <div className="item__img">
+                  <img
+                    className="item__img__avatar"
+                    src={item.user.avatar}
+                    alt={`avatar ${
+                      item.user.display_name.length > 10
+                        ? item.user.display_name.substr(0, 9)
+                        : item.user.display_name
+                    }`}
+                  />
+                  {item.user.is_verificated ? (
+                    <img className="item__img__verified" src={Verified} alt="verified icon" />
+                  ) : (
+                    ''
+                  )}
+                </div>
+                <div className="item__info">
+                  <div className="item__info__name">
+                    {item.user.display_name.length > 15
+                      ? `${item.user.display_name.substr(0, 14)}...`
+                      : item.user.display_name}
+                  </div>
+                  <div className="item__info__amount">${item.price}</div>
+                </div>
               </div>
-              <div className="item__info">
-                <div className="item__info__name">{item.name}</div>
-                <div className="item__info__amount">{item.amount}</div>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <NoItemsFound />
+          )}
         </div>
       </div>
     </div>
   );
-};
+});
 
 export default Popular;

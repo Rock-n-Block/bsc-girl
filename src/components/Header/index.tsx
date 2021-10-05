@@ -166,8 +166,8 @@ const Header: React.FC = observer(() => {
               </div>
             )}
           </div>
-          <Link to="/" target="_top" onClick={() => setIsOpen(false)}>
-            <img src={LogoBSC} alt="bsc-girl logo" className="logo" />
+          <Link to="/" target="_top" className="logo" onClick={() => setIsOpen(false)}>
+            <img src={LogoBSC} alt="bsc-girl logo" />
           </Link>
           {!isOpen ? (
             <Link

@@ -72,4 +72,5 @@ export interface IUserInfo {
   amount: number;
   rewardGot: number;
   start: number;
+  decimals: number;
 }

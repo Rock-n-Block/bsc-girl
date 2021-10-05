@@ -13,16 +13,16 @@ import { contracts } from '../../config';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
 import { IPoolInfo, IUserInfo } from '../../types';
-import { clogData } from '../../utils/logger';
+import { clog, clogData } from '../../utils/logger';
 
 import './StakingCard.scss';
 
 const tokenInfo: { [key: string]: { name: string; logo: string } } = {
-  '0xfa7b244be4c24c091d3c949c61722c34c75e53ab': {
+  '0x2442317d7d0b526a5238b5707fde9e593cd9e3df': {
     name: 'BSCGIRL',
     logo: BSCGIRL,
   },
-  '0x9014089e1ff54fa236485d349e5ddbe91b7063b2': {
+  '0x164fa2edc4dd0e486b426d716ca38361a3e78735': {
     name: 'BSCGIRLMOON',
     logo: BSCGIRLMOON,
   },
@@ -30,7 +30,7 @@ const tokenInfo: { [key: string]: { name: string; logo: string } } = {
     name: 'BSCCZ',
     logo: BSCCZ,
   },
-  '0x8301F2213c0eeD49a7E28Ae4c3e91722919B8B47': {
+  '0x8301f2213c0eed49a7e28ae4c3e91722919b8b47': {
     name: 'BUSD',
     logo: BUSD,
   },
@@ -38,15 +38,15 @@ const tokenInfo: { [key: string]: { name: string; logo: string } } = {
     name: 'CAKE',
     logo: CAKE,
   },
-  '0xa5b46fd282725765f7317703629dce4d4807b8a7': {
+  '0xab7f509424133b9fe8f07248dd7e084934cee390': {
     name: 'BSCGIRL_BSCGIRLMOON_LP',
     logo: BSCGIRL,
   },
-  '0x746c0a2197e70f3632b3f1ffdbde33a41e3a6200': {
+  '0x53fc2fbd371c15bc07c2c090bbedd1e6e65d2c35': {
     name: 'BSCGIRL_BSCCZ_LP',
     logo: BSCGIRL,
   },
-  '0x55bf412f813a71cc880521181b49d09a0ca384a9': {
+  '0x28315aff0850d46e2c21e33de8688233e555ad5f': {
     name: 'BSCGIRLMOON_BSCCZ_LP',
     logo: BSCGIRLMOON,
   },
@@ -68,12 +68,49 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolId }) => {
   const { contract } = contracts;
   const connector = useWalletConnectService();
 
+  const endTime = infoForUser.start * 1000 + 259200000 - new Date().getTime();
+  const days = endTime / 86400000;
+  const hours = (endTime - days * 86400000) / 3600000;
+  const minutes = (endTime - days * 86400000 - hours * 3600000) / 60000;
+
   const handleUnlock = () => {
     modals.stakeModal.setPool(
+      'Stake in pool',
       tokenInfo[poolInfo.stakingToken].name,
       tokenInfo[poolInfo.stakingToken].logo,
       poolId,
     );
+  };
+
+  const handleIncrease = () => {
+    modals.stakeModal.setPool(
+      'Increase stake',
+      tokenInfo[poolInfo.stakingToken].name,
+      tokenInfo[poolInfo.stakingToken].logo,
+      poolId,
+    );
+  };
+
+  const handleRemovePart = () => {
+    modals.stakeModal.setPool(
+      'Remove part of stake',
+      tokenInfo[poolInfo.stakingToken].name,
+      tokenInfo[poolInfo.stakingToken].logo,
+      poolId,
+      infoForUser.amount,
+    );
+  };
+
+  const handleWithdraw = () => {
+    connector.connectorService
+      .getContract('Staking')
+      .methods.withdrawReward(modals.stakeModal.poolId, user.address)
+      .send({
+        from: user.address,
+      })
+      .then(() => {
+        clog('successful withdraw');
+      });
   };
 
   useEffect(() => {
@@ -111,6 +148,7 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolId }) => {
                 amount: processData[0],
                 rewardGot: processData[1],
                 start: processData[2],
+                decimals: contract[tokenInfo[poolInfo.rewardsToken].name]?.params?.decimals ?? 18,
               });
             });
         } else
@@ -118,9 +156,10 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolId }) => {
             amount: 0,
             rewardGot: 0,
             start: 0,
+            decimals: 18,
           });
       });
-  }, [connector.connectorService, poolId, user.address]);
+  }, [connector.connectorService, contract, poolId, poolInfo.rewardsToken, user.address]);
 
   return (
     <div className="staking-card">
@@ -143,18 +182,27 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolId }) => {
           <div className="profit__title">
             Recent {tokenInfo[poolInfo.rewardsToken]?.name} profit:
           </div>
-          <div className="profit__value">{isUnlocked ? infoForUser.rewardGot : ''}</div>
+          <div className="profit__value">
+            {isUnlocked
+              ? new BigNumber(infoForUser.rewardGot)
+                  .dividedBy(new BigNumber(10).pow(infoForUser.decimals))
+                  .toFixed(3)
+              : ''}
+            {+infoForUser.rewardGot ? (
+              <button type="button" className="gradient-button" onClick={() => handleWithdraw()}>
+                Collect
+              </button>
+            ) : (
+              ''
+            )}
+          </div>
         </div>
         <div className="withdraw-fee">
           <div className="withdraw-fee__info">
             {poolInfo.fee}% unstaking fee if withdrawn within 72h
           </div>
           <div className="withdraw-fee__date">
-            {isUnlocked
-              ? `${new Date(Number(infoForUser.start)).getDay()}d:${new Date(
-                  Number(infoForUser.start),
-                ).getHours()}h:${new Date(Number(infoForUser.start)).getMinutes()}m`
-              : ''}
+            {isUnlocked ? `${days.toFixed(0)}d:${hours.toFixed(0)}h:${minutes.toFixed(0)}m` : ''}
           </div>
         </div>
         {isUnlocked ? (
@@ -164,17 +212,23 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolId }) => {
             </div>
             <div className="staked__amount">
               <div className="staked__amount__value">
-                {
-                  new BigNumber(infoForUser.amount)
+                {new BigNumber(infoForUser.amount)
                   .dividedBy(
-                    new BigNumber(10).pow(contract[tokenInfo[poolInfo.stakingToken].name]?.params?.decimals ?? 18)).toFixed(2)
-                }
+                    new BigNumber(10).pow(
+                      contract[tokenInfo[poolInfo.stakingToken].name]?.params?.decimals ?? 18
+                    )
+                  )
+                  .toFixed(2)}
               </div>
               <div className="staked__amount__edit">
-                <button type="button" className="staked__amount__edit-btn">
+                <button
+                  type="button"
+                  className="staked__amount__edit-btn"
+                  onClick={handleRemovePart}
+                >
                   -
                 </button>
-                <button type="button" className="staked__amount__edit-btn">
+                <button type="button" className="staked__amount__edit-btn" onClick={handleIncrease}>
                   +
                 </button>
               </div>

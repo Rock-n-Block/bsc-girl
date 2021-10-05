@@ -269,13 +269,26 @@
 
   .logo {
     width: 120px;
+    height: 27px;
+
+    img {
+      width: 100%;
+    }
   }
 
   .nav-btn {
     position: absolute;
     z-index: 110;
-    top: 24px;
+    top: 22px;
     left: 15px;
+
+    &__burger {
+      height: 14px;
+
+      img {
+        height: 100%;
+      }
+    }
 
     &__create {
       position: absolute;

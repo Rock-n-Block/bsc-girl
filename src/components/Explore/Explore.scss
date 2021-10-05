@@ -62,7 +62,7 @@
       }
 
       @include b(990) {
-        top: 20px;
+        top: 100px;
         z-index: 100;
       }
 
@@ -108,7 +108,7 @@
       }
 
       @include b(990) {
-        top: 50px;
+        top: 120px;
       }
 
       &__item {

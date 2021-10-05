@@ -33,6 +33,7 @@ const Explore: React.FC = () => {
         clogData('get tags error', err);
       });
   }, []);
+
   const loadExplore = useCallback(
     async (page = 1) => {
       storeApi
@@ -61,6 +62,7 @@ const Explore: React.FC = () => {
     },
     [activeFilter, activeSort.key],
   );
+
   const handleFilterChange = (value: string[]): void => {
     setActiveFilter(value[0]);
   };

@@ -3,7 +3,7 @@
 .staking-card {
   box-sizing: border-box;
   width: 355px;
-  height: 480px;
+  height: 520px;
   background: #f9f9f9;
   border-radius: 40px;
   font-size: 18px;
@@ -82,7 +82,20 @@
       }
 
       &__value {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
         font-weight: 500;
+
+        button {
+          margin-bottom: 10px;
+          width: 106px;
+          height: 42px;
+
+          font-weight: 700;
+          font-size: 18px;
+        }
       }
     }
 

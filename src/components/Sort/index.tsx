@@ -17,6 +17,14 @@ const Sort: React.FC<ISort> = ({ items, onChange }) => {
   const [isOpen, setOpen] = useState(false);
   const [activeSort, setActiveSort] = useState<ISortItem>(items[0]);
 
+  document.addEventListener('mousedown', (event) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (event.target?.className !== 'open__item undefined') {
+      setOpen(false);
+    }
+  });
+
   const handleChangeSort = (sort: ISortItem): void => {
     if (sort !== activeSort) {
       onChange(sort);
