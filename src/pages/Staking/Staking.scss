@@ -3,6 +3,11 @@
 .staking {
   margin: 70px 30px 50px;
   width: 100%;
+  overflow-x: hidden;
+
+  @include b(900) {
+    margin: 70px 0 0;
+  }
 
   &__preview {
     position: relative;
@@ -28,11 +33,21 @@
       top: 27px;
       left: 42px;
 
+      @include b(565) {
+        top: 10px;
+        left: 20px;
+      }
+
       &__title {
         font-weight: 700;
         font-size: 60px;
         line-height: 90px;
         color: #fff;
+
+        @include b(560) {
+          font-size: 30px;
+          line-height: 45px;
+        }
       }
 
       &__text {
@@ -41,6 +56,13 @@
         font-size: 16px;
         line-height: 24px;
         color: #fff;
+
+        @include b(560) {
+          width: 100px;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 24px;
+        }
       }
     }
 
@@ -54,7 +76,7 @@
       right: -15px;
       z-index: 2;
 
-      @include b(550) {
+      @include b(610) {
         display: none;
       }
     }
@@ -63,7 +85,7 @@
       right: 285px;
       bottom: -10px;
 
-      @include b(610) {
+      @include b(625) {
         display: none;
       }
     }
@@ -73,7 +95,7 @@
       bottom: 0;
       z-index: 1;
 
-      @include b(550) {
+      @include b(610) {
         right: 0;
       }
     }
@@ -82,7 +104,7 @@
       right: 186px;
       top: -21px;
 
-      @include b(610) {
+      @include b(670) {
         display: none;
       }
     }
@@ -104,14 +126,21 @@
     justify-content: space-between;
     align-items: center;
 
-    @include b(810) {
+    @include b(850) {
       flex-direction: column;
+      gap: 15px;
     }
 
     &__switchers {
       display: flex;
       flex-direction: row;
       align-items: center;
+      flex-wrap: wrap;
+
+      @include b(400) {
+        gap: 15px;
+        justify-content: center;
+      }
 
       &__rows {
         margin-right: 13px;
@@ -126,8 +155,8 @@
       &__staked-only {
         position: relative;
         margin-right: 9px;
-        width: 38px;
-        height: 21px;
+        min-width: 38px;
+        min-height: 21px;
         background: #fff;
         border: 0.8px solid $soft-red;
         box-sizing: border-box;
@@ -199,11 +228,21 @@
     &__items {
       display: flex;
       flex-direction: row;
+
+      @include b(400) {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
     }
   }
 
   &__content {
     overflow-x: hidden;
+
+    @include b(850) {
+      overflow-x: auto;
+    }
 
     &__cards {
       margin-top: 34px;
@@ -211,6 +250,16 @@
       grid-template-columns: repeat(3, 1fr);
       grid-column-gap: 19px;
       grid-row-gap: 26px;
+
+      @include b(1440) {
+        grid-template-columns: repeat(2, 1fr);
+        justify-items: center;
+      }
+
+      @include b(850) {
+        display: inline-flex;
+        overflow-x: scroll;
+      }
     }
   }
 }

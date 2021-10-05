@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import BigNumber from 'bignumber.js/bignumber';
 import { observer } from 'mobx-react';
 
 import BSCCZ from '../../assets/img/bsccz-logo.png';
@@ -6,10 +7,9 @@ import BSCGIRL from '../../assets/img/bscgirl-logo.png';
 import BSCGIRLMOON from '../../assets/img/bscgirlmoon-logo.png';
 import BUSD from '../../assets/img/busd-logo.png';
 import CAKE from '../../assets/img/cake-logo.png';
-import ArrowDownGradient from '../../assets/img/icons/arrow-down-gradient.svg';
 import Calculator from '../../assets/img/icons/calculator-pink.svg';
 import BNB from '../../assets/img/icons/logo-bnb.svg';
-import Refresh from '../../assets/img/icons/refresh-icon.svg';
+import { contracts } from '../../config';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
 import { IPoolInfo, IUserInfo } from '../../types';
@@ -30,13 +30,25 @@ const tokenInfo: { [key: string]: { name: string; logo: string } } = {
     name: 'BSCCZ',
     logo: BSCCZ,
   },
-  '0x00cdc2309f483fdba11cb63f89f5bccc0d365b3d': {
+  '0x8301F2213c0eeD49a7E28Ae4c3e91722919B8B47': {
     name: 'BUSD',
     logo: BUSD,
   },
   '0x4ecb0b3af3b14c5db6053095bb5a9cc0d3eb702b': {
     name: 'CAKE',
     logo: CAKE,
+  },
+  '0xa5b46fd282725765f7317703629dce4d4807b8a7': {
+    name: 'BSCGIRL_BSCGIRLMOON_LP',
+    logo: BSCGIRL,
+  },
+  '0x746c0a2197e70f3632b3f1ffdbde33a41e3a6200': {
+    name: 'BSCGIRL_BSCCZ_LP',
+    logo: BSCGIRL,
+  },
+  '0x55bf412f813a71cc880521181b49d09a0ca384a9': {
+    name: 'BSCGIRLMOON_BSCCZ_LP',
+    logo: BSCGIRLMOON,
   },
   '0x0000000000000000000000000000000000000000': {
     name: 'BNB',
@@ -52,15 +64,17 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolId }) => {
   const [isUnlocked, setUnlocked] = useState(false);
   const [poolInfo, setPoolInfo] = useState({} as IPoolInfo);
   const [infoForUser, setInfoForUser] = useState({} as IUserInfo);
-  const { user } = useMst();
+  const { user, modals } = useMst();
+  const { contract } = contracts;
   const connector = useWalletConnectService();
 
-  clogData('poolInfo:', poolInfo);
-  clogData('infoForUser:', infoForUser);
-
-  // const getPoolInfo = useCallback(() => {
-  //
-  // }, [connector.connectorService, poolId, user.address]);
+  const handleUnlock = () => {
+    modals.stakeModal.setPool(
+      tokenInfo[poolInfo.stakingToken].name,
+      tokenInfo[poolInfo.stakingToken].logo,
+      poolId,
+    );
+  };
 
   useEffect(() => {
     connector.connectorService
@@ -86,19 +100,20 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolId }) => {
           stakeholders: data.stakeholders_,
         });
         // eslint-disable-next-line no-underscore-dangle
-        if (data.stakeholders_.find((holder: string) => holder === user.address))
+        if (data.stakeholders_.find((holder: string) => holder.toLowerCase() === user.address)) {
+          setUnlocked(true);
           connector.connectorService
             .getContract('Staking')
             .methods.getProcessInfoForUser(user.address, poolId)
-            .then((info: any) => {
-              clogData('info:', info);
+            .call()
+            .then((processData: any) => {
               setInfoForUser({
-                amount: info.amount,
-                rewardGot: info.rewardGot,
-                start: info.start,
+                amount: processData[0],
+                rewardGot: processData[1],
+                start: processData[2],
               });
             });
-        else
+        } else
           setInfoForUser({
             amount: 0,
             rewardGot: 0,
@@ -135,7 +150,11 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolId }) => {
             {poolInfo.fee}% unstaking fee if withdrawn within 72h
           </div>
           <div className="withdraw-fee__date">
-            {isUnlocked ? new Date(infoForUser.start)?.toDateString() : ''}
+            {isUnlocked
+              ? `${new Date(Number(infoForUser.start)).getDay()}d:${new Date(
+                  Number(infoForUser.start),
+                ).getHours()}h:${new Date(Number(infoForUser.start)).getMinutes()}m`
+              : ''}
           </div>
         </div>
         {isUnlocked ? (
@@ -145,8 +164,11 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolId }) => {
             </div>
             <div className="staked__amount">
               <div className="staked__amount__value">
-                {infoForUser?.amount?.toFixed(3)}
-                <div className="usd">~{1} USD</div>
+                {
+                  new BigNumber(infoForUser.amount)
+                  .dividedBy(
+                    new BigNumber(10).pow(contract[tokenInfo[poolInfo.stakingToken].name]?.params?.decimals ?? 18)).toFixed(2)
+                }
               </div>
               <div className="staked__amount__edit">
                 <button type="button" className="staked__amount__edit-btn">
@@ -161,30 +183,11 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolId }) => {
         ) : (
           <div className="unlock-wallet">
             Start farming
-            <button type="button" onClick={() => setUnlocked(true)} className="gradient-button">
+            <button type="button" onClick={handleUnlock} className="gradient-button">
               Unlock wallet
             </button>
           </div>
         )}
-      </div>
-      <div className={`staking-card__footer ${isUnlocked ? 'unlocked' : 'locked'}`}>
-        {isUnlocked ? (
-          <button type="button" className="gradient-button" onClick={() => {}}>
-            <div className="auto">
-              <img className="auto__refresh" src={Refresh} alt="refresh icon" />
-              <div className="gradient-text">Auto</div>
-              <img className="auto__arrow" src={ArrowDownGradient} alt="arrow down gradient" />
-            </div>
-          </button>
-        ) : (
-          ''
-        )}
-        <button type="button" className="gradient-button">
-          <span className="details">
-            <div className="gradient-text">Details</div>
-            <img src={ArrowDownGradient} alt="arrow down gradient" />
-          </span>
-        </button>
       </div>
     </div>
   );

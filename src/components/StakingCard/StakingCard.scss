@@ -3,7 +3,7 @@
 .staking-card {
   box-sizing: border-box;
   width: 355px;
-  height: 565px;
+  height: 480px;
   background: #f9f9f9;
   border-radius: 40px;
   font-size: 18px;
@@ -47,7 +47,6 @@
     padding-bottom: 26px;
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid rgba(184, 184, 184, 0.3);
 
     .apy {
       padding-bottom: 26px;

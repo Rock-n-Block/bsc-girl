@@ -13,7 +13,7 @@ import Search from '../../assets/img/icons/staking-search.svg';
 import PinkHeart from '../../assets/img/pink-heart.svg';
 import Girl from '../../assets/img/staking-girl.svg';
 import PreviewBg from '../../assets/img/staking-preview-bg.png';
-import { StakingCard } from '../../components';
+import { StakeModal, StakingCard } from '../../components';
 
 import './Staking.scss';
 
@@ -95,16 +95,28 @@ const StakingPage: React.FC = observer(() => {
             </div>
           </div>
         </div>
-        <div className="staking__content">
+        <div className="staking__content" id="content">
           {currentView === 'cards' ? (
             <div className="staking__content__cards">
+              <StakingCard poolId={0} />
               <StakingCard poolId={1} />
+              <StakingCard poolId={2} />
+              <StakingCard poolId={3} />
+              <StakingCard poolId={4} />
+              <StakingCard poolId={5} />
+              <StakingCard poolId={6} />
+              <StakingCard poolId={7} />
+              <StakingCard poolId={8} />
+              <StakingCard poolId={9} />
+              <StakingCard poolId={10} />
+              <StakingCard poolId={11} />
             </div>
           ) : (
             <div className="staking__content__rows">Rows</div>
           )}
         </div>
       </div>
+      <StakeModal />
     </div>
   );
 });

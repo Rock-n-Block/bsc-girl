@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
 
+import LogoMedium from '../../assets/img/icons/logo-medium.svg';
+import LogoTG from '../../assets/img/icons/logo-tg.svg';
 import LogoTW from '../../assets/img/icons/logo-tw.svg';
 import LogoYoutube from '../../assets/img/icons/logo-youtube.svg';
 import Logo from '../../assets/img/icons/logo.svg';
@@ -41,16 +43,24 @@ const Footer: React.FC = observer(() => {
                 <div className="title">Community</div>
                 <div className="links">
                   <Link to="/create">Create</Link>
-                  <a href="https://bridge.bscgirl.com/">Bridge</a>
+                  <a href="https://bridge.bscgirl.com/" target="_blank" rel="noreferrer">
+                    Bridge
+                  </a>
                 </div>
               </div>
             </div>
             <div className="footer__nav__contacts">
-              <a href="https://twitter.com/BSC_Girl">
+              <a href="https://twitter.com/BSC_Girl" target="_blank" rel="noreferrer">
                 <img src={LogoTW} alt="logo Twitter" />
               </a>
-              <a href="https://youtube.com/user/Belew101">
+              <a href="https://youtube.com/user/Belew101" target="_blank" rel="noreferrer">
                 <img src={LogoYoutube} alt="logo Youtube" />
+              </a>
+              <a href="https://t.me/joinchat/X21yx11I-hMyMzQ1" target="_blank" rel="noreferrer">
+                <img src={LogoTG} alt="logo telegram" />
+              </a>
+              <a href="https://bscgirl.medium.com/" target="_blank" rel="noreferrer">
+                <img src={LogoMedium} alt="logo medium" />
               </a>
             </div>
           </div>

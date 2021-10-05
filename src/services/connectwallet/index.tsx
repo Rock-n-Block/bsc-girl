@@ -49,14 +49,17 @@ class ConnectWalletService extends React.Component<any, any> {
     address: string,
     tokenName: string,
   ): Promise<any> {
+    clog('allowance start');
     return new Promise((resolve, reject) => {
       this.connectWallet
         .Contract(tokenName)
         .methods.allowance(from, address)
         .call()
         .then((allowance: string) => {
+          clogData('getting allowance', allowance);
           const allow = new BigNumber(allowance);
           const allowed = allow.minus(amount);
+          clogData('allowed', allowed);
           clogGroup(['allowance', allowance, amount, allowed.isNegative()], true);
           // eslint-disable-next-line no-unused-expressions
           allowed.isNegative() ? reject() : resolve(1);
@@ -171,7 +174,7 @@ class ConnectWalletService extends React.Component<any, any> {
                     rootStore.user.setAddress(account.address);
                     await rootStore.user.getMe();
                   } catch (err: any) {
-                    rootStore.modals.error.setErr(err.message);
+                    rootStore.modals.error.setErr(err.message.text);
                     rootStore.user.disconnect();
                   }
                 });

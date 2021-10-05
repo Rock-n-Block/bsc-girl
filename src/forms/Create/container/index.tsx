@@ -121,7 +121,10 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
             .sendTransaction(user.address, data.initial_tx)
             .then(() => {
               history.push(data.id ? `/token/${data.id}` : '/');
-              modals.info.setMsg('Congrats you create your own NFT!', 'success');
+              modals.info.setMsg(
+                'Congrats you create your own NFT! Please wait while your token is minted',
+                'success',
+              );
               goToNextStep();
             })
             .catch((err: any) => {

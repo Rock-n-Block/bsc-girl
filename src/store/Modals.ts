@@ -162,13 +162,22 @@ const InfoModal = types
 const StakeModal = types
   .model({
     isOpen: types.optional(types.boolean, false),
+    name: types.optional(types.string, ''),
+    logo: types.optional(types.string, ''),
+    poolId: types.optional(types.number, 0),
   })
   .actions((self) => ({
-    open() {
-      self.isOpen = true;
-    },
     close() {
       self.isOpen = false;
+      self.name = '';
+      self.logo = '';
+      self.poolId = -1;
+    },
+    setPool(name: string, logo: string, poolId: number) {
+      self.name = name;
+      self.logo = logo;
+      self.poolId = poolId;
+      self.isOpen = true;
     },
   }));
 

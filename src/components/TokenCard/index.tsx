@@ -116,7 +116,11 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({
             ) : (
               ''
             )}
-            {format === ('gif' || 'image' || 'img') ? <img src={img} alt="token preview" /> : ''}
+            {format === 'gif' || format === 'image' || format === 'img' ? (
+              <img src={img} alt="token preview" />
+            ) : (
+              ''
+            )}
           </div>
         </Link>
       ) : (

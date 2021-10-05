@@ -82,7 +82,7 @@ const Preview: React.FC<TypePreviewProps> = observer(({ tokens }) => {
             ) : (
               ''
             )}
-            {token.format !== ('video' || 'audio') ? (
+            {token.format === 'gif' || token.format === 'image' || token.format === 'img' ? (
               <img src={token.media} alt={token.media} />
             ) : (
               ''

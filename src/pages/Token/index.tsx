@@ -269,6 +269,7 @@ const TokenPage: React.FC = observer(() => {
     storeApi
       .getToken(tokenId)
       .then(({ data: tokendata }: any) => {
+        clogData('tokenData:', tokendata);
         handleSetTokenData(tokendata);
       })
       .catch((err: any) => {
@@ -313,7 +314,6 @@ const TokenPage: React.FC = observer(() => {
   }, [tokenData, user]);
 
   clogData('my token?', isMyToken);
-  clogData('tokenData:', tokenData);
 
   return (
     <div className="container">
@@ -335,7 +335,9 @@ const TokenPage: React.FC = observer(() => {
           ) : (
             ''
           )}
-          {tokenData.format === ('gif' || 'image' || 'img') ? (
+          {tokenData.format === 'gif' ||
+          tokenData.format === 'image' ||
+          tokenData.format === 'img' ? (
             <img src={tokenData.media} alt="token" />
           ) : (
             ''
