@@ -343,7 +343,7 @@ class ConnectWalletService extends React.Component<any, any> {
   }
 
   async approveToken(
-    contractName: 'BSCGIRL' | 'BSCGIRLMOON',
+    contractName: string,
     tokenDecimals: number,
     approvedAddress?: string,
     walletAddress?: string,

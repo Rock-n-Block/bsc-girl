@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import BigNumber from 'bignumber.js/bignumber';
 import { observer } from 'mobx-react-lite';
 
@@ -6,7 +6,7 @@ import Calculator from '../../assets/img/icons/calculator-pink.svg';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
 import { IPoolInfo } from '../../types';
-import { clog, clogData } from '../../utils/logger';
+import { clogData } from '../../utils/logger';
 
 import './StakingCard.scss';
 
@@ -16,6 +16,7 @@ type TypeStakingCardProps = {
 };
 
 const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenInfo }) => {
+  const [isLoading, setLoading] = useState(false);
   const { user, modals } = useMst();
   const connector = useWalletConnectService();
 
@@ -35,6 +36,7 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
       tokenInfo[poolInfo.stakingToken].name,
       tokenInfo[poolInfo.stakingToken].logo,
       poolInfo.poolId,
+      poolInfo.fee,
     );
   };
 
@@ -44,11 +46,13 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
       tokenInfo[poolInfo.stakingToken].name,
       tokenInfo[poolInfo.stakingToken].logo,
       poolInfo.poolId,
+      poolInfo.fee,
       poolInfo.infoForUser.amount,
     );
   };
 
   const handleWithdraw = () => {
+    setLoading(true);
     connector.connectorService
       .getContract('Staking')
       .methods.withdrawReward(poolInfo.poolId, user.address)
@@ -56,15 +60,17 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
         from: user.address,
       })
       .then(() => {
-        clog('successful withdraw');
+        modals.info.setMsg('You have successfully withdraw reward!', 'success');
+        setTimeout(() => document.location.reload(), 2000);
       })
       .catch((err: any) => {
         modals.error.setErr('Something went wrong');
         clogData('withdraw error:', err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
-
-  clog('render cards');
 
   return (
     <div key={poolInfo.poolId} className="staking-card">
@@ -100,7 +106,7 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
             <div className="withdraw-fee__date">
               {poolInfo.infoForUser.reward > 0 ? (
                 <button type="button" className="gradient-button" onClick={() => handleWithdraw()}>
-                  <span>Collect</span>
+                  <span>{isLoading ? 'Wait...' : 'Collect'}</span>
                 </button>
               ) : (
                 ''

@@ -35,7 +35,9 @@ const StakingPage: React.FC = observer(() => {
   const [isStakedOnly, setStakedOnly] = useState(false);
   const { user } = useMst();
   const { contract, type } = contracts;
+  const contractRef = useRef(contract);
   const connector = useWalletConnectService();
+  const sortRef = useRef(null);
 
   const tokenInfo = useRef({
     [contract.BSCGIRL.chain[type].address.toLowerCase()]: {
@@ -125,9 +127,11 @@ const StakingPage: React.FC = observer(() => {
               )
             : 0,
           rewardDecimals:
-            contract[tokenInfo.current[rewardsToken.toLowerCase()].name]?.params?.decimals ?? 18,
+            contractRef.current[tokenInfo.current[rewardsToken.toLowerCase()].name]?.params
+              ?.decimals ?? 18,
           stakedDecimals:
-            contract[tokenInfo.current[stakingToken.toLowerCase()].name]?.params?.decimals ?? 18,
+            contractRef.current[tokenInfo.current[stakingToken.toLowerCase()].name]?.params
+              ?.decimals ?? 18,
         };
       }
       return {
@@ -140,7 +144,7 @@ const StakingPage: React.FC = observer(() => {
         stakedDecimals: 0,
       };
     },
-    [connector.connectorService, contract, user.address],
+    [connector.connectorService, user.address],
   );
 
   const getPoolsData = useCallback(async (): Promise<void> => {
@@ -200,7 +204,19 @@ const StakingPage: React.FC = observer(() => {
     getPoolsData();
   }, [getPoolsData]);
 
-  clog('render stake');
+  useEffect(() => {
+    const handleClickOutside = (e: any) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (e.target?.className !== 'grey-box open__item') setSortOpen(false);
+      clog(e);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="container">
@@ -252,11 +268,14 @@ const StakingPage: React.FC = observer(() => {
             </div>
             <span>Staked only</span>
           </div>
-          <div className="staking__nav__items">
+          <div className="staking__nav__items" ref={sortRef}>
             <button
               type="button"
               className="staking__nav__items__sort grey-box"
-              onClick={() => setSortOpen(!isSortOpen)}
+              onClick={() => {
+                if (!isSortOpen) setSortOpen(true);
+                clog('click on sort');
+              }}
             >
               Sort by {sort}
               <img

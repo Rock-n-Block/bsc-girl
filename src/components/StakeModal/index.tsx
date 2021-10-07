@@ -30,18 +30,19 @@ const StakeModal: React.FC = observer(() => {
     const decimals = contract[modals.stakeModal.name]?.params?.decimals || 18;
     const amount = new BigNumber(staked).times(new BigNumber(10).pow(decimals)).toFixed(0, 1);
     if (modals.stakeModal.operation === 'Remove part of stake') {
-      clog(amount);
+      clogData('unstake amount', amount);
       connector.connectorService
         .getContract('Staking')
         .methods.removePartOfStake(user.address, modals.createModal.poolId, amount)
         .send({
           from: user.address,
+          value: 0,
         })
         .then((tx: any) => {
           clogData('tx:', tx);
           setLoading(false);
           modals.closeAll();
-          modals.info.setMsg('You have successfully remove part of stake', 'success');
+          modals.info.setMsg('You have successfully removed part of stake', 'success');
           setTimeout(() => document.location.reload(), 2000);
         })
         .catch((err: any) => {
@@ -51,45 +52,26 @@ const StakeModal: React.FC = observer(() => {
       if (modals.stakeModal.operation === 'Stake in pool') {
         connector.connectorService
           .getContract('Staking')
-          .methods.createStake(
-            modals.stakeModal.poolId,
-            new BigNumber(amount).dividedBy(10).pow(18),
-          )
+          .methods.createStake(amount, modals.stakeModal.poolId)
           .send({
             from: user.address,
             value: amount,
           })
           .then(() => {
             modals.info.setMsg('You have successfully staked BNB!', 'success');
-          });
-      } else if (modals.stakeModal.operation === 'Increase stake') {
-        connector.connectorService
-          .getContract('Staking')
-          .methods.increaseStake(
-            modals.stakeModal.poolId,
-            new BigNumber(amount).dividedBy(10).pow(18),
-          )
-          .send({
-            from: user.address,
-            value: amount,
-          })
-          .then(() => {
-            modals.info.setMsg('You have successfully staked BNB!', 'success');
+            setTimeout(() => document.location.reload(), 2000);
           });
       } else {
         connector.connectorService
           .getContract('Staking')
-          .methods.removePartOfStake(
-            user.address,
-            modals.stakeModal.poolId,
-            new BigNumber(amount).dividedBy(10).pow(18),
-          )
+          .methods.increaseStake(modals.stakeModal.poolId, amount)
           .send({
             from: user.address,
             value: amount,
           })
           .then(() => {
             modals.info.setMsg('You have successfully staked BNB!', 'success');
+            setTimeout(() => document.location.reload(), 2000);
           });
       }
     } else {
@@ -235,7 +217,9 @@ const StakeModal: React.FC = observer(() => {
           />
         </div>
         <div className="stake-modal__form__footer">
-          <div className="stake-modal__form__fee">Fee {modals.stakeModal.fee}%</div>
+          <div className="stake-modal__form__fee">
+            {modals.stakeModal.fee ? `Fee ${modals.stakeModal.fee}%` : ''}
+          </div>
           <div className="stake-modal__form__balance">{`Balance: ${+balance}`}</div>
         </div>
         <div className="stake-modal__form__range">

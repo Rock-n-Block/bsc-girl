@@ -183,8 +183,8 @@ const StakeModal = types
       name: string,
       logo: string,
       poolId: number,
-      amount?: number | string,
       fee?: number | string,
+      amount?: number | string,
     ) {
       self.operation = type;
       self.name = name;

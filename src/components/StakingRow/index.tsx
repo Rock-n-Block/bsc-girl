@@ -9,7 +9,7 @@ import Timer from '../../assets/img/icons/timer-icon.svg';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
 import { IPoolInfo } from '../../types';
-import { clog, clogData } from '../../utils/logger';
+import { clogData } from '../../utils/logger';
 
 import './StakingRow.scss';
 
@@ -20,6 +20,7 @@ type TypeStakingRowProps = {
 
 const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInfo }) => {
   const [isDetailsOpen, setDetailsOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const { user, modals } = useMst();
   const connector = useWalletConnectService();
 
@@ -39,6 +40,7 @@ const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInf
       tokenInfo[poolInfo.stakingToken].name,
       tokenInfo[poolInfo.stakingToken].logo,
       poolInfo.poolId,
+      poolInfo.fee,
     );
   };
 
@@ -48,11 +50,13 @@ const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInf
       tokenInfo[poolInfo.stakingToken].name,
       tokenInfo[poolInfo.stakingToken].logo,
       poolInfo.poolId,
+      poolInfo.fee,
       poolInfo.infoForUser.amount,
     );
   };
 
   const handleWithdraw = () => {
+    setLoading(true);
     connector.connectorService
       .getContract('Staking')
       .methods.withdrawReward(poolInfo.poolId, user.address)
@@ -60,15 +64,17 @@ const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInf
         from: user.address,
       })
       .then(() => {
-        clog('successful withdraw');
+        modals.info.setMsg('You have successfully withdraw reward!', 'success');
+        setTimeout(() => document.location.reload(), 2000);
       })
       .catch((err: any) => {
         modals.error.setErr('Something went wrong');
         clogData('withdraw error:', err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
-
-  clog('render rows');
 
   return (
     <div key={poolInfo.poolId} className="stake-row">
@@ -133,7 +139,7 @@ const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInf
               .dividedBy(new BigNumber(10).pow(poolInfo.infoForUser.rewardDecimals))
               .toFixed(2, 1)}
             <button type="button" className="gradient-button" onClick={handleWithdraw}>
-              Collect
+              {isLoading ? 'Wait...' : 'Collect'}
             </button>
           </div>
         </div>

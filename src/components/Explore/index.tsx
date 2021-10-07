@@ -16,8 +16,8 @@ const Explore: React.FC = () => {
   const [explore, setExplore] = useState<any>({});
   const [tags, setTags] = useState<Array<string>>(['all']);
   const sortItems: Array<ISortItem> = [
-    { key: 'price', value: 'Price High' },
-    { key: '-price', value: 'Price Low' },
+    { key: '-price', value: 'Price High' },
+    { key: 'price', value: 'Price Low' },
   ];
   const [activeSort, setActiveSort] = useState<ISortItem>(sortItems[0]);
   const [activeFilter, setActiveFilter] = useState(tags[0]);
