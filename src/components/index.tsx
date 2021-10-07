@@ -1,6 +1,7 @@
 export { default as Header } from './Header';
 export { default as Preview } from './Preview';
 export { default as TokenCard } from './TokenCard';
+// eslint-disable-next-line import/no-cycle
 export { default as Popular } from './Popular';
 // eslint-disable-next-line import/no-cycle
 export { default as Collections } from './Collections';
@@ -28,4 +29,6 @@ export { default as InfoModal } from './InfoModal';
 export { default as MultiBuyModal } from './MultiBuyModal';
 export { default as CheckoutModal } from './CheckoutModal';
 export { default as StakingCard } from './StakingCard';
+export { default as StakingRow } from './StakingRow';
+// eslint-disable-next-line import/no-cycle
 export { default as StakeModal } from './StakeModal';

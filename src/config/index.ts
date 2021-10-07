@@ -5594,7 +5594,7 @@ export const contracts: IContracts = {
           abi: [],
         },
         testnet: {
-          address: '0x33a77FC20C7b9D314B753f478F7Ac40BcFe41E96',
+          address: '0x0b5A4523eCA2fc5e998e72dF16d8510853BBfAa9',
           abi: [
             {
               inputs: [
@@ -5696,10 +5696,9 @@ export const contracts: IContracts = {
             {
               inputs: [
                 { internalType: 'uint8', name: '_poolId', type: 'uint8' },
-                { internalType: 'uint256', name: '_amount', type: 'uint256' },
-                { internalType: 'uint256', name: '_start', type: 'uint256' },
+                { internalType: 'address', name: '_investor', type: 'address' },
               ],
-              name: 'calculateReward',
+              name: '_calculateReward',
               outputs: [{ internalType: 'uint256', name: 'rewardAmount', type: 'uint256' }],
               stateMutability: 'view',
               type: 'function',
@@ -5737,16 +5736,9 @@ export const contracts: IContracts = {
               ],
               name: 'getProcessInfoForUser',
               outputs: [
-                {
-                  components: [
-                    { internalType: 'uint256', name: 'amount', type: 'uint256' },
-                    { internalType: 'uint256', name: 'rewardGot', type: 'uint256' },
-                    { internalType: 'uint256', name: 'start', type: 'uint256' },
-                  ],
-                  internalType: 'struct Staking.UserInfo',
-                  name: '',
-                  type: 'tuple',
-                },
+                { internalType: 'uint256', name: 'amount', type: 'uint256' },
+                { internalType: 'uint256', name: 'rewardGot', type: 'uint256' },
+                { internalType: 'uint256', name: 'start', type: 'uint256' },
               ],
               stateMutability: 'view',
               type: 'function',
@@ -5814,6 +5806,8 @@ export const contracts: IContracts = {
                 { internalType: 'uint256', name: 'amount', type: 'uint256' },
                 { internalType: 'uint256', name: 'rewardGot', type: 'uint256' },
                 { internalType: 'uint256', name: 'start', type: 'uint256' },
+                { internalType: 'uint256', name: 'unlocked', type: 'uint256' },
+                { internalType: 'uint256', name: 'index', type: 'uint256' },
               ],
               stateMutability: 'view',
               type: 'function',
@@ -5845,6 +5839,16 @@ export const contracts: IContracts = {
                 { internalType: 'address', name: 'account', type: 'address' },
               ],
               name: 'revokeRole',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+            {
+              inputs: [
+                { internalType: 'uint8', name: '_poolId', type: 'uint8' },
+                { internalType: 'uint16', name: '_apy', type: 'uint16' },
+              ],
+              name: 'setAPYForPool',
               outputs: [],
               stateMutability: 'nonpayable',
               type: 'function',

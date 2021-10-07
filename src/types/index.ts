@@ -59,6 +59,7 @@ export interface IToken {
 }
 
 export interface IPoolInfo {
+  poolId: number;
   rewardsToken: string;
   stakingToken: string;
   amountStaked: number;
@@ -70,7 +71,9 @@ export interface IPoolInfo {
 
 export interface IUserInfo {
   amount: number;
-  rewardGot: number;
-  start: number;
-  decimals: number;
+  reward: number;
+  currentBlock: string;
+  endsIn: number;
+  rewardDecimals: number;
+  stakedDecimals: number;
 }

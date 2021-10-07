@@ -1,9 +1,10 @@
 @import "src/styles/index";
 
 .staking {
-  margin: 70px 30px 50px;
+  margin: 70px 30px 0;
+  padding-bottom: 50px;
   width: 100%;
-  overflow-x: hidden;
+  height: max-content;
 
   @include b(900) {
     margin: 70px 0 0;
@@ -226,8 +227,39 @@
     }
 
     &__items {
-      display: flex;
-      flex-direction: row;
+      position: relative;
+
+      &__sort {
+        width: 200px;
+        cursor: pointer;
+
+        .up {
+          transform: rotate(180deg);
+        }
+      }
+
+      .open {
+        box-sizing: border-box;
+        position: absolute;
+        right: 0;
+        top: 60px;
+        z-index: 2;
+        padding: 10px;
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        &__btn {
+          box-sizing: border-box;
+          height: 40px;
+          cursor: pointer;
+        }
+      }
+
+      .close {
+        display: none;
+      }
 
       @include b(400) {
         flex-direction: column;
@@ -242,6 +274,15 @@
 
     @include b(850) {
       overflow-x: auto;
+    }
+
+    &__rows {
+      padding: 34px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f9e7e7;
+      border-radius: 40px;
     }
 
     &__cards {

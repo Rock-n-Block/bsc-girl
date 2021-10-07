@@ -2,23 +2,27 @@ import React, { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js/bignumber';
 import { observer } from 'mobx-react-lite';
 
+import ArrowDown from '../../assets/img/icons/arrow-down-gradient.svg';
+import ArrowUp from '../../assets/img/icons/arrow-up-white.svg';
 import Calculator from '../../assets/img/icons/calculator-pink.svg';
+import Timer from '../../assets/img/icons/timer-icon.svg';
 import { contracts } from '../../config';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
 import { IPoolInfo, IUserInfo } from '../../types';
 import { clog, clogData } from '../../utils/logger';
 
-import './StakingCard.scss';
+import './StakingRow.scss';
 
-type TypeStakingCardProps = {
+type TypeStakingRowProps = {
   poolInfo: IPoolInfo;
   tokenInfo: { [key: string]: { name: string; logo: string } };
 };
 
-const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenInfo }) => {
+const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInfo }) => {
   const [isUnlocked, setUnlocked] = useState(false);
   const [infoForUser, setInfoForUser] = useState({} as IUserInfo);
+  const [isDetailsOpen, setDetailsOpen] = useState(false);
   const { user, modals } = useMst();
   const { contract } = contracts;
   const connector = useWalletConnectService();
@@ -112,86 +116,94 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
     }
   }, [connector.connectorService, contract, poolInfo, tokenInfo, user.address]);
 
-  clog('render cards');
+  clog('render rows');
 
   return (
-    <div key={poolInfo.poolId} className="staking-card">
-      <div className="staking-card__header">
-        <div className="staking-card__header__info">
-          <div className="title">Earn {tokenInfo[poolInfo.rewardsToken]?.name}</div>
-          <div className="currency">Stake {tokenInfo[poolInfo.stakingToken]?.name}</div>
+    <div key={poolInfo.poolId} className="stake-row">
+      <div className="stake-row__content">
+        <div className="stake-row__info">
+          <img src={tokenInfo[poolInfo.rewardsToken]?.logo} alt="rewards token logo" />
+          <div className="stake-row__info__text">
+            <div className="earned">Earn {tokenInfo[poolInfo.rewardsToken]?.name}</div>
+            <div className="staked">Stake {tokenInfo[poolInfo.stakingToken]?.name}</div>
+          </div>
         </div>
-        <img src={tokenInfo[poolInfo.rewardsToken]?.logo} alt="token logo" />
-      </div>
-      <div className="staking-card__content">
-        <div className="apy">
-          APY:
-          <div className="apy__value">
+        <div className="stake-row__profit">
+          <div className="title">Recent {tokenInfo[poolInfo.rewardsToken]?.name} profit</div>
+          {new BigNumber(infoForUser.reward)
+            .dividedBy(new BigNumber(10).pow(infoForUser.rewardDecimals))
+            .toFixed(2, 1)}
+        </div>
+        <div className="stake-row__apy">
+          <div className="title">APY</div>
+          <div className="stake-row__apy__value">
             {poolInfo.APY}%
-            <img src={Calculator} alt="calculator icon" />
+            <img src={Calculator} alt="calculator pink icon" />
           </div>
         </div>
-        <div className="profit">
-          <div className="profit__title">
-            Recent {tokenInfo[poolInfo.rewardsToken]?.name} profit:
-          </div>
-        </div>
-        <div className="withdraw-fee">
-          <div className="withdraw-fee__info">
-            {infoForUser.reward
-              ? new BigNumber(infoForUser.reward)
-                  .dividedBy(new BigNumber(10).pow(infoForUser.rewardDecimals))
-                  .toFixed(2, 1)
-              : 0}
-          </div>
-          {isUnlocked && infoForUser.reward ? (
-            <div className="withdraw-fee__date">
-              {infoForUser.reward > 0 ? (
-                <button type="button" className="gradient-button" onClick={() => handleWithdraw()}>
-                  <span>Collect</span>
-                </button>
-              ) : (
-                ''
-              )}
-            </div>
-          ) : (
-            ''
-          )}
+        <div className="stake-row__total">
+          <div className="title">Total staked</div>
+          {new BigNumber(+poolInfo.amountStaked)
+            .dividedBy(new BigNumber(10).pow(infoForUser.stakedDecimals))
+            .toFixed(2, 1)}
         </div>
         {isUnlocked ? (
-          <div className="staked">
-            <div className="staked__title">{tokenInfo[poolInfo.stakingToken]?.name} Staked</div>
-            <div className="staked__amount">
-              <div className="staked__amount__value">
-                {new BigNumber(infoForUser.amount)
-                  .dividedBy(new BigNumber(10).pow(infoForUser.stakedDecimals))
-                  .toFixed(2, 1)}
-              </div>
-              <div className="staked__amount__edit">
-                <button
-                  type="button"
-                  className="staked__amount__edit-btn"
-                  onClick={handleRemovePart}
-                >
-                  -
-                </button>
-                <button type="button" className="staked__amount__edit-btn" onClick={handleIncrease}>
-                  +
-                </button>
-              </div>
-            </div>
+          <div className="stake-row__block">
+            <div className="title">Ends in</div>
+            {infoForUser.endsIn} blocks
+            <img src={Timer} alt="timer icon" />
           </div>
         ) : (
-          <div className="unlock-wallet">
-            Start farming
-            <button type="button" onClick={handleUnlock} className="gradient-button">
-              Unlock wallet
+          ''
+        )}
+        {isUnlocked ? (
+          <button
+            type="button"
+            className="gradient-button"
+            onClick={() => setDetailsOpen(!isDetailsOpen)}
+          >
+            <div className={isDetailsOpen ? `open` : 'close'}>
+              <span className={!isDetailsOpen ? `gradient-text` : undefined}>Details</span>
+              <img src={isDetailsOpen ? ArrowUp : ArrowDown} alt="arrow icon" />
+            </div>
+          </button>
+        ) : (
+          <button type="button" className="gradient-button" onClick={handleUnlock}>
+            Unlock
+          </button>
+        )}
+      </div>
+      <div className={isDetailsOpen ? `stake-row__content pink` : 'hide'}>
+        <div className="stake-row__get-profit">
+          RECENT {tokenInfo[poolInfo.rewardsToken].name} profit
+          <div className="stake-row__get-profit__content">
+            {new BigNumber(infoForUser.reward)
+              .dividedBy(new BigNumber(10).pow(infoForUser.rewardDecimals))
+              .toFixed(2, 1)}
+            <button type="button" className="gradient-button" onClick={handleWithdraw}>
+              Collect
             </button>
           </div>
-        )}
+        </div>
+        <div className="stake-row__get-profit">
+          STAKED {tokenInfo[poolInfo.stakingToken].name} tokens
+          <div className="stake-row__get-profit__content">
+            {new BigNumber(infoForUser.amount)
+              .dividedBy(new BigNumber(10).pow(infoForUser.stakedDecimals))
+              .toFixed(2, 1)}
+            <div>
+              <button type="button" className="gradient-button" onClick={handleRemovePart}>
+                -
+              </button>
+              <button type="button" className="gradient-button" onClick={handleIncrease}>
+                +
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 });
 
-export default StakingCard;
+export default StakingRow;

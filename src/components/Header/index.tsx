@@ -122,11 +122,13 @@ const Header: React.FC = observer(() => {
             ) : (
               ''
             )}
-            <button type="button" className="gradient-button">
-              <div className="nav__button">
-                <div className="nav__button__text gradient-text">Buy BSCGIRL</div>
-              </div>
-            </button>
+            <a href="https://pancakeswap.finance/swap" target="_blank" rel="noreferrer">
+              <button type="button" className="gradient-button">
+                <div className="nav__button">
+                  <div className="nav__button__text gradient-text">Buy BSCGIRL</div>
+                </div>
+              </button>
+            </a>
             {user.address ? (
               <Link to="/create">
                 <button type="button" className="gradient-button">

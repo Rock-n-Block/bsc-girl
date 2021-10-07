@@ -16,9 +16,8 @@ const Explore: React.FC = () => {
   const [explore, setExplore] = useState<any>({});
   const [tags, setTags] = useState<Array<string>>(['all']);
   const sortItems: Array<ISortItem> = [
-    { key: 'recent', value: 'Most Recent' },
-    { key: 'highest', value: 'Price High' },
-    { key: 'cheapest', value: 'Price Low' },
+    { key: 'price', value: 'Price High' },
+    { key: '-price', value: 'Price Low' },
   ];
   const [activeSort, setActiveSort] = useState<ISortItem>(sortItems[0]);
   const [activeFilter, setActiveFilter] = useState(tags[0]);
@@ -51,10 +50,7 @@ const Explore: React.FC = () => {
               }
               return { ...prevExplore, ...data };
             });
-          } else
-            setExplore({
-              ...data,
-            });
+          } else setExplore(data);
         })
         .catch((err: any) => {
           clogData('get tokens error', err);
@@ -88,9 +84,9 @@ const Explore: React.FC = () => {
           sortItems={sortItems}
         />
         <div className="explore__cards">
-          {explore.tokens && explore.tokens.length ? (
+          {explore && explore.length ? (
             <div className="scroll">
-              {explore.tokens.map((token: any) => (
+              {explore.map((token: any) => (
                 <TokenCard
                   key={token.id}
                   id={token.id}

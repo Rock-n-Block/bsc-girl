@@ -26,44 +26,14 @@ const StakeModal: React.FC = observer(() => {
     setStaked(0);
   };
 
-  const handleStakeBNB = () => {
+  const handleStake = () => {
     const decimals = contract[modals.stakeModal.name]?.params?.decimals || 18;
-    const amount = new BigNumber(staked).times(new BigNumber(10).pow(decimals)).toFixed(0, 1);
-    if (modals.stakeModal.operation === 'Stake in pool') {
-      connector.connectorService
-        .getContract('Staking')
-        .methods.createStake(staked, amount, modals.stakeModal.poolId)
-        .send({
-          from: user.address,
-        })
-        .then((tx: any) => {
-          clogData('tx:', tx);
-          setLoading(false);
-          modals.closeAll();
-          modals.info.setMsg('You have successfully staked tokens!', 'success');
-          setTimeout(() => document.location.reload(), 2000);
-        })
-        .catch((err: any) => {
-          clogData('createStake', err);
-        });
-    } else if (modals.stakeModal.operation === 'Increase stake') {
-      connector.connectorService
-        .getContract('Staking')
-        .methods.increaseStake(staked, modals.stakeModal.poolId, amount)
-        .send({
-          from: user.address,
-        })
-        .then((tx: any) => {
-          clogData('tx:', tx);
-          setLoading(false);
-          modals.closeAll();
-          modals.info.setMsg('You have successfully increase stake', 'success');
-          setTimeout(() => document.location.reload(), 2000);
-        })
-        .catch((err: any) => {
-          clogData('increaseStake', err);
-        });
-    } else {
+    const amount =
+      modals.stakeModal.name === 'BNB'
+        ? new BigNumber(staked).toFixed(2, 1)
+        : new BigNumber(staked).times(new BigNumber(10).pow(decimals)).toFixed(0, 1);
+    if (modals.stakeModal.operation === 'Remove part of stake') {
+      clog(amount);
       connector.connectorService
         .getContract('Staking')
         .methods.removePartOfStake(user.address, modals.createModal.poolId, amount)
@@ -80,106 +50,127 @@ const StakeModal: React.FC = observer(() => {
         .catch((err: any) => {
           clogData('remove part', err);
         });
-    }
-  }
-
-  const handleStake = () => {
-    setLoading(true);
-    try {
-      const decimals = contract[modals.stakeModal.name]?.params?.decimals || 18;
-      const amount = new BigNumber(staked).times(new BigNumber(10).pow(decimals)).toFixed(0, 1);
-      connector.connectorService
-        .approveToken(
-          modals.stakeModal.name,
-          decimals,
-          contract.STAKING.chain[type].address,
-          user.address,
-        )
-        .then(() => {
-          connector.connectorService
-            .getAllowance(
-              amount,
-              user.address,
-              contract.STAKING.chain[type].address,
-              modals.stakeModal.name,
-            )
-            .then(() => {
-              connector.connectorService
-                .getContract(modals.stakeModal.name)
-                .methods.approve(contract.STAKING.chain[type].address, amount)
-                .send({
-                  from: user.address,
-                })
-                .then(() => {
-                  clog('approved');
-                  if (modals.stakeModal.operation === 'Stake in pool') {
-                    connector.connectorService
-                      .getContract('Staking')
-                      .methods.createStake(amount, modals.stakeModal.poolId)
-                      .send({
-                        from: user.address,
-                      })
-                      .then((tx: any) => {
-                        clogData('tx:', tx);
-                        setLoading(false);
-                        modals.closeAll();
-                        modals.info.setMsg('You have successfully staked tokens!', 'success');
-                        setTimeout(() => document.location.reload(), 2000);
-                      })
-                      .catch((err: any) => {
-                        clogData('createStake', err);
-                      });
-                  } else if (modals.stakeModal.operation === 'Increase stake') {
-                    connector.connectorService
-                      .getContract('Staking')
-                      .methods.increaseStake(modals.stakeModal.poolId, amount)
-                      .send({
-                        from: user.address,
-                      })
-                      .then((tx: any) => {
-                        clogData('tx:', tx);
-                        setLoading(false);
-                        modals.closeAll();
-                        modals.info.setMsg('You have successfully increase stake', 'success');
-                        setTimeout(() => document.location.reload(), 2000);
-                      })
-                      .catch((err: any) => {
-                        clogData('increaseStake', err);
-                      });
-                  } else {
-                    connector.connectorService
-                      .getContract('Staking')
-                      .methods.removePartOfStake(user.address, modals.createModal.poolId, amount)
-                      .send({
-                        from: user.address,
-                      })
-                      .then((tx: any) => {
-                        clogData('tx:', tx);
-                        setLoading(false);
-                        modals.closeAll();
-                        modals.info.setMsg('You have successfully remove part of stake', 'success');
-                        setTimeout(() => document.location.reload(), 2000);
-                      })
-                      .catch((err: any) => {
-                        clogData('remove part', err);
-                      });
-                  }
-                })
-                .catch((err: any) => {
-                  clogData('approve', err);
-                });
-            })
-            .catch((err: any) => {
-              clogData('get allowance', err);
-            });
-        })
-        .catch((err: any) => {
-          clogData('approveToken', err);
-        });
-    } catch (err: any) {
-      modals.closeAll();
-      modals.error.setErr(err.message);
-      setLoading(false);
+    } else if (modals.stakeModal.name === 'BNB') {
+      if (modals.stakeModal.operation === 'Stake in pool') {
+        connector.connectorService
+          .getContract('Staking')
+          .methods.createStake(
+            modals.stakeModal.poolId,
+            new BigNumber(amount).dividedBy(10).pow(18),
+          )
+          .send({
+            from: user.address,
+          })
+          .then(() => {
+            modals.info.setMsg('You have successfully staked BNB!', 'success');
+          });
+      } else if (modals.stakeModal.operation === 'Increase stake') {
+        connector.connectorService
+          .getContract('Staking')
+          .methods.increaseStake(
+            modals.stakeModal.poolId,
+            new BigNumber(amount).dividedBy(10).pow(18),
+          )
+          .send({
+            from: user.address,
+          })
+          .then(() => {
+            modals.info.setMsg('You have successfully staked BNB!', 'success');
+          });
+      } else {
+        connector.connectorService
+          .getContract('Staking')
+          .methods.removePartOfStake(
+            user.address,
+            modals.stakeModal.poolId,
+            new BigNumber(amount).dividedBy(10).pow(18),
+          )
+          .send({
+            from: user.address,
+          })
+          .then(() => {
+            modals.info.setMsg('You have successfully staked BNB!', 'success');
+          });
+      }
+    } else {
+      setLoading(true);
+      try {
+        connector.connectorService
+          .approveToken(
+            modals.stakeModal.name,
+            decimals,
+            contract.STAKING.chain[type].address,
+            user.address,
+          )
+          .then(() => {
+            connector.connectorService
+              .getAllowance(
+                amount,
+                user.address,
+                contract.STAKING.chain[type].address,
+                modals.stakeModal.name,
+              )
+              .then(() => {
+                connector.connectorService
+                  .getContract(modals.stakeModal.name)
+                  .methods.approve(contract.STAKING.chain[type].address, amount)
+                  .send({
+                    from: user.address,
+                  })
+                  .then(() => {
+                    clog('approved');
+                    if (modals.stakeModal.operation === 'Stake in pool') {
+                      connector.connectorService
+                        .getContract('Staking')
+                        .methods.createStake(amount, modals.stakeModal.poolId)
+                        .send({
+                          from: user.address,
+                        })
+                        .then((tx: any) => {
+                          clogData('tx:', tx);
+                          setLoading(false);
+                          modals.closeAll();
+                          modals.info.setMsg('You have successfully staked tokens!', 'success');
+                          setTimeout(() => document.location.reload(), 2000);
+                        })
+                        .catch((err: any) => {
+                          clogData('createStake', err);
+                        });
+                    } else {
+                      connector.connectorService
+                        .getContract('Staking')
+                        .methods.increaseStake(modals.stakeModal.poolId, amount)
+                        .send({
+                          from: user.address,
+                        })
+                        .then((tx: any) => {
+                          clogData('tx:', tx);
+                          setLoading(false);
+                          modals.closeAll();
+                          modals.info.setMsg('You have successfully increase stake', 'success');
+                          setTimeout(() => document.location.reload(), 2000);
+                        })
+                        .catch((err: any) => {
+                          clogData('increaseStake', err);
+                        });
+                    }
+                  })
+                  .catch((err: any) => {
+                    clogData('approve', err);
+                  });
+              })
+              .catch((err: any) => {
+                clogData('get allowance', err);
+              });
+          })
+          .catch((err: any) => {
+            clogData('approveToken', err);
+          });
+      } catch (err: any) {
+        modals.closeAll();
+        modals.error.setErr(err.message);
+        setLoading(false);
+      }
     }
   };
 
@@ -224,7 +215,11 @@ const StakeModal: React.FC = observer(() => {
       </div>
       <div className="stake-modal__form">
         <div className="stake-modal__form__label">
-          <div className="title">Stake</div>
+          <div className="title">
+            {modals.stakeModal.operation === 'Stake in pool' ? 'Stake' : ''}
+            {modals.stakeModal.operation === 'Increase stake' ? 'Increase' : ''}
+            {modals.stakeModal.operation === 'Remove part of stake' ? 'Remove' : ''}
+          </div>
           <div className="currency">
             <img src={modals.stakeModal.logo} alt="currency logo" />
             {modals.stakeModal.name}
@@ -263,11 +258,7 @@ const StakeModal: React.FC = observer(() => {
             <span>Max</span>
           </button>
         </div>
-        <button
-          type="button"
-          className="gradient-button confirm"
-          onClick={modals.stakeModal.name === 'BNB' ? handleStakeBNB : handleStake}
-        >
+        <button type="button" className="gradient-button confirm" onClick={handleStake}>
           {isLoading ? 'In progress...' : 'Confirm'}
         </button>
         {modals.stakeModal.operation !== 'Remove part of stake' ? (

@@ -167,6 +167,7 @@ const StakeModal = types
     logo: types.optional(types.string, ''),
     poolId: types.optional(types.number, 0),
     stakedAmount: types.optional(types.number, 0),
+    fee: types.optional(types.number, 0),
   })
   .actions((self) => ({
     close() {
@@ -175,14 +176,23 @@ const StakeModal = types
       self.logo = '';
       self.poolId = -1;
       self.stakedAmount = 0;
+      self.fee = 0;
     },
-    setPool(type: string, name: string, logo: string, poolId: number, amount?: number | string) {
+    setPool(
+      type: string,
+      name: string,
+      logo: string,
+      poolId: number,
+      amount?: number | string,
+      fee?: number | string,
+    ) {
       self.operation = type;
       self.name = name;
       self.logo = logo;
       self.poolId = poolId;
       self.isOpen = true;
       self.stakedAmount = amount ? +amount : 0;
+      self.fee = fee ? +fee : 0;
     },
   }));
 

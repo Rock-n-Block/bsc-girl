@@ -138,18 +138,18 @@ class ConnectWalletService extends React.Component<any, any> {
               this.getTokenBalance(account.address, 'BSCGIRL')
                 .then((value: any) => {
                   rootStore.user.setBalance(
-                    new BigNumber(value).dividedBy(new BigNumber(10).pow(8)).toFixed(0),
+                    new BigNumber(value).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
                     'BSCGIRL',
                   );
                   this.getTokenBalance(account.address, 'BSCGIRLMOON').then((balance: any) => {
                     rootStore.user.setBalance(
-                      new BigNumber(balance).dividedBy(new BigNumber(10).pow(8)).toFixed(0),
+                      new BigNumber(balance).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
                       'BSCGIRLMOON',
                     );
 
                     this.getBnbBalance(account.address).then((data) => {
                       rootStore.user.setBalance(
-                        new BigNumber(data).dividedBy(new BigNumber(10).pow(18)).toFixed(3),
+                        new BigNumber(data).dividedBy(new BigNumber(10).pow(18)).toFixed(3, 1),
                         'BNB',
                       );
                     });
