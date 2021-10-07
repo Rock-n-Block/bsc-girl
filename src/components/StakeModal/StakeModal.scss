@@ -82,14 +82,25 @@
 
       input {
         border: none;
-        font-size: 16px;
+        font-size: 18px;
         line-height: 24px;
       }
     }
 
-    &__balance {
+    &__footer {
       margin-bottom: 5px;
-      text-align: end;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &__fee {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    &__balance {
       font-size: 16px;
       line-height: 24px;
     }

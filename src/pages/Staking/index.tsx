@@ -22,7 +22,7 @@ import { NoItemsFound, StakeModal, StakingCard, StakingRow } from '../../compone
 import { contracts } from '../../config';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
-import { IPoolInfo } from '../../types';
+import { IPoolInfo, IUserInfo } from '../../types';
 import { clog, clogData } from '../../utils/logger';
 
 import './Staking.scss';
@@ -92,44 +92,107 @@ const StakingPage: React.FC = observer(() => {
     setSortOpen(false);
   };
 
-  const getPoolsData = useCallback((): void => {
+  const getInfoForUser = useCallback(
+    async (
+      stakeholders: string[],
+      poolId: number,
+      timeLockUp: string | number,
+      stakingToken: string,
+      rewardsToken: string,
+    ): Promise<IUserInfo> => {
+      let isUnlocked = false;
+      if (stakeholders.find((holder: string) => holder.toLowerCase() === user.address)) {
+        isUnlocked = true;
+        const processData = await connector.connectorService
+          .getContract('Staking')
+          ?.methods.getProcessInfoForUser(user.address, poolId)
+          .call();
+        const currentBlock = await connector.connectorService.Web3().eth.getBlock('latest');
+        // eslint-disable-next-line no-underscore-dangle
+        const reward = await connector.connectorService
+          ?.getContract('Staking')
+          .methods._calculateReward(poolId, user.address)
+          .call();
+        return {
+          isUnlocked,
+          amount: +processData.amount,
+          reward: +reward,
+          currentBlock: currentBlock.number,
+          endsIn: +timeLockUp
+            ? Math.floor(
+                Math.abs(processData.start + +timeLockUp - +currentBlock.timestamp) / 3 +
+                  +currentBlock.number,
+              )
+            : 0,
+          rewardDecimals:
+            contract[tokenInfo.current[rewardsToken.toLowerCase()].name]?.params?.decimals ?? 18,
+          stakedDecimals:
+            contract[tokenInfo.current[stakingToken.toLowerCase()].name]?.params?.decimals ?? 18,
+        };
+      }
+      return {
+        isUnlocked,
+        amount: 0,
+        currentBlock: '0',
+        endsIn: 0,
+        reward: 0,
+        rewardDecimals: 0,
+        stakedDecimals: 0,
+      };
+    },
+    [connector.connectorService, contract, user.address],
+  );
+
+  const getPoolsData = useCallback(async (): Promise<void> => {
     const data: IPoolInfo[] = [];
     for (let i = 0; i < 12; i += 1) {
-      connector.connectorService
+      /* eslint-disable no-await-in-loop */
+      const res = await connector.connectorService
         .getContract('Staking')
-        .methods.getPoolInfo(i)
-        .call()
-        .then((res: any) => {
-          clogData('poolInfo:', res);
-          data.push({
-            poolId: i,
-            // eslint-disable-next-line no-underscore-dangle
-            rewardsToken: res.rewardsToken_.toLowerCase(),
-            // eslint-disable-next-line no-underscore-dangle
-            stakingToken: res.stakingToken_.toLowerCase(),
-            // eslint-disable-next-line no-underscore-dangle
-            amountStaked: +res.amountStaked_,
-            // eslint-disable-next-line no-underscore-dangle
-            stakeholders: res.stakeholders_,
-            // eslint-disable-next-line no-underscore-dangle
-            timeLockUp: +res.timeLockUp_,
-            // eslint-disable-next-line no-underscore-dangle
-            APY: +res.APY_,
-            // eslint-disable-next-line no-underscore-dangle
-            fee: +res.fee_,
-          } as IPoolInfo);
-        });
+        ?.methods.getPoolInfo(i)
+        .call();
+      if (res) {
+        const infoForUser = await getInfoForUser(
+          // eslint-disable-next-line no-underscore-dangle
+          res.stakeholders_,
+          i,
+          // eslint-disable-next-line no-underscore-dangle
+          res.timeLockUp_,
+          // eslint-disable-next-line no-underscore-dangle
+          res.stakingToken_,
+          // eslint-disable-next-line no-underscore-dangle
+          res.rewardsToken_,
+        );
+        data.push({
+          poolId: i,
+          // eslint-disable-next-line no-underscore-dangle
+          rewardsToken: res.rewardsToken_.toLowerCase(),
+          // eslint-disable-next-line no-underscore-dangle
+          stakingToken: res.stakingToken_.toLowerCase(),
+          // eslint-disable-next-line no-underscore-dangle
+          amountStaked: +res.amountStaked_,
+          // eslint-disable-next-line no-underscore-dangle
+          stakeholders: res.stakeholders_,
+          // eslint-disable-next-line no-underscore-dangle
+          timeLockUp: +res.timeLockUp_,
+          // eslint-disable-next-line no-underscore-dangle
+          APY: +res.APY_,
+          // eslint-disable-next-line no-underscore-dangle
+          fee: +res.fee_,
+          infoForUser,
+        } as IPoolInfo);
+      }
     }
     clogData('poolsData:', data);
     setPoolsData(data);
-  }, [connector.connectorService]);
+  }, [connector.connectorService, getInfoForUser]);
 
   const handleOnlyStaked = () => {
     const filteredData = poolsData.filter((pool) =>
       pool.stakeholders.find((holder) => holder.toLowerCase() === user.address),
     );
     if (!isStakedOnly) setPoolsData(filteredData);
-    getPoolsData();
+    else getPoolsData();
     setStakedOnly(!isStakedOnly);
   };
 

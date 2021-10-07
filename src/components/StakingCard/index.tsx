@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import BigNumber from 'bignumber.js/bignumber';
 import { observer } from 'mobx-react-lite';
 
 import Calculator from '../../assets/img/icons/calculator-pink.svg';
-import { contracts } from '../../config';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
-import { IPoolInfo, IUserInfo } from '../../types';
+import { IPoolInfo } from '../../types';
 import { clog, clogData } from '../../utils/logger';
 
 import './StakingCard.scss';
@@ -17,10 +16,7 @@ type TypeStakingCardProps = {
 };
 
 const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenInfo }) => {
-  const [isUnlocked, setUnlocked] = useState(false);
-  const [infoForUser, setInfoForUser] = useState({} as IUserInfo);
   const { user, modals } = useMst();
-  const { contract } = contracts;
   const connector = useWalletConnectService();
 
   const handleUnlock = () => {
@@ -48,7 +44,7 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
       tokenInfo[poolInfo.stakingToken].name,
       tokenInfo[poolInfo.stakingToken].logo,
       poolInfo.poolId,
-      infoForUser.amount,
+      poolInfo.infoForUser.amount,
     );
   };
 
@@ -67,50 +63,6 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
         clogData('withdraw error:', err);
       });
   };
-
-  useEffect(() => {
-    if (poolInfo.stakeholders.find((holder) => holder.toLowerCase() === user.address)) {
-      setUnlocked(true);
-      connector.connectorService
-        .getContract('Staking')
-        .methods.getProcessInfoForUser(user.address, poolInfo.poolId)
-        .call()
-        .then((processData: any) => {
-          clogData('infoForUser:', processData);
-          connector.connectorService
-            .Web3()
-            .eth.getBlock('latest')
-            .then((response: any) => {
-              // eslint-disable-next-line no-underscore-dangle
-              connector.connectorService
-                .getContract('Staking')
-                .methods._calculateReward(poolInfo.poolId, user.address)
-                .call()
-                .then((reward: any) => {
-                  clogData('reward:', reward);
-                  setInfoForUser({
-                    amount: +processData.amount,
-                    reward: +reward,
-                    currentBlock: response.number,
-                    endsIn: +poolInfo.timeLockUp
-                      ? Math.floor(
-                          Math.abs(processData.start + +poolInfo.timeLockUp - +response.timestamp) /
-                            3 +
-                            +response.number,
-                        )
-                      : 0,
-                    rewardDecimals:
-                      contract[tokenInfo[poolInfo.rewardsToken.toLowerCase()].name]?.params
-                        ?.decimals ?? 18,
-                    stakedDecimals:
-                      contract[tokenInfo[poolInfo.rewardsToken.toLowerCase()].name]?.params
-                        ?.decimals ?? 18,
-                  });
-                });
-            });
-        });
-    }
-  }, [connector.connectorService, contract, poolInfo, tokenInfo, user.address]);
 
   clog('render cards');
 
@@ -138,15 +90,15 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
         </div>
         <div className="withdraw-fee">
           <div className="withdraw-fee__info">
-            {infoForUser.reward
-              ? new BigNumber(infoForUser.reward)
-                  .dividedBy(new BigNumber(10).pow(infoForUser.rewardDecimals))
+            {poolInfo.infoForUser.reward
+              ? new BigNumber(poolInfo.infoForUser.reward)
+                  .dividedBy(new BigNumber(10).pow(poolInfo.infoForUser.rewardDecimals))
                   .toFixed(2, 1)
               : 0}
           </div>
-          {isUnlocked && infoForUser.reward ? (
+          {poolInfo.infoForUser.isUnlocked && poolInfo.infoForUser.reward ? (
             <div className="withdraw-fee__date">
-              {infoForUser.reward > 0 ? (
+              {poolInfo.infoForUser.reward > 0 ? (
                 <button type="button" className="gradient-button" onClick={() => handleWithdraw()}>
                   <span>Collect</span>
                 </button>
@@ -158,13 +110,13 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
             ''
           )}
         </div>
-        {isUnlocked ? (
+        {poolInfo.infoForUser.isUnlocked ? (
           <div className="staked">
             <div className="staked__title">{tokenInfo[poolInfo.stakingToken]?.name} Staked</div>
             <div className="staked__amount">
               <div className="staked__amount__value">
-                {new BigNumber(infoForUser.amount)
-                  .dividedBy(new BigNumber(10).pow(infoForUser.stakedDecimals))
+                {new BigNumber(poolInfo.infoForUser.amount)
+                  .dividedBy(new BigNumber(10).pow(poolInfo.infoForUser.stakedDecimals))
                   .toFixed(2, 1)}
               </div>
               <div className="staked__amount__edit">

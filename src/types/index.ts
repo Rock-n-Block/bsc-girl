@@ -67,9 +67,11 @@ export interface IPoolInfo {
   fee: number;
   APY: number;
   stakeholders: string[];
+  infoForUser: IUserInfo;
 }
 
 export interface IUserInfo {
+  isUnlocked: boolean;
   amount: number;
   reward: number;
   currentBlock: string;

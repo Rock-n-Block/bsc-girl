@@ -28,10 +28,7 @@ const StakeModal: React.FC = observer(() => {
 
   const handleStake = () => {
     const decimals = contract[modals.stakeModal.name]?.params?.decimals || 18;
-    const amount =
-      modals.stakeModal.name === 'BNB'
-        ? new BigNumber(staked).toFixed(2, 1)
-        : new BigNumber(staked).times(new BigNumber(10).pow(decimals)).toFixed(0, 1);
+    const amount = new BigNumber(staked).times(new BigNumber(10).pow(decimals)).toFixed(0, 1);
     if (modals.stakeModal.operation === 'Remove part of stake') {
       clog(amount);
       connector.connectorService
@@ -60,6 +57,7 @@ const StakeModal: React.FC = observer(() => {
           )
           .send({
             from: user.address,
+            value: amount,
           })
           .then(() => {
             modals.info.setMsg('You have successfully staked BNB!', 'success');
@@ -73,6 +71,7 @@ const StakeModal: React.FC = observer(() => {
           )
           .send({
             from: user.address,
+            value: amount,
           })
           .then(() => {
             modals.info.setMsg('You have successfully staked BNB!', 'success');
@@ -87,6 +86,7 @@ const StakeModal: React.FC = observer(() => {
           )
           .send({
             from: user.address,
+            value: amount,
           })
           .then(() => {
             modals.info.setMsg('You have successfully staked BNB!', 'success');
@@ -234,7 +234,10 @@ const StakeModal: React.FC = observer(() => {
             onChange={(e: any) => setStaked(e.target.value)}
           />
         </div>
-        <div className="stake-modal__form__balance">{`Balance: ${balance}`}</div>
+        <div className="stake-modal__form__footer">
+          <div className="stake-modal__form__fee">Fee {modals.stakeModal.fee}%</div>
+          <div className="stake-modal__form__balance">{`Balance: ${+balance}`}</div>
+        </div>
         <div className="stake-modal__form__range">
           <input
             type="range"
