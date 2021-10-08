@@ -38,7 +38,6 @@ const StakeModal: React.FC = observer(() => {
           .methods.removePartOfStake(user.address, modals.stakeModal.poolId, amount)
           .send({
             from: user.address,
-            value: modals.stakeModal.name === 'BNB' ? amount : 0,
           })
           .then((tx: any) => {
             clogData('tx:', tx);
