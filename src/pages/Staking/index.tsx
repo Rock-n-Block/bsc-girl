@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import BigNumber from 'bignumber.js/bignumber';
 import { observer } from 'mobx-react-lite';
 
 import BlueHeart from '../../assets/img/blue-heart.svg';
@@ -81,9 +82,15 @@ const StakingPage: React.FC = observer(() => {
   });
 
   const handleSort = (typeOfSort: string) => {
+    setSort(typeOfSort);
     const sortedArray = poolsData.sort((a, b) => {
+      const decimalsA = contract[tokenInfo.current[a?.stakingToken]?.name]?.params?.decimals ?? 18;
+      const decimalsB = contract[tokenInfo.current[b?.stakingToken]?.name]?.params?.decimals ?? 18;
       if (typeOfSort === 'Hot') {
-        return a.amountStaked - b.amountStaked;
+        return (
+          +new BigNumber(b.amountStaked).dividedBy(new BigNumber(10).pow(decimalsB)) -
+          +new BigNumber(a.amountStaked).dividedBy(new BigNumber(10).pow(decimalsA))
+        );
       }
       return a.APY - b.APY;
     });
@@ -92,7 +99,6 @@ const StakingPage: React.FC = observer(() => {
     } else {
       setPoolsData(sortedArray);
     }
-    setSort(typeOfSort);
     setSortOpen(false);
   };
 
@@ -142,8 +148,12 @@ const StakingPage: React.FC = observer(() => {
         currentBlock: '0',
         endsIn: 0,
         reward: 0,
-        rewardDecimals: 0,
-        stakedDecimals: 0,
+        rewardDecimals:
+          contractRef.current[tokenInfo.current[rewardsToken.toLowerCase()].name]?.params
+            ?.decimals ?? 18,
+        stakedDecimals:
+          contractRef.current[tokenInfo.current[stakingToken.toLowerCase()].name]?.params
+            ?.decimals ?? 18,
       };
     },
     [connector.connectorService, user.address],
@@ -207,20 +217,6 @@ const StakingPage: React.FC = observer(() => {
   useEffect(() => {
     getPoolsData();
   }, [getPoolsData]);
-
-  useEffect(() => {
-    const handleClickOutside = (e: any) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (e.target?.className !== 'grey-box open__item') setSortOpen(false);
-      clog(e);
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   return (
     <div className="container">

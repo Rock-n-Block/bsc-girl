@@ -7,7 +7,7 @@ import Close from '../../assets/img/icons/close-icon-grey.svg';
 import { contracts } from '../../config';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
-import { clog, clogData } from '../../utils/logger';
+import { clogData } from '../../utils/logger';
 import { InputNumber } from '../index';
 
 import './StakeModal.scss';
@@ -48,6 +48,7 @@ const StakeModal: React.FC = observer(() => {
           })
           .catch((err: any) => {
             clogData('remove part', err);
+            setLoading(false);
           });
       } else if (modals.stakeModal.name === 'BNB') {
         if (modals.stakeModal.operation === 'Stake in pool') {
@@ -61,6 +62,9 @@ const StakeModal: React.FC = observer(() => {
             .then(() => {
               modals.info.setMsg('You have successfully staked BNB!', 'success');
               setTimeout(() => document.location.reload(), 2000);
+            })
+            .catch(() => {
+              setLoading(false);
             });
         } else {
           connector.connectorService
@@ -73,6 +77,9 @@ const StakeModal: React.FC = observer(() => {
             .then(() => {
               modals.info.setMsg('You have successfully staked BNB!', 'success');
               setTimeout(() => document.location.reload(), 2000);
+            })
+            .catch(() => {
+              setLoading(false);
             });
         }
       } else {
@@ -99,7 +106,6 @@ const StakeModal: React.FC = observer(() => {
                     from: user.address,
                   })
                   .then(() => {
-                    clog('approved');
                     if (modals.stakeModal.operation === 'Stake in pool') {
                       connector.connectorService
                         .getContract('Staking')
@@ -116,6 +122,7 @@ const StakeModal: React.FC = observer(() => {
                         })
                         .catch((err: any) => {
                           clogData('createStake', err);
+                          setLoading(false);
                         });
                     } else {
                       connector.connectorService
@@ -133,19 +140,23 @@ const StakeModal: React.FC = observer(() => {
                         })
                         .catch((err: any) => {
                           clogData('increaseStake', err);
+                          setLoading(false);
                         });
                     }
                   })
                   .catch((err: any) => {
                     clogData('approve', err);
+                    setLoading(false);
                   });
               })
               .catch((err: any) => {
                 clogData('get allowance', err);
+                setLoading(false);
               });
           })
           .catch((err: any) => {
             clogData('approveToken', err);
+            setLoading(false);
           });
       }
     } catch (err: any) {

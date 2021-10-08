@@ -64,7 +64,7 @@ const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInf
         from: user.address,
       })
       .then(() => {
-        modals.info.setMsg('You have successfully withdraw reward!', 'success');
+        modals.info.setMsg('You have successfully withdrew reward!', 'success');
         setTimeout(() => document.location.reload(), 2000);
       })
       .catch((err: any) => {
@@ -108,8 +108,10 @@ const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInf
         {poolInfo.infoForUser.isUnlocked ? (
           <div className="stake-row__block">
             <div className="title">Ends in</div>
-            {poolInfo.infoForUser.endsIn} blocks
-            <img src={Timer} alt="timer icon" />
+            <div className="stake-row__block__value">
+              {poolInfo.infoForUser.endsIn} blocks
+              <img src={Timer} alt="timer icon" />
+            </div>
           </div>
         ) : (
           ''

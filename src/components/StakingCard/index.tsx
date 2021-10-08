@@ -60,7 +60,7 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
         from: user.address,
       })
       .then(() => {
-        modals.info.setMsg('You have successfully withdraw reward!', 'success');
+        modals.info.setMsg('You have successfully withdrew reward!', 'success');
         setTimeout(() => document.location.reload(), 2000);
       })
       .catch((err: any) => {

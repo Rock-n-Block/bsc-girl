@@ -91,6 +91,12 @@
     @include b(900) {
       display: none;
     }
+
+    &__value {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
   }
 
   button {
