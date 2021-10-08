@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Modal from 'react-modal';
 import BigNumber from 'bignumber.js/bignumber';
 import { observer } from 'mobx-react';
@@ -15,10 +15,11 @@ import './StakeModal.scss';
 const StakeModal: React.FC = observer(() => {
   const [staked, setStaked] = useState(0);
   const [isLoading, setLoading] = useState(false);
-  const [balance, setBalance] = useState<BigNumber>(new BigNumber(0));
+  const [balance, setBalance] = useState(new BigNumber(0));
   const { modals, user } = useMst();
   const connector = useWalletConnectService();
   const { contract, type } = contracts;
+  const contractRef = useRef(contract);
 
   const closeModal = () => {
     modals.stakeModal.close();
@@ -27,56 +28,55 @@ const StakeModal: React.FC = observer(() => {
   };
 
   const handleStake = () => {
+    setLoading(true);
     const decimals = contract[modals.stakeModal.name]?.params?.decimals || 18;
     const amount = new BigNumber(staked).times(new BigNumber(10).pow(decimals)).toFixed(0, 1);
-    if (modals.stakeModal.operation === 'Remove part of stake') {
-      clogData('unstake amount', amount);
-      connector.connectorService
-        .getContract('Staking')
-        .methods.removePartOfStake(user.address, modals.createModal.poolId, amount)
-        .send({
-          from: user.address,
-          value: 0,
-        })
-        .then((tx: any) => {
-          clogData('tx:', tx);
-          setLoading(false);
-          modals.closeAll();
-          modals.info.setMsg('You have successfully removed part of stake', 'success');
-          setTimeout(() => document.location.reload(), 2000);
-        })
-        .catch((err: any) => {
-          clogData('remove part', err);
-        });
-    } else if (modals.stakeModal.name === 'BNB') {
-      if (modals.stakeModal.operation === 'Stake in pool') {
+    try {
+      if (modals.stakeModal.operation === 'Remove part of stake') {
         connector.connectorService
           .getContract('Staking')
-          .methods.createStake(amount, modals.stakeModal.poolId)
+          .methods.removePartOfStake(user.address, modals.stakeModal.poolId, amount)
           .send({
             from: user.address,
-            value: amount,
+            value: modals.stakeModal.name === 'BNB' ? amount : 0,
           })
-          .then(() => {
-            modals.info.setMsg('You have successfully staked BNB!', 'success');
+          .then((tx: any) => {
+            clogData('tx:', tx);
+            setLoading(false);
+            modals.closeAll();
+            modals.info.setMsg('You have successfully removed part of stake', 'success');
             setTimeout(() => document.location.reload(), 2000);
+          })
+          .catch((err: any) => {
+            clogData('remove part', err);
           });
+      } else if (modals.stakeModal.name === 'BNB') {
+        if (modals.stakeModal.operation === 'Stake in pool') {
+          connector.connectorService
+            .getContract('Staking')
+            .methods.createStake(amount, modals.stakeModal.poolId)
+            .send({
+              from: user.address,
+              value: amount,
+            })
+            .then(() => {
+              modals.info.setMsg('You have successfully staked BNB!', 'success');
+              setTimeout(() => document.location.reload(), 2000);
+            });
+        } else {
+          connector.connectorService
+            .getContract('Staking')
+            .methods.increaseStake(modals.stakeModal.poolId, amount)
+            .send({
+              from: user.address,
+              value: amount,
+            })
+            .then(() => {
+              modals.info.setMsg('You have successfully staked BNB!', 'success');
+              setTimeout(() => document.location.reload(), 2000);
+            });
+        }
       } else {
-        connector.connectorService
-          .getContract('Staking')
-          .methods.increaseStake(modals.stakeModal.poolId, amount)
-          .send({
-            from: user.address,
-            value: amount,
-          })
-          .then(() => {
-            modals.info.setMsg('You have successfully staked BNB!', 'success');
-            setTimeout(() => document.location.reload(), 2000);
-          });
-      }
-    } else {
-      setLoading(true);
-      try {
         connector.connectorService
           .approveToken(
             modals.stakeModal.name,
@@ -148,33 +148,42 @@ const StakeModal: React.FC = observer(() => {
           .catch((err: any) => {
             clogData('approveToken', err);
           });
-      } catch (err: any) {
-        modals.closeAll();
-        modals.error.setErr(err.message);
-        setLoading(false);
       }
+    } catch (err: any) {
+      modals.closeAll();
+      modals.error.setErr(err.message);
+      clogData('staking', err);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (modals.stakeModal.operation !== 'Remove part of stake') {
-      if (modals.stakeModal.name && modals.stakeModal.name !== 'BNB' && user.address) {
-        const decimals = contract[modals.stakeModal.name]?.params?.decimals || 18;
-        connector.connectorService
-          .getTokenBalance(user.address, modals.stakeModal.name)
-          .then((value: any) => {
-            setBalance(new BigNumber(value).dividedBy(new BigNumber(10).pow(decimals)));
-          });
-      } else if (modals.stakeModal.name && user.address) setBalance(user.balance.bnb);
-    } else if (modals.stakeModal.stakedAmount) {
-      const decimals = contract[modals.stakeModal.name]?.params?.decimals || 18;
-      setBalance(
-        new BigNumber(modals.stakeModal.stakedAmount).dividedBy(new BigNumber(10).pow(decimals)),
-      );
+    if (user.address) {
+      const decimals = contractRef.current[modals.stakeModal.name]?.params?.decimals || 18;
+      let value: any;
+      if (modals.stakeModal.operation !== 'Remove part of stake') {
+        if (modals.stakeModal.name !== 'BNB' && user.address) {
+          connector.connectorService
+            .getTokenBalance(user.address, modals.stakeModal.name)
+            .then((res: any) => {
+              value = new BigNumber(res).dividedBy(new BigNumber(10).pow(decimals));
+              setBalance(value);
+              setStaked(value * 0.5);
+            });
+        } else if (user.address) {
+          setBalance(user.balance.bnb);
+          setStaked(user.balance.bnb * 0.5);
+        }
+      } else if (modals.stakeModal.stakedAmount) {
+        value = new BigNumber(modals.stakeModal.stakedAmount).dividedBy(
+          new BigNumber(10).pow(decimals),
+        );
+        setBalance(value);
+        setStaked(value * 0.5);
+      }
     }
   }, [
     connector.connectorService,
-    contract,
     modals.stakeModal.name,
     modals.stakeModal.operation,
     modals.stakeModal.stakedAmount,
@@ -220,7 +229,11 @@ const StakeModal: React.FC = observer(() => {
           <div className="stake-modal__form__fee">
             {modals.stakeModal.fee ? `Fee ${modals.stakeModal.fee}%` : ''}
           </div>
-          <div className="stake-modal__form__balance">{`Balance: ${+balance}`}</div>
+          <div className="stake-modal__form__balance">
+            {`${
+              modals.stakeModal.operation === 'Remove part of stake' ? 'Staked' : 'Balance'
+            }: ${+balance}`}
+          </div>
         </div>
         <div className="stake-modal__form__range">
           <input
@@ -228,14 +241,14 @@ const StakeModal: React.FC = observer(() => {
             min={1}
             max={100}
             className="slider"
-            onChange={(e: any) => setStaked((e.target.value / 100) * +balance)}
+            onChange={(e: any) => setStaked((+balance / 100) * e.target.value)}
           />
         </div>
         <div className="stake-modal__form__buttons">
-          <button type="button" className="btn-item" onClick={() => setStaked(+balance * 0.25)}>
+          <button type="button" className="btn-item" onClick={() => setStaked(+balance / 4)}>
             <span>25%</span>
           </button>
-          <button type="button" className="btn-item" onClick={() => setStaked(+balance * 0.5)}>
+          <button type="button" className="btn-item" onClick={() => setStaked(+balance / 2)}>
             <span>50%</span>
           </button>
           <button type="button" className="btn-item" onClick={() => setStaked(+balance * 0.75)}>

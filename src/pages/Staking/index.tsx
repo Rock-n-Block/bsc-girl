@@ -10,6 +10,7 @@ import CAKE from '../../assets/img/cake-logo.png';
 import Cloud from '../../assets/img/cloud.svg';
 import Crown from '../../assets/img/crown.svg';
 import ArrowDownGradient from '../../assets/img/icons/arrow-gradient.svg';
+import Loader from '../../assets/img/icons/loader.svg';
 import BNB from '../../assets/img/icons/logo-bnb.svg';
 import MenuCardsActive from '../../assets/img/icons/menu-cards-active.svg';
 import MenuCards from '../../assets/img/icons/menu-cards.svg';
@@ -28,6 +29,7 @@ import { clog, clogData } from '../../utils/logger';
 import './Staking.scss';
 
 const StakingPage: React.FC = observer(() => {
+  const [isLoading, setLoading] = useState(false);
   const [sort, setSort] = useState('Hot');
   const [isSortOpen, setSortOpen] = useState(false);
   const [poolsData, setPoolsData] = useState([] as IPoolInfo[]);
@@ -148,6 +150,7 @@ const StakingPage: React.FC = observer(() => {
   );
 
   const getPoolsData = useCallback(async (): Promise<void> => {
+    setLoading(true);
     const data: IPoolInfo[] = [];
     for (let i = 0; i < 12; i += 1) {
       /* eslint-disable no-await-in-loop */
@@ -188,6 +191,7 @@ const StakingPage: React.FC = observer(() => {
       }
     }
     clogData('poolsData:', data);
+    setLoading(true);
     setPoolsData(data);
   }, [connector.connectorService, getInfoForUser]);
 
@@ -321,7 +325,16 @@ const StakingPage: React.FC = observer(() => {
               })}
             </div>
           ) : (
-            <NoItemsFound />
+            <>
+              {isLoading ? (
+                <div className="loading">
+                  Loading&nbsp;
+                  <img className="loading__loader" src={Loader} alt="spinner" />
+                </div>
+              ) : (
+                <NoItemsFound />
+              )}
+            </>
           )}
         </div>
       </div>

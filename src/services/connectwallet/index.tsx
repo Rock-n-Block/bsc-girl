@@ -149,7 +149,7 @@ class ConnectWalletService extends React.Component<any, any> {
 
                     this.getBnbBalance(account.address).then((data) => {
                       rootStore.user.setBalance(
-                        new BigNumber(data).dividedBy(new BigNumber(10).pow(18)).toFixed(3, 1),
+                        new BigNumber(data).dividedBy(new BigNumber(10).pow(18)).toFixed(5, 1),
                         'BNB',
                       );
                     });
