@@ -25,7 +25,7 @@ import { contracts } from '../../config';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
 import { IPoolInfo, IUserInfo } from '../../types';
-import { clog, clogData } from '../../utils/logger';
+import { clogData } from '../../utils/logger';
 
 import './Staking.scss';
 
@@ -81,26 +81,31 @@ const StakingPage: React.FC = observer(() => {
     },
   });
 
-  const handleSort = (typeOfSort: string) => {
-    setSort(typeOfSort);
-    const sortedArray = poolsData.sort((a, b) => {
-      const decimalsA = contract[tokenInfo.current[a?.stakingToken]?.name]?.params?.decimals ?? 18;
-      const decimalsB = contract[tokenInfo.current[b?.stakingToken]?.name]?.params?.decimals ?? 18;
-      if (typeOfSort === 'Hot') {
-        return (
-          +new BigNumber(b.amountStaked).dividedBy(new BigNumber(10).pow(decimalsB)) -
-          +new BigNumber(a.amountStaked).dividedBy(new BigNumber(10).pow(decimalsA))
-        );
+  const handleSort = useCallback(
+    (typeOfSort: string) => {
+      setSort(typeOfSort);
+      const sortedArray = poolsData.sort((a, b) => {
+        const decimalsA =
+          contractRef.current[tokenInfo.current[a?.stakingToken]?.name]?.params?.decimals ?? 18;
+        const decimalsB =
+          contractRef.current[tokenInfo.current[b?.stakingToken]?.name]?.params?.decimals ?? 18;
+        if (typeOfSort === 'Hot') {
+          return (
+            +new BigNumber(b.amountStaked).dividedBy(new BigNumber(10).pow(decimalsB)) -
+            +new BigNumber(a.amountStaked).dividedBy(new BigNumber(10).pow(decimalsA))
+          );
+        }
+        return a.APY - b.APY;
+      });
+      if (typeOfSort === 'APY High') {
+        setPoolsData(sortedArray.reverse());
+      } else {
+        setPoolsData(sortedArray);
       }
-      return a.APY - b.APY;
-    });
-    if (typeOfSort === 'APY High') {
-      setPoolsData(sortedArray.reverse());
-    } else {
-      setPoolsData(sortedArray);
-    }
-    setSortOpen(false);
-  };
+      setSortOpen(false);
+    },
+    [poolsData],
+  );
 
   const getInfoForUser = useCallback(
     async (
@@ -219,6 +224,10 @@ const StakingPage: React.FC = observer(() => {
     getPoolsData();
   }, [getPoolsData]);
 
+  useEffect(() => {
+    handleSort('Hot');
+  }, [handleSort]);
+
   return (
     <div className="container">
       <div className="staking">
@@ -274,8 +283,7 @@ const StakingPage: React.FC = observer(() => {
               type="button"
               className="staking__nav__items__sort grey-box"
               onClick={() => {
-                if (!isSortOpen) setSortOpen(true);
-                clog('click on sort');
+                setSortOpen(!isSortOpen);
               }}
             >
               Sort by {sort}
