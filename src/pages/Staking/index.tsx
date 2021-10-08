@@ -201,7 +201,7 @@ const StakingPage: React.FC = observer(() => {
       }
     }
     clogData('poolsData:', data);
-    setLoading(true);
+    setLoading(false);
     setPoolsData(data);
   }, [connector.connectorService, getInfoForUser]);
 
@@ -209,8 +209,9 @@ const StakingPage: React.FC = observer(() => {
     const filteredData = poolsData.filter((pool) =>
       pool.stakeholders.find((holder) => holder.toLowerCase() === user.address),
     );
-    if (!isStakedOnly) setPoolsData(filteredData);
-    else getPoolsData();
+    if (!isStakedOnly) {
+      setPoolsData(filteredData);
+    } else getPoolsData();
     setStakedOnly(!isStakedOnly);
   };
 
