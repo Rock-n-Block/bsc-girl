@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import DefaultImg from '../../assets/img/card-default.png';
+import Loader from '../../assets/img/icons/loader.svg';
 import { storeApi } from '../../services/api';
 import { clogData } from '../../utils/logger';
 import { Filter, NoItemsFound, TokenCard } from '../index';
@@ -13,6 +14,7 @@ interface ISortItem {
 }
 
 const Explore: React.FC = () => {
+  const [isLoading, setLoading] = useState(true);
   const [explore, setExplore] = useState<any>({});
   const [tags, setTags] = useState<Array<string>>(['all']);
   const sortItems: Array<ISortItem> = [
@@ -51,6 +53,7 @@ const Explore: React.FC = () => {
               return { ...prevExplore, ...data };
             });
           } else setExplore(data);
+          setLoading(false);
         })
         .catch((err: any) => {
           clogData('get tokens error', err);
@@ -83,31 +86,38 @@ const Explore: React.FC = () => {
           onChangeSort={handleSortChange}
           sortItems={sortItems}
         />
-        <div className="explore__cards">
-          {explore && explore.length ? (
-            <div className="scroll">
-              {explore.map((token: any) => (
-                <TokenCard
-                  key={token.id}
-                  id={token.id}
-                  owners={token.standart === 'ERC1155' ? token.owners : [token.owners]}
-                  img={token.media ? token.media : DefaultImg}
-                  format={token.format}
-                  name={token.name}
-                  price={token.price}
-                  currency={token.currency?.symbol ?? token.currency}
-                  total_supply={token.total_supply}
-                  available={token.available}
-                  is_liked={token.is_liked}
-                  onSale={token.selling}
-                  disableLinks={false}
-                />
-              ))}
-            </div>
-          ) : (
-            <NoItemsFound />
-          )}
-        </div>
+        {isLoading ? (
+          <div className="loading">
+            Loading&nbsp;
+            <img src={Loader} alt="loader" />
+          </div>
+        ) : (
+          <div className="explore__cards">
+            {explore && explore.length ? (
+              <div className="scroll">
+                {explore.map((token: any) => (
+                  <TokenCard
+                    key={token.id}
+                    id={token.id}
+                    owners={token.standart === 'ERC1155' ? token.owners : [token.owners]}
+                    img={token.media ? token.media : DefaultImg}
+                    format={token.format}
+                    name={token.name}
+                    price={token.price}
+                    currency={token.currency?.symbol ?? token.currency}
+                    total_supply={token.total_supply}
+                    available={token.available}
+                    is_liked={token.is_liked}
+                    onSale={token.selling}
+                    disableLinks={false}
+                  />
+                ))}
+              </div>
+            ) : (
+              <NoItemsFound />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

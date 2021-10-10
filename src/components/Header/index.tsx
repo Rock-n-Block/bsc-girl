@@ -185,26 +185,34 @@ const Header: React.FC = observer(() => {
           {isOpen ? (
             <div className="nav">
               <div className="nav__top">
-                <div className="currency">
-                  <div className="currency__item">
-                    <img src={LogoBNB} alt="logo bnb" />
-                    {user.balance.bnb}&nbsp;BNB
+                {user.address ? (
+                  <div className="currency">
+                    <div className="currency__item">
+                      <img src={LogoBNB} alt="logo bnb" />
+                      {user.balance.bnb}&nbsp;BNB
+                    </div>
+                    <div className="currency__item">
+                      <img src={LogoMini} alt="logo bscgirl" />
+                      {user.balance.bscgirl}&nbsp;BSCGIRL
+                    </div>
+                    <div className="currency__item">
+                      <img src={LogoBSCGIRLMOON} alt="logo bscgirlmoon" />
+                      {user.balance.bscgirlmoon}&nbsp;BSCGIRLMOON
+                    </div>
                   </div>
-                  <div className="currency__item">
-                    <img src={LogoMini} alt="logo bscgirl" />
-                    {user.balance.bscgirl}&nbsp;BSCGIRL
-                  </div>
-                  <div className="currency__item">
-                    <img src={LogoBSCGIRLMOON} alt="logo bscgirlmoon" />
-                    {user.balance.bscgirlmoon}&nbsp;BSCGIRLMOON
-                  </div>
-                </div>
-                <Link to={`/profile/${user.id}`} target="_top" onClick={() => setIsOpen(false)}>
-                  <div className="profile-link">
-                    {user.avatar ? <img src={user.avatar} alt="user avatar" /> : ''}
-                    {user.id}
-                  </div>
-                </Link>
+                ) : (
+                  ''
+                )}
+                {user.address ? (
+                  <Link to={`/profile/${user.id}`} target="_top" onClick={() => setIsOpen(false)}>
+                    <div className="profile-link">
+                      {user.avatar ? <img src={user.avatar} alt="user avatar" /> : ''}
+                      {user.id}
+                    </div>
+                  </Link>
+                ) : (
+                  ''
+                )}
                 <div className="nav__top__main">
                   <a
                     href="#staking"
@@ -216,16 +224,20 @@ const Header: React.FC = observer(() => {
                   >
                     Explore
                   </a>
-                  <a
-                    href="#my-items"
-                    className="nav__top__main__link"
-                    onClick={() => {
-                      history.push('/');
-                      setIsOpen(false);
-                    }}
-                  >
-                    My items
-                  </a>
+                  {user.address ? (
+                    <a
+                      href="#my-items"
+                      className="nav__top__main__link"
+                      onClick={() => {
+                        history.push('/');
+                        setIsOpen(false);
+                      }}
+                    >
+                      My items
+                    </a>
+                  ) : (
+                    ''
+                  )}
                   <Link
                     to="/staking"
                     className="nav__top__main__link"

@@ -21,19 +21,19 @@
     flex-direction: row;
 
     &__user {
-      max-width: 30px;
-      max-height: 30px;
+      width: 30px;
+      height: 30px;
 
       img {
-        max-width: 30px;
-        max-height: 30px;
+        width: 30px;
+        height: 30px;
 
         border-radius: 50%;
       }
 
       &-1 {
-        max-width: 30px;
-        max-height: 30px;
+        width: 30px;
+        height: 30px;
 
         border-radius: 50%;
 
@@ -43,8 +43,8 @@
         }
 
         img {
-          max-width: 30px;
-          max-height: 30px;
+          width: 30px;
+          height: 30px;
 
           border-radius: 50%;
         }
@@ -54,14 +54,14 @@
         position: relative;
         left: -13px;
 
-        max-width: 30px;
-        max-height: 30px;
+        width: 30px;
+        height: 30px;
 
         border-radius: 50%;
 
         img {
-          max-width: 30px;
-          max-height: 30px;
+          width: 30px;
+          height: 30px;
 
           border-radius: 50%;
         }
@@ -76,14 +76,14 @@
         position: relative;
         left: -26px;
 
-        max-width: 30px;
-        max-height: 30px;
+        width: 30px;
+        height: 30px;
 
         border-radius: 50%;
 
         img {
-          max-width: 30px;
-          max-height: 30px;
+          width: 30px;
+          height: 30px;
 
           border-radius: 50%;
         }

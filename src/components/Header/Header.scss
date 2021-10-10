@@ -387,7 +387,6 @@
         align-items: center;
 
         box-sizing: border-box;
-        width: 370px;
         height: 40px;
 
         font-family: 'Poppins', sans-serif;
@@ -398,10 +397,6 @@
         color: #000;
         border: 2px solid #e6e8ec;
         border-radius: 30px;
-
-        @include b(400) {
-          width: 100%;
-        }
 
         img {
           margin-right: 4px;

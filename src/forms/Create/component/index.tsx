@@ -61,6 +61,8 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
     const { user } = useMst();
     const serviceFee = 3;
 
+    clogData('format', values.format);
+
     const onSubmit = () => {
       handleSubmit();
     };
@@ -98,8 +100,6 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
       handleChange(e);
     };
 
-    clogData('values.selling:', values.selling);
-
     return (
       <Form name="create-form" className="create-collectible__main">
         <div className="create-form">
@@ -121,19 +121,25 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
               validateStatus={validateField('price', touched, errors)}
               help={!touched.price ? false : errors.price}
               label={
-                <span className="create-form__enter-price__title">Enter price for one piece</span>
+                <span className="create-form__enter-price__title">
+                  Enter price and currency for one piece
+                </span>
               }
             >
               <div className="gradient">
                 <div className="create-form__enter-price__input">
-                  <InputNumber
-                    id="price"
-                    value={values.price}
-                    placeholder="10"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    positiveOnly
-                  />
+                  {isActive ? (
+                    <InputNumber
+                      id="price"
+                      value={values.price}
+                      placeholder="10"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      positiveOnly
+                    />
+                  ) : (
+                    ''
+                  )}
                   <div className="gradient-box">
                     <div
                       className="choose-currency"
@@ -411,12 +417,11 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
               is_liked={false}
               available={+values.numberOfCopies}
               id=""
-              onSale
+              onSale={values.selling}
             />
           </div>
         </div>
         <CreateModal
-          closeModal={values.closeModal}
           approveStatus={values.approveStatus}
           uploadStatus={values.uploadStatus}
           signStatus={values.signStatus}

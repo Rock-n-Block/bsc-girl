@@ -101,6 +101,24 @@
   color: rgba(0, 0, 0, 0.5);
 }
 
+.loading {
+  margin-top: 50px;
+  width: 100%;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 24px;
+  color: $soft-red;
+
+  img {
+    animation: preloader-rotate 2s infinite linear;
+  }
+}
+
 @keyframes preloader-rotate {
   100% {
     transform: rotate(360deg);

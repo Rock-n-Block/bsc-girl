@@ -58,11 +58,6 @@ export const validateForm = ({ values, notRequired }: { values: any; notRequired
         errCopy.price = 'Price should be more than 0.001';
       }
     },
-    // bid: (value: string): void => {
-    //   if (!value || !+value) {
-    //     errCopy.bid = 'Enter bid value';
-    //   }
-    // },
     videoLink: (value: string): void => {
       if (!value) {
         errCopy.videoLink = 'Enter your link to a video file';
@@ -91,19 +86,16 @@ export const validateForm = ({ values, notRequired }: { values: any; notRequired
         errCopy.instagram = 'Enter your instagram';
       }
     },
-
     site: (value: string): void => {
       if (!value) {
         errCopy.instagram = 'Enter your website';
       }
     },
-
     numberOfCopies: (value: string): void => {
       if (!value || !+value || +value <= 0) {
         errCopy.numberOfCopies = '"Number of copies" must be a number';
       }
     },
-
     tokenRoyalties: (value: string): void => {
       if (!value) {
         errCopy.tokenRoyalties = '"Royalties" must be a number';
@@ -127,11 +119,6 @@ export const validateForm = ({ values, notRequired }: { values: any; notRequired
         errCopy.digitalKey = '"Locked content" is required';
       }
     },
-    // full_address: (value: string): void => {
-    //   if (!value) {
-    //     errCopy.full_address = 'Enter your full address';
-    //   }
-    // },
     username: (value: string): void => {
       if (!value) {
         errCopy.username = 'Enter your name';
@@ -150,6 +137,16 @@ export const validateForm = ({ values, notRequired }: { values: any; notRequired
     lastname: (value: string): void => {
       if (!value) {
         errCopy.lastname = 'Enter your last name';
+      }
+    },
+    customUrl: (value: string): void => {
+      if (!value) {
+        errCopy.customUrl = 'Enter your custom url';
+      }
+    },
+    bio: (value: string): void => {
+      if (!value) {
+        errCopy.bio = 'Enter your bio';
       }
     },
   };

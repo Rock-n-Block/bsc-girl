@@ -46,20 +46,16 @@ interface INewUser {
 }
 
 const ProfilePage: React.FC = observer(() => {
+  const params = new URLSearchParams(useLocation().search);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isShowCopied, setShowCopied] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<INewUser>();
-
+  const [activeTab, setActiveTab] = useState(params.get('tab') ?? 'my-items');
   const [collectibles, setCollectibles] = useState<any>({});
-
   const { modals, user } = useMst();
   const walletConnector = useWalletConnectService();
-
   const { userId } = useParams<{ userId: string | undefined }>();
   const history = useHistory();
-  const params = new URLSearchParams(useLocation().search);
-  const [activeTab, setActiveTab] = useState(params.get('tab') ?? 'my-items');
-
   const self = (user.id ? user.id.toString() : '') === (userId ?? '0');
 
   const links: TypeLink[] = [
@@ -80,6 +76,36 @@ const ProfilePage: React.FC = observer(() => {
       setShowCopied(true);
       setTimeout(() => setShowCopied(false), 2000);
     });
+  };
+
+  const getShortAddress = () => {
+    const addr = currentUser?.address || '';
+    return `${addr.slice(0, 15)}...${addr.slice(addr.length - 4)}`;
+  };
+
+  const onHandleExit = () => {
+    walletConnector.disconnect();
+    user.disconnect();
+  };
+
+  const handleUploadCover = (file: any) => {
+    setIsLoading(true);
+    userApi
+      .setUserCover(file)
+      .then(({ data }) => {
+        setIsLoading(false);
+        user.setCover(data);
+        modals.info.setMsg('Congrats you changed the cover!', 'success');
+        setCurrentUser((prevState: any) => {
+          return {
+            ...prevState,
+            cover: data,
+          };
+        });
+      })
+      .catch((err) => {
+        clogData('set cover error', err);
+      });
   };
 
   const loadUser = useCallback(() => {
@@ -147,32 +173,8 @@ const ProfilePage: React.FC = observer(() => {
         isVerified: user.is_verificated,
       });
     }
-  }, [self, loadUser, user]);
+  }, [loadUser, self, user]);
 
-  const onHandleExit = () => {
-    walletConnector.disconnect();
-    user.disconnect();
-  };
-
-  const handleUploadCover = (file: any) => {
-    setIsLoading(true);
-    userApi
-      .setUserCover(file)
-      .then(({ data }) => {
-        setIsLoading(false);
-        user.setCover(data);
-        modals.info.setMsg('Congrats you changed the cover!', 'success');
-        setCurrentUser((prevState: any) => {
-          return {
-            ...prevState,
-            cover: data,
-          };
-        });
-      })
-      .catch((err) => {
-        clogData('set cover error', err);
-      });
-  };
   useEffect(() => {
     const urlParams = new URLSearchParams();
     if (activeTab) {
@@ -182,14 +184,10 @@ const ProfilePage: React.FC = observer(() => {
     }
     history.push({ search: urlParams.toString() });
   }, [activeTab, history]);
+
   useEffect(() => {
     loadCollectibles();
-  });
-
-  const getShortAddress = () => {
-    const addr = currentUser?.address || '';
-    return `${addr.slice(0, 15)}...${addr.slice(addr.length - 4)}`;
-  };
+  }, [loadCollectibles]);
 
   return (
     <div className="container">
@@ -252,12 +250,6 @@ const ProfilePage: React.FC = observer(() => {
                   );
                 return '';
               })}
-              {/* <div className="link"> */}
-              {/*   <img src={Share} alt="share" /> */}
-              {/* </div> */}
-              {/* <div className="link"> */}
-              {/*   <img src={More} alt="more" /> */}
-              {/* </div> */}
             </div>
           </div>
           <div className="profile__navbar">

@@ -77,7 +77,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
       signStatus: signStatus,
     }),
     validate: (values) => {
-      const notRequired: string[] = ['tokenDescription', 'preview'];
+      const notRequired: string[] = ['tokenDescription', 'preview', 'price'];
       if (isSingle) {
         notRequired.push('numberOfCopies');
       }
@@ -121,6 +121,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
             .sendTransaction(user.address, data.initial_tx)
             .then(() => {
               history.push(data.id ? `/token/${data.id}` : '/');
+              modals.createModal.close();
               modals.info.setMsg(
                 'Congrats you create your own NFT! Please wait while your token is minted',
                 'success',
@@ -128,13 +129,13 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
               goToNextStep();
             })
             .catch((err: any) => {
-              modals.create.close();
+              modals.createModal.close();
               modals.error.setErr('Something went wrong');
               clogData('sendTransaction', err);
             });
         })
         .catch((error) => {
-          modals.create.close();
+          modals.createModal.close();
           modals.error.setErr('Something went wrong');
           clogData('createToken error:', error);
         });

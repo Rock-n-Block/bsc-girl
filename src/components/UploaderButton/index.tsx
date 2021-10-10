@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { message, Upload } from 'antd';
+import { Upload } from 'antd';
 import { useFormikContext } from 'formik';
+import { observer } from 'mobx-react';
 
 import Close from '../../assets/img/icons/close-icon.svg';
 import Img from '../../assets/img/icons/img-icon.svg';
 import { useMst } from '../../store/store';
+import { clogData } from '../../utils/logger';
 
 const { Dragger } = Upload;
 
@@ -24,7 +26,7 @@ interface IUploader {
   values?: any;
 }
 
-const UploaderButton: React.FC<IUploader> = ({
+const UploaderButton: React.FC<IUploader> = observer(({
   type = 'area',
   isLoading = false,
   className,
@@ -32,18 +34,27 @@ const UploaderButton: React.FC<IUploader> = ({
   handleUpload,
   setFormat,
 }) => {
-  const { user } = useMst();
+  const [url, setUrl] = useState<any>();
+  const { modals, user } = useMst();
   const location = useLocation();
   const formik = useFormikContext();
-  // const [imageUrl, setImageUrl] = React.useState('');
+
+  const handleClear = () => {
+    formik.setFieldValue('img', '');
+    formik.setFieldValue('preview', '');
+    setUrl('');
+  };
+
   const getBase64 = (img: any, callback: any) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       if (type === 'area') formik.setFieldValue('preview', reader.result);
       callback(reader.result);
+      clogData('preview:', formik.getFieldProps('preview'));
     });
     reader.readAsDataURL(img);
   };
+
   const beforeUpload = (file: any) => {
     const isValidType =
       file.type === 'image/jpeg' ||
@@ -53,14 +64,17 @@ const UploaderButton: React.FC<IUploader> = ({
       (type === 'area' && file.type === 'audio/mpeg') ||
       (type === 'area' && file.type === 'video/mp4');
     if (!isValidType) {
-      message.error('You can only upload JPG/PNG/WEBP/GIF/MP3/MP4 file!');
+      if (type === 'area') {
+        modals.info.setMsg('You can only upload JPG, PNG, WEBP, GIF, MP3 or MP4 file!', 'error');
+      } else modals.info.setMsg('You can only upload JPG, PNG, WEBP or GIF file!', 'error');
     }
     const isLt2M = file.size / 1024 / 1024 <= 30;
     if (!isLt2M) {
-      message.error('Image must be smaller than 30MB!');
+      modals.info.setMsg('Image must be smaller than 30MB!', 'error');
     }
     return isValidType && isLt2M;
   };
+
   const handleChange = ({ file }: any) => {
     const isValidType =
       file.type === 'image/jpeg' ||
@@ -80,12 +94,9 @@ const UploaderButton: React.FC<IUploader> = ({
     if (handleUpload) {
       handleUpload(file.originFileObj);
     } else formik.setFieldValue('img', file.originFileObj);
-    getBase64(file.originFileObj, () => {});
+    getBase64(file.originFileObj, (prop: string) => setUrl(prop));
   };
-  const handleClear = () => {
-    formik.setFieldValue('img', '');
-    formik.setFieldValue('preview', '');
-  };
+
   return (
     <div className={`${className || ''} uploader`}>
       {type === 'area' ? (
@@ -108,16 +119,13 @@ const UploaderButton: React.FC<IUploader> = ({
             {values.img ? (
               <>
                 {values.format === 'image' ? (
-                  <img src={values.preview} alt="token preview" className="uploader__img" />
+                  <img src={url} alt="token preview" className="uploader__img" />
                 ) : (
                   ''
                 )}
                 {values.format === 'video' ? (
                   <video controls className="uploader__img">
-                    <source
-                      src={values.preview}
-                      type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
-                    />
+                    <source src={url} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
                     <track kind="captions" />
                   </video>
                 ) : (
@@ -125,7 +133,7 @@ const UploaderButton: React.FC<IUploader> = ({
                 )}
                 {values.format === 'audio' ? (
                   <audio controls className="uploader__img">
-                    <source src={values.preview} />
+                    <source src={url} />
                     <track kind="captions" />
                   </audio>
                 ) : (
@@ -163,6 +171,6 @@ const UploaderButton: React.FC<IUploader> = ({
       )}
     </div>
   );
-};
+});
 
 export default UploaderButton;

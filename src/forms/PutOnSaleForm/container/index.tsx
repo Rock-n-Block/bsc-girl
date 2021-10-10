@@ -37,7 +37,6 @@ const PutOnSaleForm: React.FC<SaleFixedPriceFormProps> = ({
       return validateForm({ values, notRequired });
     },
     handleSubmit: async (values, { setFieldValue }) => {
-      clogData('currency:', values.currency);
       setFieldValue('isLoading', true);
       try {
         handleApproveNft()

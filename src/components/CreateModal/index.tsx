@@ -7,14 +7,12 @@ import { useMst } from '../../store/store';
 import './CreateModal.scss';
 
 type TypeCreateModalProps = {
-  closeModal: () => void;
   approveStatus: { text: string; img: string };
   uploadStatus: { text: string; img: string };
   signStatus: { text: string; img: string };
 };
 
 const CreateModal: React.FC<TypeCreateModalProps> = ({
-  closeModal,
   approveStatus,
   uploadStatus,
   signStatus,
@@ -53,12 +51,13 @@ const CreateModal: React.FC<TypeCreateModalProps> = ({
     return 'green-bg';
   };
 
-  const afterOpen = () => {};
+  const closeModal = () => {
+    modals.createModal.close();
+  };
 
   return (
     <Modal
       isOpen={modals.createModal.isOpen}
-      onAfterOpen={afterOpen}
       onRequestClose={closeModal}
       ariaHideApp={false}
       contentLabel="Follow steps"
@@ -66,7 +65,7 @@ const CreateModal: React.FC<TypeCreateModalProps> = ({
     >
       <div className="modal__header">
         <div className="modal__header__title">Follow steps</div>
-        <button type="button" className="modal__header__close" onClick={() => closeModal()}>
+        <button type="button" className="modal__header__close" onClick={closeModal}>
           <img src={Close} alt="close icon" />
         </button>
       </div>

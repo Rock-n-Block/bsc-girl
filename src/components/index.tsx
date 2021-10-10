@@ -4,9 +4,6 @@ export { default as TokenCard } from './TokenCard';
 // eslint-disable-next-line import/no-cycle
 export { default as Popular } from './Popular';
 // eslint-disable-next-line import/no-cycle
-export { default as Collections } from './Collections';
-export { default as CollectionCard } from './CollectionCard';
-// eslint-disable-next-line import/no-cycle
 export { default as Explore } from './Explore';
 export { default as Footer } from './Footer';
 export { default as CreateModal } from './CreateModal';

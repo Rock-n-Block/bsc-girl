@@ -5,6 +5,8 @@
 
   width: 100%;
 
+  overflow-x: hidden;
+
   @include b(1024) {
     margin: 105px 0 60px;
   }
@@ -152,7 +154,7 @@
           }
         }
 
-        img {
+        img, video {
           width: 100%;
 
           border-radius: 30px;
