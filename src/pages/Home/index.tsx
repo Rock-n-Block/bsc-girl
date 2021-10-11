@@ -18,15 +18,18 @@ const Home: React.FC = observer(() => {
   useEffect(() => {
     if (user.address) {
       setLoading(true);
-      storeApi.getFavorites().then((res: any) => {
-        setAdvTokens(res.data);
-        storeApi.getCollectibles(user.address, 1).then(({ data }) => {
-          setTokens(data);
-          setLoading(false);
-        });
+      storeApi.getCollectibles(user.address, 1).then(({ data }) => {
+        setTokens(data);
+        setLoading(false);
       });
     }
   }, [user.address]);
+
+  useEffect(() => {
+    storeApi.getFavorites().then((res: any) => {
+      setAdvTokens(res.data);
+    });
+  }, []);
 
   return (
     <div>
