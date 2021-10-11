@@ -16,17 +16,14 @@ const Home: React.FC = observer(() => {
   const [advTokens, setAdvTokens] = useState<IToken[]>([]);
 
   useEffect(() => {
-    const array: IToken[] = [];
     if (user.address) {
       setLoading(true);
-      storeApi.getCollectibles(user.address, 1).then(({ data }) => {
-        // eslint-disable-next-line array-callback-return
-        data.map((token: any) => {
-          if (token.selling) array.push(token);
+      storeApi.getFavorites().then((res: any) => {
+        setAdvTokens(res.data);
+        storeApi.getCollectibles(user.address, 1).then(({ data }) => {
+          setTokens(data);
+          setLoading(false);
         });
-        setTokens(data);
-        setAdvTokens(array);
-        setLoading(false);
       });
     }
   }, [user.address]);
@@ -35,7 +32,7 @@ const Home: React.FC = observer(() => {
     <div>
       <div className="gradient-bg" />
       <div className="home">
-        <Preview tokens={advTokens} />
+        <Preview tokens={advTokens} isLoading={isLoading} />
         <div className="container" id="my-items">
           {isLoading ? (
             <div className="loading">
@@ -44,7 +41,7 @@ const Home: React.FC = observer(() => {
             </div>
           ) : (
             <div className="cards">
-              <ProfileCollectibles tokens={tokens} />
+              <ProfileCollectibles tokens={tokens} isLoading={isLoading} />
             </div>
           )}
         </div>

@@ -16,7 +16,7 @@ interface ISortItem {
 const Explore: React.FC = () => {
   const [isLoading, setLoading] = useState(true);
   const [explore, setExplore] = useState<any>({});
-  const [tags, setTags] = useState<Array<string>>(['all']);
+  const [tags, setTags] = useState<Array<string>>(['All']);
   const sortItems: Array<ISortItem> = [
     { key: '-price', value: 'Price High' },
     { key: 'price', value: 'Price Low' },
@@ -28,7 +28,7 @@ const Explore: React.FC = () => {
     storeApi
       .getTags()
       .then(({ data }) => {
-        setTags(['all', ...data.tags]);
+        setTags(['All', ...data.tags]);
       })
       .catch((err: any) => {
         clogData('get tags error', err);

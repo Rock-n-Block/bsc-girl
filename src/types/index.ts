@@ -49,6 +49,7 @@ export interface IToken {
   media: string;
   format: string;
   name: string;
+  selling: boolean;
   description: string;
   id: number;
   owners: any;

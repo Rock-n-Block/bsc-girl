@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Input } from 'antd';
 import { FormikProps } from 'formik';
 import { observer } from 'mobx-react-lite';
 
 import DefaultAvatar from '../../../assets/img/icons/avatar-default-logo.svg';
 import { UploaderButton } from '../../../components';
-import { clog } from '../../../utils/logger';
 import { validateField } from '../../../utils/validate';
 
 export interface IProfile {
@@ -23,13 +22,6 @@ export interface IProfile {
 
 const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
   ({ touched, errors, handleChange, handleBlur, values, handleSubmit }) => {
-    const [url, setUrl] = useState(values.preview);
-
-    const onHandleSetUrl = (value: any) => {
-      clog('handle setUrl');
-      setUrl(value);
-    };
-
     const onSubmit = () => {
       handleSubmit();
     };
@@ -193,7 +185,7 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
           </button>
         </div>
         <div className="edit-profile__main__upload">
-          <img src={url || DefaultAvatar} alt="preview avatar" />
+          <img src={values.preview || DefaultAvatar} alt="preview avatar" />
           <Form.Item
             name="img"
             className="upload"
@@ -204,7 +196,7 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
             <div className="upload__text">
               We recommend an image of at least 400x400. Gifs work too.
             </div>
-            <UploaderButton type="button" setUrl={onHandleSetUrl} />
+            <UploaderButton type="button" />
           </Form.Item>
         </div>
       </Form>

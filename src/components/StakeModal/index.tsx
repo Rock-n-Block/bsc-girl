@@ -99,55 +99,43 @@ const StakeModal: React.FC = observer(() => {
                 modals.stakeModal.name,
               )
               .then(() => {
-                connector.connectorService
-                  .getContract(modals.stakeModal.name)
-                  .methods.approve(contract.STAKING.chain[type].address, amount)
-                  .send({
-                    from: user.address,
-                  })
-                  .then(() => {
-                    if (modals.stakeModal.operation === 'Stake in pool') {
-                      connector.connectorService
-                        .getContract('Staking')
-                        .methods.createStake(amount, modals.stakeModal.poolId)
-                        .send({
-                          from: user.address,
-                        })
-                        .then((tx: any) => {
-                          clogData('tx:', tx);
-                          setLoading(false);
-                          modals.closeAll();
-                          modals.info.setMsg('You have successfully staked tokens!', 'success');
-                          setTimeout(() => document.location.reload(), 2000);
-                        })
-                        .catch((err: any) => {
-                          clogData('createStake', err);
-                          setLoading(false);
-                        });
-                    } else {
-                      connector.connectorService
-                        .getContract('Staking')
-                        .methods.increaseStake(modals.stakeModal.poolId, amount)
-                        .send({
-                          from: user.address,
-                        })
-                        .then((tx: any) => {
-                          clogData('tx:', tx);
-                          setLoading(false);
-                          modals.closeAll();
-                          modals.info.setMsg('You have successfully increase stake', 'success');
-                          setTimeout(() => document.location.reload(), 2000);
-                        })
-                        .catch((err: any) => {
-                          clogData('increaseStake', err);
-                          setLoading(false);
-                        });
-                    }
-                  })
-                  .catch((err: any) => {
-                    clogData('approve', err);
-                    setLoading(false);
-                  });
+                if (modals.stakeModal.operation === 'Stake in pool') {
+                  connector.connectorService
+                    .getContract('Staking')
+                    .methods.createStake(amount, modals.stakeModal.poolId)
+                    .send({
+                      from: user.address,
+                    })
+                    .then((tx: any) => {
+                      clogData('tx:', tx);
+                      setLoading(false);
+                      modals.closeAll();
+                      modals.info.setMsg('You have successfully staked tokens!', 'success');
+                      setTimeout(() => document.location.reload(), 2000);
+                    })
+                    .catch((err: any) => {
+                      clogData('createStake', err);
+                      setLoading(false);
+                    });
+                } else {
+                  connector.connectorService
+                    .getContract('Staking')
+                    .methods.increaseStake(modals.stakeModal.poolId, amount)
+                    .send({
+                      from: user.address,
+                    })
+                    .then((tx: any) => {
+                      clogData('tx:', tx);
+                      setLoading(false);
+                      modals.closeAll();
+                      modals.info.setMsg('You have successfully increase stake', 'success');
+                      setTimeout(() => document.location.reload(), 2000);
+                    })
+                    .catch((err: any) => {
+                      clogData('increaseStake', err);
+                      setLoading(false);
+                    });
+                }
               })
               .catch((err: any) => {
                 clogData('get allowance', err);
@@ -155,7 +143,7 @@ const StakeModal: React.FC = observer(() => {
               });
           })
           .catch((err: any) => {
-            clogData('approveToken', err);
+            clogData('approve token', err);
             setLoading(false);
           });
       }
@@ -272,11 +260,16 @@ const StakeModal: React.FC = observer(() => {
           {isLoading ? 'In progress...' : 'Confirm'}
         </button>
         {modals.stakeModal.operation !== 'Remove part of stake' ? (
-          <button type="button" className="gradient-button get-currency">
+          <a
+            href="https://pancakeswap.finance/swap"
+            target="_blank"
+            rel="noreferrer"
+            className="gradient-button get-currency"
+          >
             <div className="white-area">
               <span className="gradient-text">Get {modals.stakeModal.name}</span>
             </div>
-          </button>
+          </a>
         ) : (
           ''
         )}

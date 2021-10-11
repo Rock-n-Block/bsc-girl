@@ -16,12 +16,12 @@
     .items {
       display: flex;
       flex-direction: row;
-      gap: 10px;
       overflow-x: auto;
     }
 
     &__item {
       position: relative;
+      margin: 5px;
       padding: 9px 12px;
       height: 35px;
       display: flex;

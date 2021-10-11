@@ -52,7 +52,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector 
     mapPropsToValues: () => ({
       img: '',
       preview: '',
-      price: '',
+      price: '0',
       format: '',
       currency: 'BSCGIRL',
       tokenName: '',

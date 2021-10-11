@@ -26,7 +26,7 @@ const Filter: React.FC<IFilter> = ({
   onChangeSort,
 }) => {
   const [activeFilter, setActiveFilter] = React.useState<string[]>(
-    isAllFilterItem ? ['all'] : [filters[0]],
+    isAllFilterItem ? ['All'] : [filters[0]],
   );
 
   const handleFilterItemClick = (filter: string) => {
@@ -35,19 +35,19 @@ const Filter: React.FC<IFilter> = ({
       if (activeFilter.includes(filter)) {
         newFilters = activeFilter.filter((item) => item !== filter);
         if (!newFilters.length && isAllFilterItem) {
-          newFilters = ['all'];
-          setActiveFilter(['all']);
+          newFilters = ['All'];
+          setActiveFilter(['All']);
         } else {
           setActiveFilter(newFilters);
         }
       } else {
         newFilters.push(filter);
-        if (newFilters.length > 1 && newFilters.includes('all') && filter !== 'all') {
-          newFilters = newFilters.filter((filterString) => filterString !== 'all');
+        if (newFilters.length > 1 && newFilters.includes('All') && filter !== 'All') {
+          newFilters = newFilters.filter((filterString) => filterString !== 'All');
           setActiveFilter([...newFilters]);
-        } else if (filter === 'all') {
-          newFilters = ['all'];
-          setActiveFilter(['all']);
+        } else if (filter === 'All') {
+          newFilters = ['All'];
+          setActiveFilter(['All']);
         } else setActiveFilter([...newFilters]);
       }
     } else {

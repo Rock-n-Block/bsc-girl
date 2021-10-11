@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Upload } from 'antd';
 import { useFormikContext } from 'formik';
@@ -23,10 +23,6 @@ interface IUploader {
   isLoading?: boolean;
   // eslint-disable-next-line react/require-default-props
   values?: any;
-  // eslint-disable-next-line react/require-default-props
-  setUrl?: (url: any) => void;
-  // eslint-disable-next-line react/require-default-props
-  url?: string;
 }
 
 const UploaderButton: React.FC<IUploader> = ({
@@ -36,27 +32,18 @@ const UploaderButton: React.FC<IUploader> = ({
   values,
   handleUpload,
   setFormat,
-  setUrl,
-  url = '',
 }) => {
-  // const [url, setUrl] = useState<any>();
+  const [url, setUrl] = useState<any>();
   const { modals, user } = useMst();
   const location = useLocation();
   const formik = useFormikContext();
-  const handleClear = () => {
-    formik.setFieldValue('img', '');
-    formik.setFieldValue('preview', '');
-    if (setUrl) setUrl('');
-  };
 
-  const getBase64 = (img: any) => {
+  const getBase64 = (img: any, callback: any) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      if (type === 'area') formik.setFieldValue('preview', reader.result);
+      formik.setFieldValue('preview', reader.result);
       clogData('preview:', formik.getFieldProps('preview'));
-      if (setUrl) {
-        setUrl(reader.result);
-      }
+      callback(reader.result);
     });
     reader.readAsDataURL(img);
   };
@@ -100,7 +87,13 @@ const UploaderButton: React.FC<IUploader> = ({
     if (handleUpload) {
       handleUpload(file.originFileObj);
     } else formik.setFieldValue('img', file.originFileObj);
-    getBase64(file.originFileObj);
+    getBase64(file.originFileObj, (prop: string) => setUrl(prop));
+  };
+
+  const handleClear = () => {
+    formik.setFieldValue('img', '');
+    formik.setFieldValue('preview', '');
+    setUrl('');
   };
 
   return (
@@ -113,16 +106,20 @@ const UploaderButton: React.FC<IUploader> = ({
             multiple={false}
             showUploadList={false}
           >
-            <div
-              className="create-form__upload__clear"
-              onClick={handleClear}
-              onKeyDown={() => {}}
-              role="button"
-              tabIndex={0}
-            >
-              <img src={Close} alt="close" />
-            </div>
-            {values.img ? (
+            {url ? (
+              <div
+                className="create-form__upload__clear"
+                onClick={handleClear}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex={0}
+              >
+                <img src={Close} alt="close" />
+              </div>
+            ) : (
+              ''
+            )}
+            {url ? (
               <>
                 {values.format === 'image' ? (
                   <img src={url} alt="token preview" className="uploader__img" />

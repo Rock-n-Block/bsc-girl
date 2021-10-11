@@ -12,10 +12,10 @@ import './Preview.scss';
 
 type TypePreviewProps = {
   tokens: IToken[];
+  isLoading: boolean;
 };
 
-const Preview: React.FC<TypePreviewProps> = observer(({ tokens }) => {
-  const [isLoading, setLoading] = useState(true);
+const Preview: React.FC<TypePreviewProps> = observer(({ tokens, isLoading }) => {
   const [token, setToken] = useState<IToken>({
     media: DefaultImg,
     format: '',
@@ -23,6 +23,7 @@ const Preview: React.FC<TypePreviewProps> = observer(({ tokens }) => {
     description: '',
     standart: '',
     currency: '',
+    selling: false,
     id: 0,
     owners: [],
     available: 0,
@@ -46,22 +47,24 @@ const Preview: React.FC<TypePreviewProps> = observer(({ tokens }) => {
       if (tokens[query].owners.length) {
         owners = tokens[query].owners;
       } else owners.push(tokens[query].owners);
-      setToken({
-        standart: tokens[query].standart,
-        media: tokens[query].media,
-        format: tokens[query].format,
-        name: tokens[query].name,
-        description: tokens[query].description,
-        id: tokens[query].id,
-        owners,
-        available: tokens[query].available,
-        total_supply: tokens[query].total_supply,
-        price: tokens[query].price,
-        currency: tokens[query].currency?.symbol?.toUpperCase() ?? tokens[query].currency,
-        is_liked: tokens[query].is_liked,
-      });
+      if (tokens[query].selling) {
+        setToken({
+          standart: tokens[query].standart,
+          media: tokens[query].media,
+          format: tokens[query].format,
+          name: tokens[query].name,
+          selling: tokens[query].selling,
+          description: tokens[query].description,
+          id: tokens[query].id,
+          owners,
+          available: tokens[query].available,
+          total_supply: tokens[query].total_supply,
+          price: tokens[query].price,
+          currency: tokens[query].currency?.symbol?.toUpperCase() ?? tokens[query].currency,
+          is_liked: tokens[query].is_liked,
+        });
+      }
     }
-    setLoading(false);
   }, [tokens, query]);
 
   return (

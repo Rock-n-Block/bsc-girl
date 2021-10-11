@@ -61,7 +61,6 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
     const [tags, setTags] = useState<string[]>([]);
     const [currentTags, setCurrentTags] = useState<string[]>([]);
     const [bscRate, setBscRate] = useState([] as IRate[]);
-    const [url, setUrl] = useState('');
     const { user } = useMst();
     const serviceFee = 3;
 
@@ -69,14 +68,12 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
     clogData('currentTags:', currentTags);
 
     const editTags = (item: string) => {
-      if (values.tags.includes(item)) {
-        const idx = values.tags.indexOf(item);
-        values.tags.splice(idx, 1);
+      if (currentTags.includes(item)) {
+        setCurrentTags(currentTags.filter((currentTag) => currentTag !== item));
       } else {
         values.tags.push(item);
+        setCurrentTags([...currentTags, item]);
       }
-      clogData('tags:', values.tags);
-      return setCurrentTags(values.tags);
     };
 
     const onSubmit = () => {
@@ -149,8 +146,6 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
               values={values}
               className="create-form__upload"
               setFormat={(value: string) => setFieldValue('format', value)}
-              setUrl={setUrl}
-              url={url}
             />
           </Form.Item>
           <div className="create-form__enter-price">
@@ -372,7 +367,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                         key={tag}
                         type="button"
                         className={`create-form__tags__item ${
-                          values.tags.includes(tag) ? 'red' : ''
+                          currentTags.length && currentTags.includes(tag) ? 'red' : ''
                         }`}
                         onClick={() => editTags(tag)}
                       >
@@ -389,7 +384,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                   return values.tokenProperties?.map((item, index) => (
                     <div
                       key={`tokenProperties[${index + 1}]`}
-                      className="create-form__fields__group"
+                      className="create-form__fields__properties"
                     >
                       <Form.Item
                         name={`tokenProperties[${index}].size`}
@@ -468,7 +463,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                   avatar: user.avatar,
                 },
               ]}
-              img={url || DefaultImg}
+              img={values.preview || DefaultImg}
               name={values.tokenName}
               price={values.price}
               format={values.format}

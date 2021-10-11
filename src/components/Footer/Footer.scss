@@ -90,5 +90,9 @@
     font-size: 14px;
     line-height: 20px;
     color: #959595;
+
+    @include b(400) {
+      text-align: center;
+    }
   }
 }

@@ -48,6 +48,7 @@ interface INewUser {
 const ProfilePage: React.FC = observer(() => {
   const params = new URLSearchParams(useLocation().search);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingContent, setLoadingContent] = useState<boolean>(true);
   const [isShowCopied, setShowCopied] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<INewUser>();
   const [activeTab, setActiveTab] = useState(params.get('tab') ?? 'my-items');
@@ -142,6 +143,7 @@ const ProfilePage: React.FC = observer(() => {
           .getCollectibles(currentUser?.address ?? '', page)
           .then(({ data }) => {
             setCollectibles({ tokens: [...data], length: data.length });
+            setLoadingContent(false);
           })
           .catch((err: any) => {
             clogData('get tokens', err);
@@ -281,9 +283,21 @@ const ProfilePage: React.FC = observer(() => {
               Created
             </div>
           </div>
-          {activeTab === 'my-items' ? <ProfileCollectibles tokens={collectibles.tokens} /> : ''}
-          {activeTab === 'liked' ? <ProfileLiked address={currentUser?.address ?? ''} /> : ''}
-          {activeTab === 'created' ? <ProfileCreated address={currentUser?.address ?? ''} /> : ''}
+          {activeTab === 'my-items' ? (
+            <ProfileCollectibles tokens={collectibles.tokens} isLoading={isLoadingContent} />
+          ) : (
+            ''
+          )}
+          {activeTab === 'liked' && currentUser?.address ? (
+            <ProfileLiked address={currentUser.address ?? ''} />
+          ) : (
+            ''
+          )}
+          {activeTab === 'created' && currentUser?.address ? (
+            <ProfileCreated address={currentUser.address ?? ''} />
+          ) : (
+            ''
+          )}
         </div>
       ) : (
         <div className="profile__info">

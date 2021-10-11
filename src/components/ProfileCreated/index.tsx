@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import DefaultImg from '../../assets/img/card-default.png';
+import Loader from '../../assets/img/icons/loader.svg';
 import { storeApi } from '../../services/api';
 import { clogData } from '../../utils/logger';
 import { NoItemsFound, TokenCard } from '../index';
@@ -10,6 +11,7 @@ interface ProfileCreatedProps {
 }
 
 const ProfileCreated: React.FC<ProfileCreatedProps> = ({ address }) => {
+  const [isLoading, setLoading] = useState(true);
   const [createdCards, setCreatedCards] = useState<any>({});
 
   const loadUserCreated = useCallback(
@@ -30,6 +32,7 @@ const ProfileCreated: React.FC<ProfileCreatedProps> = ({ address }) => {
               length: data.length,
             };
           });
+          setLoading(false);
         })
         .catch((err: any) => {
           clogData('get created error', err);
@@ -46,25 +49,31 @@ const ProfileCreated: React.FC<ProfileCreatedProps> = ({ address }) => {
     <div className="profile__content">
       {createdCards.tokens && createdCards.tokens.length ? (
         <div className="scroll">
-          <div className="profile__content__items">
-            {createdCards.tokens.map((token: any) => (
-              <TokenCard
-                key={token.id}
-                id={token.id}
-                owners={token.standart === 'ERC1155' ? token.owners : [token.owners]}
-                img={token.media ? token.media : DefaultImg}
-                format={token.format}
-                name={token.name}
-                price={token.price}
-                currency={token.currency?.symbol ?? token.currency}
-                total_supply={token.total_supply}
-                available={token.available}
-                is_liked={token.is_liked}
-                disableLinks={false}
-                onSale={token.selling}
-              />
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="loading">
+              <img src={Loader} alt="loader" />
+            </div>
+          ) : (
+            <div className="profile__content__items">
+              {createdCards.tokens.map((token: any) => (
+                <TokenCard
+                  key={token.id}
+                  id={token.id}
+                  owners={token.standart === 'ERC1155' ? token.owners : [token.owners]}
+                  img={token.media ? token.media : DefaultImg}
+                  format={token.format}
+                  name={token.name}
+                  price={token.price}
+                  currency={token.currency?.symbol ?? token.currency}
+                  total_supply={token.total_supply}
+                  available={token.available}
+                  is_liked={token.is_liked}
+                  disableLinks={false}
+                  onSale={token.selling}
+                />
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         <NoItemsFound />

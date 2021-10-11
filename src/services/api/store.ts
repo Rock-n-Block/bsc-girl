@@ -9,9 +9,10 @@ export default {
   getFee: (): Promise<any> => axios.get('store/fee'),
   getExplore: (page: number, filter: string, sort: string): Promise<any> =>
     axios.post(
-      `store/search/?order_by=${sort}&on_sale=true${filter !== 'all' ? `&tag=${filter}` : ''}`,
+      `store/search/?order_by=${sort}&on_sale=true${filter !== 'All' ? `&tags=${filter}` : ''}`,
       { page: 1, text: '' },
     ),
+  getFavorites: (): Promise<any> => axios.get('store/favorites/'),
   getTags: (): Promise<any> => axios.get(`store/tags/`),
   getCollections: (): Promise<any> => axios.get('store/hot_collections/'),
   getHotBids: (): Promise<any> => axios.get('store/hot_bids/'),

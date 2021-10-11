@@ -131,7 +131,7 @@
 
         &__clear {
           position: absolute;
-          z-index: 10;
+          z-index: 1;
           top: 16px;
           right: 16px;
 
@@ -497,6 +497,18 @@
         }
 
         &__group {
+          display: grid;
+          align-items: flex-start;
+          grid-template-columns: repeat(2, 1fr);
+          grid-column-gap: 40px;
+          grid-row-gap: 20px;
+
+          @include b(400) {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        &__properties {
           display: grid;
           align-items: flex-end;
           grid-template-columns: repeat(2, 1fr);
