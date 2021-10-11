@@ -42,7 +42,7 @@ const Footer: React.FC = observer(() => {
               <div className="footer__nav__items__item">
                 <div className="title">Community</div>
                 <div className="links">
-                  <Link to="/create">Create</Link>
+                  {user.address ? <Link to="/create">Create</Link> : ''}
                   <a href="https://bridge.bscgirl.com/" target="_blank" rel="noreferrer">
                     Bridge
                   </a>

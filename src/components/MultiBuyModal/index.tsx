@@ -62,7 +62,11 @@ const MultiBuyModal: React.FC<IMultiBuyModal> = observer(({ sellers, token, coll
                         alt="seller avatar"
                       />
                       <div className="seller__info__content">
-                        <span className="seller__info__name">{seller.name}</span>
+                        <span className="seller__info__name">
+                          {seller.name.length > 17
+                            ? `${seller.name.substr(0, 16)}...`
+                            : seller.name}
+                        </span>
                         <span className="seller__info__quantity">
                           {seller.quantity} {seller.quantity > 1 ? 'Tokens' : 'Token'}
                         </span>

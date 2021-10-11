@@ -6,13 +6,21 @@
   top: 150px;
   z-index: 90;
   padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
   width: 380px;
   box-shadow: -3px 3px 6px $soft-red;
+
+  @include b(400) {
+    margin-left: 10px;
+    width: 100%;
+  }
 
   background: #fff;
   border-radius: 30px;
 
   &__content {
+    overflow-y: hidden;
     &__title {
       margin-bottom: 20px;
       font-weight: 700;
@@ -24,6 +32,7 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
+      overflow-y: auto;
 
       .seller {
         display: flex;
