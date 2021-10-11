@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Form, Input } from 'antd';
 import BigNumber from 'bignumber.js/bignumber';
 import { FieldArray, FormikProps } from 'formik';
@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import DefaultImg from '../../../assets/img/card-default.png';
 import ArrowGradient from '../../../assets/img/icons/arrow-gradient.svg';
 import { CreateModal, InputNumber, TokenCard, UploaderButton } from '../../../components';
+import { ratesApi, storeApi } from '../../../services/api';
 import { useMst } from '../../../store/store';
 import { clogData } from '../../../utils/logger';
 import { validateField } from '../../../utils/validate';
@@ -34,12 +35,11 @@ export interface ICreateForm {
   tokenRoyalties: number | string;
   numberOfCopies: number | string;
   tokenProperties: IProperties[];
+  tags: string[];
   isSingle?: boolean;
-  bscRate: IRate[];
   approveStatus: { text: string; img: string };
   uploadStatus: { text: string; img: string };
   signStatus: { text: string; img: string };
-  closeModal: () => void;
 }
 
 const { TextArea } = Input;
@@ -58,10 +58,26 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
     const [isOpen, setIsOpen] = useState(false);
     const [isActive, setActive] = useState(values.selling);
     const [rate, setRate] = useState(1);
+    const [tags, setTags] = useState<string[]>([]);
+    const [currentTags, setCurrentTags] = useState<string[]>([]);
+    const [bscRate, setBscRate] = useState([] as IRate[]);
+    const [url, setUrl] = useState('');
     const { user } = useMst();
     const serviceFee = 3;
 
     clogData('format', values.format);
+    clogData('currentTags:', currentTags);
+
+    const editTags = (item: string) => {
+      if (values.tags.includes(item)) {
+        const idx = values.tags.indexOf(item);
+        values.tags.splice(idx, 1);
+      } else {
+        values.tags.push(item);
+      }
+      clogData('tags:', values.tags);
+      return setCurrentTags(values.tags);
+    };
 
     const onSubmit = () => {
       handleSubmit();
@@ -100,6 +116,26 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
       handleChange(e);
     };
 
+    const getTags = useCallback(async () => {
+      const { data } = await storeApi.getTags();
+      setTags(data.tags);
+    }, []);
+
+    useEffect(() => {
+      ratesApi
+        .getRates()
+        .then(({ data }) => {
+          setBscRate(data);
+        })
+        .catch((error) => {
+          clogData('getRates Error:', error);
+        });
+    }, []);
+
+    useEffect(() => {
+      getTags();
+    }, [getTags]);
+
     return (
       <Form name="create-form" className="create-collectible__main">
         <div className="create-form">
@@ -113,6 +149,8 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
               values={values}
               className="create-form__upload"
               setFormat={(value: string) => setFieldValue('format', value)}
+              setUrl={setUrl}
+              url={url}
             />
           </Form.Item>
           <div className="create-form__enter-price">
@@ -209,13 +247,13 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                       .toFixed()}{' '}
                 {values.currency}
               </div>
-              {values.bscRate.length ? (
+              {bscRate && bscRate.length ? (
                 <div className="result__usd">
                   $
                   {new BigNumber(+values.price)
                     .multipliedBy(new BigNumber(100 - serviceFee))
                     .dividedBy(100)
-                    .multipliedBy(values.bscRate[rate].rate)
+                    .multipliedBy(bscRate[rate].rate)
                     .toFixed(2)}
                 </div>
               ) : (
@@ -322,6 +360,28 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                 React.Fragment
               )}
             </div>
+            <Form.Item
+              name="tags"
+              className="field"
+              label={<span className="field__title">Tags</span>}
+            >
+              <div className="create-form__tags">
+                {tags && tags.length
+                  ? tags.map((tag: string) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        className={`create-form__tags__item ${
+                          values.tags.includes(tag) ? 'red' : ''
+                        }`}
+                        onClick={() => editTags(tag)}
+                      >
+                        {tag}
+                      </button>
+                    ))
+                  : ''}
+              </div>
+            </Form.Item>
             <>
               <FieldArray
                 name="tokenProperties"
@@ -408,7 +468,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                   avatar: user.avatar,
                 },
               ]}
-              img={values.preview || DefaultImg}
+              img={url || DefaultImg}
               name={values.tokenName}
               price={values.price}
               format={values.format}

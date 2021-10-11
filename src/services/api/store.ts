@@ -8,7 +8,10 @@ export default {
   saveCollection: (data: any): Promise<any> => axios.post('store/save_collection/', data),
   getFee: (): Promise<any> => axios.get('store/fee'),
   getExplore: (page: number, filter: string, sort: string): Promise<any> =>
-    axios.post(`store/search/?order_by=${sort}&on_sale=true`, { page: 1, text: '' }),
+    axios.post(
+      `store/search/?order_by=${sort}&on_sale=true${filter !== 'all' ? `&tag=${filter}` : ''}`,
+      { page: 1, text: '' },
+    ),
   getTags: (): Promise<any> => axios.get(`store/tags/`),
   getCollections: (): Promise<any> => axios.get('store/hot_collections/'),
   getHotBids: (): Promise<any> => axios.get('store/hot_bids/'),

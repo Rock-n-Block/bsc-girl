@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js/bignumber';
 
 import LikeActive from '../../assets/img/icons/like-active.svg';
 import Like from '../../assets/img/icons/like.svg';
+import Loader from '../../assets/img/icons/loader.svg';
 import { userApi } from '../../services/api';
 import { useMst } from '../../store/store';
 import { clogData } from '../../utils/logger';
@@ -40,7 +41,7 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({
   onSale,
 }) => {
   const [isLiked, setLiked] = useState(is_liked);
-  // const [isMyToken, setMyToken] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const { user } = useMst();
 
   const handleLike = (): void => {
@@ -65,6 +66,10 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({
       setLiked(user.isLiked());
     }
   }, [id, user, user.id]);
+
+  useEffect(() => {
+    if (img) setLoading(false);
+  }, [img]);
 
   return (
     <div className="card">
@@ -99,29 +104,35 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({
       )}
       {!disableLinks ? (
         <Link to={`/token/${id}`}>
-          <div className="card__img">
-            {format === 'video' ? (
-              <video controls>
-                <source src={img} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-                <track kind="captions" />
-              </video>
-            ) : (
-              ''
-            )}
-            {format === 'audio' ? (
-              <audio controls>
-                <source src={img} />
-                <track kind="captions" />
-              </audio>
-            ) : (
-              ''
-            )}
-            {format === 'gif' || format === 'image' || format === 'img' ? (
-              <img src={img} alt="token preview" />
-            ) : (
-              ''
-            )}
-          </div>
+          {isLoading ? (
+            <div className="loading">
+              <img src={Loader} alt="loader" />
+            </div>
+          ) : (
+            <div className="card__img">
+              {format === 'video' ? (
+                <video controls>
+                  <source src={img} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+                  <track kind="captions" />
+                </video>
+              ) : (
+                ''
+              )}
+              {format === 'audio' ? (
+                <audio controls>
+                  <source src={img} />
+                  <track kind="captions" />
+                </audio>
+              ) : (
+                ''
+              )}
+              {format === 'gif' || format === 'image' || format === 'img' ? (
+                <img src={img} alt="token preview" />
+              ) : (
+                ''
+              )}
+            </div>
+          )}
         </Link>
       ) : (
         <div className="card__img">

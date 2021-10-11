@@ -117,19 +117,6 @@ const CreateModal = types
     },
   }));
 
-// const VerifyModal = types
-//   .model({
-//     isOpen: types.boolean,
-//   })
-//   .actions((self) => ({
-//     open() {
-//       self.isOpen = true;
-//     },
-//     close() {
-//       self.isOpen = false;
-//     },
-//   }));
-
 const ErrorModal = types
   .model({
     errMsg: types.optional(types.string, ''),

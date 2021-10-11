@@ -1,8 +1,9 @@
 @import "src/styles/index";
 
 .error {
-  position: relative;
-  z-index: 999;
+  position: absolute;
+  left: calc(50% - 175px);
+  z-index: 3;
   margin: 200px auto;
   padding: 20px;
   box-sizing: border-box;

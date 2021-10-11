@@ -16,10 +16,9 @@ import CreateComponent, { ICreateForm } from '../component';
 interface CreateProps {
   isSingle: boolean;
   walletConnector: any;
-  bscRate: any;
 }
 
-const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector, bscRate }) => {
+const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector }) => {
   const history = useHistory();
   const [approveStatus, setApproveStatus] = useState({ text: 'In progress...', img: Loader });
   const [uploadStatus, setUploadStatus] = useState({ text: 'Start now', img: Pencil });
@@ -67,8 +66,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
           amount: '',
         },
       ],
-      bscRate,
-      closeModal,
+      tags: [],
       // eslint-disable-next-line object-shorthand
       approveStatus: approveStatus,
       // eslint-disable-next-line object-shorthand
@@ -137,7 +135,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle, walletConnector,
         .catch((error) => {
           modals.createModal.close();
           modals.error.setErr('Something went wrong');
-          clogData('createToken error:', error);
+          clogData('createToken', error);
         });
     },
 

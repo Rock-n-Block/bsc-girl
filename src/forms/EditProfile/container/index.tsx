@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { withFormik } from 'formik';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 
 import { userApi } from '../../../services/api';
 import { useMst } from '../../../store/store';
@@ -31,15 +31,7 @@ const EditProfile: React.FC = observer(() => {
     validate: (values) => {
       return validateForm({
         values,
-        notRequired: [
-          'customUrl',
-          'bio',
-          'twitter',
-          'instagram',
-          'img',
-          'preview',
-          'site',
-        ],
+        notRequired: ['customUrl', 'bio', 'twitter', 'instagram', 'img', 'preview', 'site'],
       });
     },
 
@@ -92,9 +84,12 @@ const EditProfile: React.FC = observer(() => {
               setTimeout(() => window.location.reload(), 1000);
             });
         })
-        .catch((err) => {
-          modals.error.setErr('Something went wrong');
-          clog(err);
+        .catch((err: any) => {
+          modals.info.setMsg(
+            `${Object.keys(err.response.data)[0]}: ${Object.values(err.response.data)[0]}`,
+            'error',
+          );
+          clogData('err:', err.response.data);
         })
         .finally(() => {
           setFieldValue('isLoading', false);

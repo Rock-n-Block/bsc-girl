@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Upload } from 'antd';
 import { useFormikContext } from 'formik';
-import { observer } from 'mobx-react';
 
 import Close from '../../assets/img/icons/close-icon.svg';
 import Img from '../../assets/img/icons/img-icon.svg';
@@ -24,33 +23,40 @@ interface IUploader {
   isLoading?: boolean;
   // eslint-disable-next-line react/require-default-props
   values?: any;
+  // eslint-disable-next-line react/require-default-props
+  setUrl?: (url: any) => void;
+  // eslint-disable-next-line react/require-default-props
+  url?: string;
 }
 
-const UploaderButton: React.FC<IUploader> = observer(({
+const UploaderButton: React.FC<IUploader> = ({
   type = 'area',
   isLoading = false,
   className,
   values,
   handleUpload,
   setFormat,
+  setUrl,
+  url = '',
 }) => {
-  const [url, setUrl] = useState<any>();
+  // const [url, setUrl] = useState<any>();
   const { modals, user } = useMst();
   const location = useLocation();
   const formik = useFormikContext();
-
   const handleClear = () => {
     formik.setFieldValue('img', '');
     formik.setFieldValue('preview', '');
-    setUrl('');
+    if (setUrl) setUrl('');
   };
 
-  const getBase64 = (img: any, callback: any) => {
+  const getBase64 = (img: any) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       if (type === 'area') formik.setFieldValue('preview', reader.result);
-      callback(reader.result);
       clogData('preview:', formik.getFieldProps('preview'));
+      if (setUrl) {
+        setUrl(reader.result);
+      }
     });
     reader.readAsDataURL(img);
   };
@@ -94,7 +100,7 @@ const UploaderButton: React.FC<IUploader> = observer(({
     if (handleUpload) {
       handleUpload(file.originFileObj);
     } else formik.setFieldValue('img', file.originFileObj);
-    getBase64(file.originFileObj, (prop: string) => setUrl(prop));
+    getBase64(file.originFileObj);
   };
 
   return (
@@ -171,6 +177,6 @@ const UploaderButton: React.FC<IUploader> = observer(({
       )}
     </div>
   );
-});
+};
 
 export default UploaderButton;

@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
 import ArrowLeftRed from '../../assets/img/icons/arrow-left-red.svg';
 import { CreateForm } from '../../forms';
-import { ratesApi } from '../../services/api';
 import { useWalletConnectService } from '../../services/connectwallet';
-import { clogData } from '../../utils/logger';
 
 import './CreateCollectible.scss';
 
@@ -14,20 +13,8 @@ type TypeCreateProps = {
   isSingle: boolean;
 };
 
-const CreateCollectiblePage: React.FC<TypeCreateProps> = ({ isSingle }) => {
+const CreateCollectiblePage: React.FC<TypeCreateProps> = observer(({ isSingle }) => {
   const walletConnector = useWalletConnectService();
-  const [bscRate, setBscRate] = useState({});
-
-  useEffect(() => {
-    ratesApi
-      .getRates()
-      .then(({ data }) => {
-        setBscRate(data);
-      })
-      .catch((error) => {
-        clogData('getRates Error:', error);
-      });
-  }, []);
 
   return (
     <div className="container">
@@ -44,11 +31,10 @@ const CreateCollectiblePage: React.FC<TypeCreateProps> = ({ isSingle }) => {
         <CreateForm
           isSingle={isSingle}
           walletConnector={walletConnector.connectorService}
-          bscRate={bscRate}
         />
       </div>
     </div>
   );
-};
+});
 
 export default CreateCollectiblePage;
