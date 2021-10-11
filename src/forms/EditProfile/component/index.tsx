@@ -5,6 +5,8 @@ import { observer } from 'mobx-react-lite';
 
 import DefaultAvatar from '../../../assets/img/icons/avatar-default-logo.svg';
 import { UploaderButton } from '../../../components';
+import { userApi } from '../../../services/api';
+import { useMst } from '../../../store/store';
 import { validateField } from '../../../utils/validate';
 
 export interface IProfile {
@@ -17,13 +19,45 @@ export interface IProfile {
   site?: string;
   img?: any;
   preview?: string;
+  url?: string;
   isLoading: boolean;
 }
 
 const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
   ({ touched, errors, handleChange, handleBlur, values, handleSubmit }) => {
+    const { modals, user } = useMst();
+
     const onSubmit = () => {
       handleSubmit();
+    };
+
+    const handleVerify = () => {
+      const verifyData = new FormData();
+      verifyData.append('url', values.url ? values.url : '');
+      verifyData.append('address', user.address);
+      verifyData.append('role', 'creator');
+      verifyData.append('bio', values.bio ? values.bio : '');
+      verifyData.append('twitter', values.twitter ? values.twitter : '');
+      verifyData.append('media', values.img);
+      verifyData.append('instagram', values.instagram ? values.instagram : '');
+      verifyData.append('website', values.site ? values.site : '');
+      verifyData.append('email', values.email ? values.email : '');
+
+      userApi
+        .verifyMe(verifyData)
+        .then(() => {
+          modals.info.setMsg(
+            'Congrats you have successfully submitted a verification request',
+            'success',
+          );
+        })
+        .catch((err: any) => {
+          if (err.message === 'Request failed with status code 400') {
+            modals.info.setMsg('Your verification already in progress', 'error');
+          } else {
+            modals.error.setErr(err.message);
+          }
+        });
     };
 
     return (
@@ -180,6 +214,32 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
               Link your personal site in order to get the verification badge
             </div>
           </Form.Item>
+          <Form.Item label={<span className="form-item__title">Favorite url address</span>}>
+            <div className="form-item__input">
+              <Input
+                id="url"
+                value={values.url}
+                placeholder="https://"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              <a href={`https://${values.url}`} target="_blank" rel="noreferrer">
+                Link
+              </a>
+            </div>
+            <div className="form-item__description">
+              Link any favorite url address in order to get the verification badge
+            </div>
+          </Form.Item>
+          {user.is_verificated ? (
+            ''
+          ) : (
+            <button type="button" className="gradient-button" onClick={handleVerify}>
+              <div className="verify">
+                <span className="gradient-text">Request verification</span>
+              </div>
+            </button>
+          )}
           <button type="button" className="gradient-button" onClick={onSubmit}>
             Update profile
           </button>

@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 
 import { userApi } from '../../../services/api';
 import { useMst } from '../../../store/store';
-import { clog, clogData } from '../../../utils/logger';
+import { clogData } from '../../../utils/logger';
 import { validateForm } from '../../../utils/validate';
 import ProfileComponent, { IProfile } from '../component';
 
@@ -52,35 +52,7 @@ const EditProfile: React.FC = observer(() => {
         .then(({ data }) => {
           user.update(data);
           modals.info.setMsg('Congrats you successfully changed your profile', 'success');
-
-          const verifyData = new FormData();
-          verifyData.append('url', values.customUrl ? values.customUrl : '');
-          verifyData.append('address', user.address);
-          verifyData.append('role', 'creator');
-          verifyData.append('bio', values.bio ? values.bio : '');
-          verifyData.append('twitter', values.twitter ? values.twitter : '');
-          verifyData.append('media', values.img);
-          verifyData.append('instagram', values.instagram ? values.instagram : '');
-          verifyData.append('website', values.site ? values.site : '');
-          verifyData.append('email', values.email ? values.email : '');
-
-          userApi
-            .verifyMe(verifyData)
-            .then(() => {
-              modals.info.setMsg(
-                'Congrats you have successfully submitted a verification request',
-                'success',
-              );
-              history.push(`/profile/${user.id}`);
-            })
-            .catch((err: any) => {
-              if (err.message === 'Request failed with status code 400') {
-                clog(`Your verification already in progress`);
-              } else {
-                clogData('error', err.message);
-              }
-              clog(err.message);
-            });
+          history.push(`/profile/${user.id}`);
         })
         .catch((err: any) => {
           modals.info.setMsg(
