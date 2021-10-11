@@ -474,6 +474,10 @@
 
               border: none;
               outline: none;
+
+              &::placeholder {
+                opacity: 0.5;
+              }
             }
 
             .unit {

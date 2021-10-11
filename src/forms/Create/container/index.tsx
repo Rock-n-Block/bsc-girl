@@ -16,7 +16,7 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle }) => {
     mapPropsToValues: () => ({
       img: '',
       preview: '',
-      price: '0',
+      price: '',
       format: '',
       currency: 'BSCGIRL',
       tokenName: '',
