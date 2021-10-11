@@ -71,6 +71,7 @@ const EditProfile: React.FC = observer(() => {
                 'Congrats you have successfully submitted a verification request',
                 'success',
               );
+              history.push(`/profile/${user.id}`);
             })
             .catch((err: any) => {
               if (err.message === 'Request failed with status code 400') {
@@ -79,9 +80,6 @@ const EditProfile: React.FC = observer(() => {
                 clogData('error', err.message);
               }
               clog(err.message);
-            })
-            .finally(() => {
-              setTimeout(() => window.location.reload(), 1000);
             });
         })
         .catch((err: any) => {
@@ -93,7 +91,6 @@ const EditProfile: React.FC = observer(() => {
         })
         .finally(() => {
           setFieldValue('isLoading', false);
-          history.push(`/profile/${user.id}`);
         });
     },
 

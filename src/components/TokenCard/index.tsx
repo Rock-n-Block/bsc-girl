@@ -136,7 +136,27 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({
         </Link>
       ) : (
         <div className="card__img">
-          <img src={img} alt={img} />
+          {format === 'video' ? (
+            <video controls>
+              <source src={img} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+              <track kind="captions" />
+            </video>
+          ) : (
+            ''
+          )}
+          {format === 'audio' ? (
+            <audio controls>
+              <source src={img} />
+              <track kind="captions" />
+            </audio>
+          ) : (
+            ''
+          )}
+          {format === 'gif' || format === 'image' || format === 'img' ? (
+            <img src={img} alt="token preview" />
+          ) : (
+            ''
+          )}
         </div>
       )}
       <div className="card__content">

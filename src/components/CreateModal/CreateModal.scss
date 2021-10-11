@@ -1,9 +1,10 @@
 @import 'src/styles/index';
 
 .modal {
-  position: relative;
-  z-index: 999;
-  margin: 100px auto 0;
+  position: absolute;
+  left: calc(50% - 224px);
+  top: 100px;
+  z-index: 5;
   padding: 32px;
   max-width: 448px;
   max-height: 601px;

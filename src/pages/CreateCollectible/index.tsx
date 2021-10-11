@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite';
 import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
 import ArrowLeftRed from '../../assets/img/icons/arrow-left-red.svg';
 import { CreateForm } from '../../forms';
-import { useWalletConnectService } from '../../services/connectwallet';
 
 import './CreateCollectible.scss';
 
@@ -14,8 +13,6 @@ type TypeCreateProps = {
 };
 
 const CreateCollectiblePage: React.FC<TypeCreateProps> = observer(({ isSingle }) => {
-  const walletConnector = useWalletConnectService();
-
   return (
     <div className="container">
       <div className="create-collectible">
@@ -28,10 +25,7 @@ const CreateCollectiblePage: React.FC<TypeCreateProps> = observer(({ isSingle })
           <div className="red">{isSingle ? 'single' : 'multiple'}</div>
           &nbsp;collectible
         </div>
-        <CreateForm
-          isSingle={isSingle}
-          walletConnector={walletConnector.connectorService}
-        />
+        <CreateForm isSingle={isSingle} />
       </div>
     </div>
   );

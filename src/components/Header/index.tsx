@@ -89,24 +89,32 @@ const Header: React.FC = observer(() => {
                 {!isShownCurrency ? (
                   <div className="currency__item">
                     <img src={LogoMini} alt="logo avatar" />
-                    {user.balance.bscgirl}
+                    {user.balance.bscgirl.length > 7
+                      ? `${user.balance.bscgirl.substr(0, 7)}...`
+                      : user.balance.bscgirl}
                     &nbsp; BSCGIRL
                   </div>
                 ) : (
                   <div className="show">
                     <div className="currency__item">
                       <img src={LogoBNB} alt="logo bnb" />
-                      {user.balance.bnb}
+                      {user.balance.bnb.length > 7
+                        ? `${user.balance.bnb.substr(0, 7)}...`
+                        : user.balance.bnb}
                       &nbsp; BNB
                     </div>
                     <div className="currency__item">
                       <img src={LogoMini} alt="logo bscgirl" />
-                      {user.balance.bscgirl}
+                      {user.balance.bscgirl.length > 7
+                        ? `${user.balance.bscgirl.substr(0, 7)}...`
+                        : user.balance.bscgirl}
                       &nbsp; BSCGIRL
                     </div>
                     <div className="currency__item">
                       <img src={LogoBSCGIRLMOON} alt="logo bscgirlmoon" />
-                      {user.balance.bscgirlmoon}
+                      {user.balance.bscgirlmoon.length > 7
+                        ? `${user.balance.bscgirlmoon.substr(0, 7)}...`
+                        : user.balance.bscgirlmoon}
                       &nbsp; BSCGIRLMOON
                     </div>
                   </div>
