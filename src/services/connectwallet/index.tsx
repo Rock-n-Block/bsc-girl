@@ -4,12 +4,19 @@ import { ConnectWallet } from '@amfi/connect-wallet';
 import { ContractWeb3 } from '@amfi/connect-wallet/dist/interface';
 import BigNumber from 'bignumber.js/bignumber';
 import { observer } from 'mobx-react';
+import { Observable } from 'rxjs';
 import Web3 from 'web3';
 
 import { blockchains, chain, connectWalletInfo, contracts } from '../../config';
 import { rootStore } from '../../store/store';
 import { clog, clogData, clogGroup, throwError } from '../../utils/logger';
 import { userApi } from '../api';
+
+declare global {
+  interface Window {
+    ethereum: any;
+  }
+}
 
 const walletConnectContext = createContext<any>({
   connectorService: {},
@@ -23,14 +30,26 @@ class ConnectWalletService extends React.Component<any, any> {
     return new BigNumber(amount).times(new BigNumber(10).pow(tokenDecimal)).toString(10);
   }
 
+  private wallet: any;
+
   private readonly connectWallet: ConnectWallet;
 
   private connector: any | undefined;
 
+  public accountChangedObs: any;
+
   constructor(props: any) {
     super(props);
 
+    this.wallet = window.ethereum;
+
     this.connectWallet = new ConnectWallet();
+
+    this.accountChangedObs = new Observable((subscriber) => {
+      this.wallet.on('accountsChanged', () => {
+        subscriber.next();
+      });
+    });
   }
 
   componentDidMount() {
@@ -39,6 +58,13 @@ class ConnectWalletService extends React.Component<any, any> {
     if (localStorage.connector && localStorage.bsc_token && !rootStore.user.address) {
       this.connect(localStorage.connector);
     }
+
+    this.accountChangedObs.subscribe({
+      next() {
+        this.connector = undefined;
+        rootStore.user.disconnect();
+      },
+    });
   }
 
   public getContract = (name: string): ContractWeb3 => this.connectWallet.Contract(name);
