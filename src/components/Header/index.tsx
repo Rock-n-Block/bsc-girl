@@ -215,7 +215,7 @@ const Header: React.FC = observer(() => {
                   <Link to={`/profile/${user.id}`} target="_top" onClick={() => setIsOpen(false)}>
                     <div className="profile-link">
                       {user.avatar ? <img src={user.avatar} alt="user avatar" /> : ''}
-                      {user.id}
+                      {user.display_name}
                     </div>
                   </Link>
                 ) : (

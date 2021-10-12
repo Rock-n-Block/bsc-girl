@@ -31,7 +31,7 @@ const EditProfile: React.FC = observer(() => {
     validate: (values) => {
       return validateForm({
         values,
-        notRequired: ['customUrl', 'bio', 'twitter', 'instagram', 'img', 'preview', 'site'],
+        notRequired: ['bio', 'twitter', 'instagram', 'img', 'preview', 'site'],
       });
     },
 

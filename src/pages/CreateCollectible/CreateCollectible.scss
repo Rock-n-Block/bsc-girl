@@ -221,6 +221,10 @@
             background: transparent;
             border: none;
             outline: none;
+
+            &::placeholder {
+              opacity: 0.5;
+            }
           }
 
           .gradient-box {

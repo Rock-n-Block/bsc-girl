@@ -174,9 +174,27 @@
   }
 
   &__cards {
-    margin-top: 30px;
+    position: relative;
+    margin-top: 20px;
+    padding-top: 30px;
     width: 100%;
     overflow-x: hidden;
+
+    .arrow-right {
+      display: none;
+
+      @include b(990) {
+        display: block;
+        position: absolute;
+        left: 85vw;
+        top: 0;
+        width: 15px;
+        animation-duration: 2s;
+        animation-direction: normal;
+        animation-iteration-count: infinite;
+        animation-name: arrow;
+      }
+    }
 
     .scroll {
       display: grid;

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import DefaultImg from '../../assets/img/card-default.png';
+import ArrowRight from '../../assets/img/icons/arrow-right.svg';
 import Loader from '../../assets/img/icons/loader.svg';
 import { storeApi } from '../../services/api';
 import { clogData } from '../../utils/logger';
@@ -94,25 +95,32 @@ const Explore: React.FC = () => {
         ) : (
           <div className="explore__cards">
             {explore && explore.length ? (
-              <div className="scroll">
-                {explore.map((token: any) => (
-                  <TokenCard
-                    key={token.id}
-                    id={token.id}
-                    owners={token.standart === 'ERC1155' ? token.owners : [token.owners]}
-                    img={token.media ? token.media : DefaultImg}
-                    format={token.format}
-                    name={token.name}
-                    price={token.price}
-                    currency={token.currency?.symbol ?? token.currency}
-                    total_supply={token.total_supply}
-                    available={token.available}
-                    is_liked={token.is_liked}
-                    onSale={token.selling}
-                    disableLinks={false}
-                  />
-                ))}
-              </div>
+              <>
+                {explore.length > 1 ? (
+                  <img src={ArrowRight} alt="arrow right" className="arrow-right" />
+                ) : (
+                  ''
+                )}
+                <div className="scroll">
+                  {explore.map((token: any) => (
+                    <TokenCard
+                      key={token.id}
+                      id={token.id}
+                      owners={token.standart === 'ERC1155' ? token.owners : [token.owners]}
+                      img={token.media ? token.media : DefaultImg}
+                      format={token.format}
+                      name={token.name}
+                      price={token.price}
+                      currency={token.currency?.symbol ?? token.currency}
+                      total_supply={token.total_supply}
+                      available={token.available}
+                      is_liked={token.is_liked}
+                      onSale={token.selling}
+                      disableLinks={false}
+                    />
+                  ))}
+                </div>
+              </>
             ) : (
               <NoItemsFound />
             )}

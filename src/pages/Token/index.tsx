@@ -79,6 +79,8 @@ const TokenPage: React.FC = observer(() => {
   const [isMyToken, setMyToken] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
+  clogData('tokenData:', tokenData);
+
   const createBuyTransaction = async (buyTokenData: any) => {
     clogData('buyTokenData:', buyTokenData);
     try {
@@ -196,7 +198,7 @@ const TokenPage: React.FC = observer(() => {
       creator: data.creator,
       currency: (data.currency?.symbol ?? data.currency).toUpperCase(),
       description: data.description,
-      details: data.details,
+      details: JSON.parse(data.details),
       id: data.id,
       media: data.media,
       format: data.format,
@@ -269,7 +271,6 @@ const TokenPage: React.FC = observer(() => {
     storeApi
       .getToken(tokenId)
       .then(({ data: tokendata }: any) => {
-        clogData('tokenData:', tokendata);
         handleSetTokenData(tokendata);
       })
       .catch((err: any) => {
@@ -516,17 +517,17 @@ const TokenPage: React.FC = observer(() => {
               >
                 History
               </div>
-              {/* <div */}
-              {/*   className={`token__content__details__navbar__link ${ */}
-              {/*     activeTab === 'Details' ? 'active' : undefined */}
-              {/*   }`} */}
-              {/*   role="button" */}
-              {/*   tabIndex={0} */}
-              {/*   onClick={() => setActiveTab('Details')} */}
-              {/*   onKeyPress={() => {}} */}
-              {/* > */}
-              {/*   Details */}
-              {/* </div> */}
+              <div
+                className={`token__content__details__navbar__link ${
+                  activeTab === 'Details' ? 'active' : undefined
+                }`}
+                role="button"
+                tabIndex={0}
+                onClick={() => setActiveTab('Details')}
+                onKeyPress={() => {}}
+              >
+                Details
+              </div>
             </div>
             {tokenData.owners && tokenData.owners.length ? (
               <div className="token__content__details__data">
@@ -586,55 +587,65 @@ const TokenPage: React.FC = observer(() => {
                   ''
                 )}
                 {activeTab === 'Owners' ? (
-                  <>
-                    <div className="token__content__details__data">
-                      {tokenData.owners.map((owner) => (
-                        <div className="person">
-                          <Link id={`${owner.id}`} to={`/profile/${owner.id}`}>
-                            <div className="person__img">
-                              <img className="avatar" src={owner.avatar} alt="person avatar" />
-                              {owner.is_verificated ? (
-                                <img className="verified" src={Verified} alt="verified" />
-                              ) : (
-                                ''
-                              )}
-                            </div>
-                          </Link>
-                          <div className="info">
-                            Owner
-                            <div className="info__position">
-                              {owner.name.length > 16
-                                ? `${owner.name.substr(0, 15)}...`
-                                : owner.name}
-                            </div>
+                  <div className="token__content__details__data">
+                    {tokenData.owners.map((owner) => (
+                      <div className="person">
+                        <Link id={`${owner.id}`} to={`/profile/${owner.id}`}>
+                          <div className="person__img">
+                            <img className="avatar" src={owner.avatar} alt="person avatar" />
+                            {owner.is_verificated ? (
+                              <img className="verified" src={Verified} alt="verified" />
+                            ) : (
+                              ''
+                            )}
+                          </div>
+                        </Link>
+                        <div className="info">
+                          Owner
+                          <div className="info__position">
+                            {owner.name.length > 16 ? `${owner.name.substr(0, 15)}...` : owner.name}
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </>
+                      </div>
+                    ))}
+                  </div>
                 ) : (
                   ''
                 )}
                 {activeTab === 'History' ? (
-                  <>
-                    <div className="token__content__details__data">
-                      {tokenData.history.map((item: any) => (
-                        <div className="person">
-                          <Link to={`/profile/${item.id}`}>
-                            <div className="person__img">
-                              <img className="avatar" src={item.avatar} alt="person avatar" />
-                            </div>
-                          </Link>
-                          <div className="info">
-                            {item.method}
-                            <div className="info__position">
-                              {item.name.length > 16 ? `${item.name.substr(0, 15)}...` : item.name}
-                            </div>
+                  <div className="token__content__details__data">
+                    {tokenData.history.map((item: any) => (
+                      <div className="person">
+                        <Link to={`/profile/${item.id}`}>
+                          <div className="person__img">
+                            <img className="avatar" src={item.avatar} alt="person avatar" />
+                          </div>
+                        </Link>
+                        <div className="info">
+                          {item.method}
+                          <div className="info__position">
+                            {item.name.length > 16 ? `${item.name.substr(0, 15)}...` : item.name}
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  ''
+                )}
+                {activeTab === 'Details' ? (
+                  <div className="token__content__details__data">
+                    {tokenData.details && Object.keys(tokenData.details).length
+                      ? Object.keys(tokenData.details).map((key) => (
+                          <div className="person">
+                            <div className="info">
+                              {key}
+                              <div className="info__position">{tokenData.details[key]}</div>
+                            </div>
+                          </div>
+                        ))
+                      : 'No details'}
+                  </div>
                 ) : (
                   ''
                 )}

@@ -94,7 +94,7 @@ const CreateModal: React.FC<TypeCreateModalProps> = observer(({ values, isSingle
         }
       });
 
-      formData.append('details', details);
+      formData.append('details', JSON.stringify(details));
     }
     goToNextStep();
 

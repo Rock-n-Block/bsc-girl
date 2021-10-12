@@ -12,6 +12,7 @@
 
   &__preview {
     position: relative;
+    z-index: -1;
     margin-top: 30px;
     max-width: 100%;
     height: 188px;
@@ -19,6 +20,8 @@
     border-radius: 40px;
 
     &__bg {
+      position: relative;
+      z-index: -1;
       width: 100%;
       height: 100%;
       overflow: hidden;
@@ -75,7 +78,7 @@
     .blue-heart {
       top: 70px;
       right: -15px;
-      z-index: 2;
+      z-index: 1;
 
       @include b(610) {
         display: none;
@@ -94,7 +97,7 @@
     .girl {
       right: 42px;
       bottom: 0;
-      z-index: 1;
+      z-index: 0;
 
       @include b(610) {
         right: 0;
@@ -102,6 +105,8 @@
     }
 
     .cloud {
+      position: absolute;
+      z-index: -1;
       right: 186px;
       top: -21px;
 
@@ -270,10 +275,27 @@
   }
 
   &__content {
+    position: relative;
     overflow-x: hidden;
 
     @include b(850) {
-      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    .arrow-right {
+      display: none;
+
+      @include b(850) {
+        display: block;
+        position: absolute;
+        left: 85vw;
+        top: 0;
+        width: 15px;
+        animation-duration: 2s;
+        animation-direction: normal;
+        animation-iteration-count: infinite;
+        animation-name: arrow;
+      }
     }
 
     &__rows {
@@ -286,20 +308,26 @@
     }
 
     &__cards {
-      margin-top: 34px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-column-gap: 19px;
-      grid-row-gap: 26px;
+      position: relative;
+      overflow-y: hidden;
+      padding-top: 34px;
 
-      @include b(1440) {
-        grid-template-columns: repeat(2, 1fr);
-        justify-items: center;
-      }
+      .scroll {
+        overflow-y: hidden;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-column-gap: 19px;
+        grid-row-gap: 26px;
 
-      @include b(850) {
-        display: inline-flex;
-        overflow-x: scroll;
+        @include b(1440) {
+          grid-template-columns: repeat(2, 1fr);
+          justify-items: center;
+        }
+
+        @include b(850) {
+          display: inline-flex;
+          overflow-x: scroll;
+        }
       }
     }
   }

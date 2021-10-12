@@ -124,3 +124,17 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes arrow {
+  0% {
+    left: 85vw;
+  }
+
+  50% {
+    left: 80vw;
+  }
+
+  100% {
+    left: 85vw;
+  }
+}

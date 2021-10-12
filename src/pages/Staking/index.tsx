@@ -11,6 +11,7 @@ import CAKE from '../../assets/img/cake-logo.png';
 import Cloud from '../../assets/img/cloud.svg';
 import Crown from '../../assets/img/crown.svg';
 import ArrowDownGradient from '../../assets/img/icons/arrow-gradient.svg';
+import ArrowRight from '../../assets/img/icons/arrow-right.svg';
 import Loader from '../../assets/img/icons/loader.svg';
 import BNB from '../../assets/img/icons/logo-bnb.svg';
 import MenuCardsActive from '../../assets/img/icons/menu-cards-active.svg';
@@ -319,22 +320,25 @@ const StakingPage: React.FC = observer(() => {
           </div>
         </div>
         <div className="staking__content" id="content">
-          {poolsData.length ? (
-            <div className={`staking__content__${currentView}`}>
-              {poolsData.map((poolData) => {
-                return currentView === 'cards' ? (
-                  <StakingCard poolInfo={poolData} tokenInfo={tokenInfo.current} />
-                ) : (
-                  <StakingRow poolInfo={poolData} tokenInfo={tokenInfo.current} />
-                );
-              })}
+          {isLoading ? (
+            <div className="loading">
+              Loading&nbsp;
+              <img className="loading__loader" src={Loader} alt="spinner" />
             </div>
           ) : (
             <>
-              {isLoading ? (
-                <div className="loading">
-                  Loading&nbsp;
-                  <img className="loading__loader" src={Loader} alt="spinner" />
+              <img src={ArrowRight} alt="arrow right" className="arrow-right" />
+              {poolsData.length ? (
+                <div className={`staking__content__${currentView}`}>
+                  <div className={currentView === 'cards' ? 'scroll' : ''}>
+                    {poolsData.map((poolData) => {
+                      return currentView === 'cards' ? (
+                        <StakingCard poolInfo={poolData} tokenInfo={tokenInfo.current} />
+                      ) : (
+                        <StakingRow poolInfo={poolData} tokenInfo={tokenInfo.current} />
+                      );
+                    })}
+                  </div>
                 </div>
               ) : (
                 <NoItemsFound />
