@@ -56,13 +56,13 @@
       }
 
       &__header {
-        margin-bottom: 4px;
+        margin-bottom: 10px;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
 
         .shadow-block {
-          width: 48px;
           background: #fff;
           border: 1px solid #ededed;
           box-sizing: border-box;
@@ -74,7 +74,7 @@
         }
 
         .type {
-          padding: 9px 0;
+          padding: 9px;
           font-family: 'Montserrat', sans-serif;
           font-weight: 700;
           font-size: 14px;

@@ -4,13 +4,13 @@ import { observer } from 'mobx-react';
 
 import LikeActive from '../../assets/img/icons/like-active.svg';
 import Like from '../../assets/img/icons/like.svg';
+import Loader from '../../assets/img/icons/loader.svg';
 import Verified from '../../assets/img/icons/verification.svg';
 import { CheckoutModal, MultiBuyModal, PutOnSaleModal } from '../../components';
 import { contracts } from '../../config';
 import { storeApi, userApi } from '../../services/api';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
-// import { weiToEth } from '../../utils/ethOperations';
 import { clogData } from '../../utils/logger';
 
 import './Token.scss';
@@ -76,6 +76,7 @@ const TokenPage: React.FC = observer(() => {
   const [tokenData, setTokenData] = useState<IToken>({} as IToken);
   const [isApproved, setApproved] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isTokenLoading, setTokenLoading] = useState<boolean>(true);
   const [isMyToken, setMyToken] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
@@ -268,6 +269,13 @@ const TokenPage: React.FC = observer(() => {
   };
 
   useEffect(() => {
+    if (tokenData.format === ('img' || 'gif' || 'image')) {
+      const img = new Image();
+      img.onload = () => setTokenLoading(false);
+    } else if (tokenData.media) setTokenLoading(false);
+  }, [tokenData.format, tokenData.media]);
+
+  useEffect(() => {
     storeApi
       .getToken(tokenId)
       .then(({ data: tokendata }: any) => {
@@ -319,38 +327,42 @@ const TokenPage: React.FC = observer(() => {
   return (
     <div className="container">
       <div className="token">
-        <div className="token__image">
-          {tokenData.format === 'video' ? (
-            <video controls>
-              <source src={tokenData.media} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-              <track kind="captions" />
-            </video>
-          ) : (
-            ''
-          )}
-          {tokenData.format === 'audio' ? (
-            <audio controls>
-              <source src={tokenData.media} />
-              <track kind="captions" />
-            </audio>
-          ) : (
-            ''
-          )}
-          {tokenData.format === 'gif' ||
-          tokenData.format === 'image' ||
-          tokenData.format === 'img' ? (
-            <img src={tokenData.media} alt="token" />
-          ) : (
-            ''
-          )}
-        </div>
+        {isTokenLoading ? (
+          <div className="loading">
+            Loading <img src={Loader} alt="loader" />
+          </div>
+        ) : (
+          <div className="token__image">
+            {tokenData.format === 'video' ? (
+              <video controls>
+                <source src={tokenData.media} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+                <track kind="captions" />
+              </video>
+            ) : (
+              ''
+            )}
+            {tokenData.format === 'audio' ? (
+              <audio controls>
+                <source src={tokenData.media} />
+                <track kind="captions" />
+              </audio>
+            ) : (
+              ''
+            )}
+            {tokenData.format === 'gif' ||
+            tokenData.format === 'image' ||
+            tokenData.format === 'img' ? (
+              <img src={tokenData.media} alt="token" />
+            ) : (
+              ''
+            )}
+          </div>
+        )}
         <div className="token__content">
           <div className="token__content__card">
             <div className="token__content__card__header">
               {tokenData.tags?.map((tag) => (
-                <Link to="/">
-                  <div className="shadow-block type">{tag}</div>
-                </Link>
+                <div className="shadow-block type">{tag}</div>
               ))}
             </div>
             <div className="token__content__card__title">{tokenData.name}</div>

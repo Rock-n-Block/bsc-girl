@@ -71,7 +71,7 @@
   }
 
   &__items {
-    overflow-x: scroll;
+    overflow-x: hidden;
     padding-left: 20px;
     max-height: 500px;
     display: flex;

@@ -68,8 +68,12 @@ const TokenCard: React.FC<TypeTokenCardProps> = ({
   }, [id, user, user.id]);
 
   useEffect(() => {
-    if (img) setLoading(false);
-  }, [img]);
+    if (format === ('image' || 'gif' || 'img')) {
+      const image = new Image();
+      image.onload = () => setLoading(false);
+      image.src = img;
+    } else if (img) setLoading(false);
+  }, [format, img]);
 
   return (
     <div className="card">
