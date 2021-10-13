@@ -199,7 +199,7 @@ const TokenPage: React.FC = observer(() => {
       creator: data.creator,
       currency: (data.currency?.symbol ?? data.currency).toUpperCase(),
       description: data.description,
-      details: JSON.parse(data.details),
+      details: data.details === '[object Object]' ? {} : JSON.parse(data.details),
       id: data.id,
       media: data.media,
       format: data.format,

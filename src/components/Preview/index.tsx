@@ -47,23 +47,21 @@ const Preview: React.FC<TypePreviewProps> = observer(({ tokens, isLoading }) => 
       if (tokens[query].owners.length) {
         owners = tokens[query].owners;
       } else owners.push(tokens[query].owners);
-      if (tokens[query].selling) {
-        setToken({
-          standart: tokens[query].standart,
-          media: tokens[query].media,
-          format: tokens[query].format,
-          name: tokens[query].name,
-          selling: tokens[query].selling,
-          description: tokens[query].description,
-          id: tokens[query].id,
-          owners,
-          available: tokens[query].available,
-          total_supply: tokens[query].total_supply,
-          price: tokens[query].price,
-          currency: tokens[query].currency?.symbol?.toUpperCase() ?? tokens[query].currency,
-          is_liked: tokens[query].is_liked,
-        });
-      }
+      setToken({
+        standart: tokens[query].standart,
+        media: tokens[query].media,
+        format: tokens[query].format,
+        name: tokens[query].name,
+        selling: tokens[query].selling,
+        description: tokens[query].description,
+        id: tokens[query].id,
+        owners,
+        available: tokens[query].available,
+        total_supply: tokens[query].total_supply,
+        price: tokens[query].price,
+        currency: tokens[query].currency?.symbol?.toUpperCase() ?? tokens[query].currency,
+        is_liked: tokens[query].is_liked,
+      });
     }
   }, [tokens, query]);
 
@@ -141,7 +139,7 @@ const Preview: React.FC<TypePreviewProps> = observer(({ tokens, isLoading }) => 
             <div className="preview__content__buttons">
               <button type="button" className="gradient-button">
                 <Link to={`/token/${token.id ?? ''}`}>
-                  Buy for {token.price} {token.currency ?? 'BSCGIRL'}
+                  {token.selling ? `Buy for ${token.price} ${token.currency}` : 'See token info'}
                 </Link>
               </button>
               {token.standart === 'ERC1155' ? (
