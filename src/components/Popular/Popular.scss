@@ -71,13 +71,16 @@
   }
 
   &__items {
-    overflow-x: hidden;
+    overflow-y: hidden;
+    overflow-x: auto;
     padding-left: 20px;
     max-height: 500px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     gap: 36px;
+
+
 
     .item {
       position: relative;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
 
 import ArrowDown from '../../assets/img/icons/arrow-down.svg';
@@ -139,22 +140,24 @@ const Popular: React.FC = observer(() => {
             users.map((item, index) => (
               <div key={item.id} className="item">
                 <div className="item__number">{index + 1}.</div>
-                <div className="item__img">
-                  <img
-                    className="item__img__avatar"
-                    src={item.user.avatar}
-                    alt={`avatar ${
-                      item.user.display_name.length > 10
-                        ? item.user.display_name.substr(0, 9)
-                        : item.user.display_name
-                    }`}
-                  />
-                  {item.user.is_verificated ? (
-                    <img className="item__img__verified" src={Verified} alt="verified icon" />
-                  ) : (
-                    ''
-                  )}
-                </div>
+                <Link to={`/profile/${item.user.id}/`}>
+                  <div className="item__img">
+                    <img
+                      className="item__img__avatar"
+                      src={item.user.avatar}
+                      alt={`avatar ${
+                        item.user.display_name.length > 10
+                          ? item.user.display_name.substr(0, 9)
+                          : item.user.display_name
+                      }`}
+                    />
+                    {item.user.is_verificated ? (
+                      <img className="item__img__verified" src={Verified} alt="verified icon" />
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                </Link>
                 <div className="item__info">
                   <div className="item__info__name">
                     {item.user.display_name.length > 15
