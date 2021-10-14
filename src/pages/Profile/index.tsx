@@ -132,9 +132,11 @@ const ProfilePage: React.FC = observer(() => {
         });
       })
       .catch((err) => {
-        clogData(err, 'get user');
+        if (err.response.data.error === 'user not found') {
+          history.push('/error');
+        } else clogData('get user', err);
       });
-  }, [userId]);
+  }, [history, userId]);
 
   const loadCollectibles = useCallback(
     (page = 1) => {
@@ -229,7 +231,7 @@ const ProfilePage: React.FC = observer(() => {
             )}
           </div>
           <div className="profile__info">
-            <div className="profile__info__name">{currentUser?.displayName || 'UserName'}</div>
+            <div className="profile__info__name">{currentUser?.displayName || ''}</div>
             <div className="profile__info__bio">{currentUser?.bio || 'No biography info'}</div>
             {isShowCopied ? (
               <div className="profile__info__copied">Address copied to clipboard</div>

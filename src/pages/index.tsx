@@ -7,3 +7,4 @@ export { default as EditProfilePage } from './EditProfile';
 export { default as ConnectWalletPage } from './ConnectWallet';
 export { default as SearchPage } from './Search';
 export { default as StakingPage } from './Staking';
+export { default as Error404Page } from './Error404';

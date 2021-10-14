@@ -32,7 +32,10 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle }) => {
       ],
     }),
     validate: (values) => {
-      const notRequired: string[] = ['tokenDescription', 'preview', 'price'];
+      const notRequired: string[] = ['tokenDescription', 'preview'];
+      if (!values.selling) {
+        notRequired.push('price');
+      } else notRequired.filter((item) => item !== 'price');
       if (isSingle) {
         notRequired.push('numberOfCopies');
       }

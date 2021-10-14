@@ -142,8 +142,8 @@ export const validateForm = ({ values, notRequired }: { values: any; notRequired
     customUrl: (value: string): void => {
       if (!value) {
         errCopy.customUrl = 'Enter your custom url';
-      } else if (value.match(/[.#$&?!+=@/,:;'"{*^№`~} ]/i)) {
-        errCopy.customUrl = 'Incorrect custom url';
+      } else if (value.match(/[.#$&?!+=@/,:;'"{(*^№`~}) ]/i)) {
+        errCopy.customUrl = 'Your custom URL must have only letters, numbers or "_" symbol';
       }
     },
     bio: (value: string): void => {

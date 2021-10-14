@@ -291,6 +291,16 @@ const StakeModal: React.FC = observer(() => {
             <span>Max</span>
           </button>
         </div>
+        {modals.stakeModal.poolId === 7 && modals.stakeModal.operation === 'Stake in pool' ? (
+          <div className="unlock">Unstaking will be available in 3 months</div>
+        ) : (
+          ''
+        )}
+        {modals.stakeModal.poolId === 8 && modals.stakeModal.operation === 'Stake in pool' ? (
+          <div className="unlock">Unstaking will be available in 1 months</div>
+        ) : (
+          ''
+        )}
         <button type="button" className="gradient-button confirm" onClick={handleStake}>
           {isLoading ? 'In progress...' : 'Confirm'}
         </button>

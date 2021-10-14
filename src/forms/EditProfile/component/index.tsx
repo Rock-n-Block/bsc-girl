@@ -5,8 +5,6 @@ import { observer } from 'mobx-react-lite';
 
 import DefaultAvatar from '../../../assets/img/icons/avatar-default-logo.svg';
 import { UploaderButton } from '../../../components';
-import { userApi } from '../../../services/api';
-import { useMst } from '../../../store/store';
 import { validateField } from '../../../utils/validate';
 
 export interface IProfile {
@@ -25,40 +23,15 @@ export interface IProfile {
 
 const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
   ({ touched, errors, handleChange, handleBlur, values, handleSubmit }) => {
-    const { modals, user } = useMst();
-
     const onSubmit = () => {
       handleSubmit();
     };
 
-    const handleVerify = () => {
-      const verifyData = new FormData();
-      verifyData.append('url', values.url ? values.url : '');
-      verifyData.append('address', user.address);
-      verifyData.append('role', 'creator');
-      verifyData.append('bio', values.bio ? values.bio : '');
-      verifyData.append('twitter', values.twitter ? values.twitter : '');
-      verifyData.append('media', values.img);
-      verifyData.append('instagram', values.instagram ? values.instagram : '');
-      verifyData.append('website', values.site ? values.site : '');
-      verifyData.append('email', values.email ? values.email : '');
-
-      userApi
-        .verifyMe(verifyData)
-        .then(() => {
-          modals.info.setMsg(
-            'Congrats you have successfully submitted a verification request',
-            'success',
-          );
-        })
-        .catch((err: any) => {
-          if (err.message === 'Request failed with status code 400') {
-            modals.info.setMsg('Your verification already in progress', 'error');
-          } else {
-            modals.error.setErr(err.message);
-          }
-        });
-    };
+    // const handleChange = (e: any) => {
+    //   if (e.target.id === 'customUrl') {
+    //     values.customUrl = e.target.value.match(/[A-Z0-9_]/);
+    //   }
+    // };
 
     return (
       <Form className="edit-profile__main">
@@ -89,11 +62,11 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
             help={!touched.customUrl ? false : errors.customUrl}
             label={<span className="form-item__title">Custom URL</span>}
           >
-            <div className="form-item__input">
+            <div className={`form-item__input ${errors.customUrl ? 'form-item__red' : ''}`}>
               <Input
                 id="customUrl"
                 value={values.customUrl}
-                placeholder="Enter your custom URL"
+                placeholder="site.com/{your_custom_url}"
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -137,30 +110,6 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
                 Link
               </a>
             </div>
-            <div className="form-item__description">
-              Link your Twitter account in order to get the verification badge
-            </div>
-          </Form.Item>
-          <Form.Item
-            name="email"
-            className="form-item"
-            initialValue={values.email}
-            validateStatus={validateField('email', touched, errors)}
-            help={!touched.email ? false : errors.email}
-            label={<span className="form-item__title">Email Username</span>}
-          >
-            <div className="form-item__input">
-              <Input
-                id="email"
-                value={values.email}
-                placeholder="mailto:"
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </div>
-            <div className="form-item__description">
-              Link your email in order to get the verification badge
-            </div>
           </Form.Item>
           <Form.Item
             name="instagram"
@@ -186,9 +135,6 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
                 Link
               </a>
             </div>
-            <div className="form-item__description">
-              Link your Instagram account in order to get the verification badge
-            </div>
           </Form.Item>
           <Form.Item
             name="site"
@@ -210,36 +156,7 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
                 Link
               </a>
             </div>
-            <div className="form-item__description">
-              Link your personal site in order to get the verification badge
-            </div>
           </Form.Item>
-          <Form.Item label={<span className="form-item__title">Favorite url address</span>}>
-            <div className="form-item__input">
-              <Input
-                id="url"
-                value={values.url}
-                placeholder="https://"
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              <a href={`https://${values.url}`} target="_blank" rel="noreferrer">
-                Link
-              </a>
-            </div>
-            <div className="form-item__description">
-              Link any favorite url address in order to get the verification badge
-            </div>
-          </Form.Item>
-          {user.is_verificated ? (
-            ''
-          ) : (
-            <button type="button" className="gradient-button" onClick={handleVerify}>
-              <div className="verify">
-                <span className="gradient-text">Request verification</span>
-              </div>
-            </button>
-          )}
           <button type="button" className="gradient-button" onClick={onSubmit}>
             Update profile
           </button>

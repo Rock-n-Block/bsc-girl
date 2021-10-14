@@ -327,10 +327,14 @@ const StakingPage: React.FC = observer(() => {
             </div>
           ) : (
             <>
-              <img src={ArrowRight} alt="arrow right" className="arrow-right" />
+              <img
+                src={ArrowRight}
+                alt="arrow right"
+                className={currentView === 'cards' ? 'arrow-right' : 'hide'}
+              />
               {poolsData.length ? (
                 <div className={`staking__content__${currentView}`}>
-                  <div className={currentView === 'cards' ? 'scroll' : ''}>
+                  <div className={currentView === 'cards' ? 'scroll' : 'block'}>
                     {poolsData.map((poolData) => {
                       return currentView === 'cards' ? (
                         <StakingCard poolInfo={poolData} tokenInfo={tokenInfo.current} />

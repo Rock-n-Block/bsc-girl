@@ -154,71 +154,64 @@ class ConnectWalletService extends React.Component<any, any> {
   }
 
   public connect = (providerName: string) => {
-    try {
-      this.initWalletConnect(providerName).then((isConnected: any) => {
-        if (isConnected) {
-          this.getAccount({
-            address: rootStore.user.address,
-          })
-            .then((account: any) => {
-              this.getTokenBalance(account.address, 'BSCGIRL')
-                .then((value: any) => {
-                  rootStore.user.setBalance(
-                    new BigNumber(value).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
-                    'BSCGIRL',
-                  );
-                  this.getTokenBalance(account.address, 'BSCGIRLMOON').then((balance: any) => {
-                    rootStore.user.setBalance(
-                      new BigNumber(balance).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
-                      'BSCGIRLMOON',
-                    );
-
-                    this.getBnbBalance(account.address).then((data) => {
-                      rootStore.user.setBalance(
-                        new BigNumber(data).dividedBy(new BigNumber(10).pow(18)).toFixed(5, 1),
-                        'BNB',
-                      );
-                    });
-                  });
-                })
-                .finally(async () => {
-                  try {
-                    if (!localStorage.bsc_token) {
-                      const metMsg: any = await userApi.getMsg();
-
-                      const signedMsg = await this.signMsg(
-                        metMsg.data,
-                        providerName,
-                        account.address,
-                      );
-
-                      const login: any = await userApi.login({
-                        address: account.address,
-                        msg: metMsg.data,
-                        signedMsg,
-                      });
-
-                      localStorage.bsc_token = login.data.key;
-                    }
-                    localStorage.connector = providerName;
-                    rootStore.user.setAddress(account.address);
-                    await rootStore.user.getMe();
-                  } catch (err: any) {
-                    rootStore.modals.error.setErr(err.message.text);
-                    rootStore.user.disconnect();
-                  }
-                });
-            })
-            .catch((err: any) => {
-              rootStore.modals.error.setErr(`Getting account ${err.message}`);
+    this.initWalletConnect(providerName).then((isConnected: any) => {
+      if (isConnected) {
+        this.getAccount({
+          address: rootStore.user.address,
+        })
+          .then(async (account: any) => {
+            this.getTokenBalance(account.address, 'BSCGIRL').then((value: any) => {
+              rootStore.user.setBalance(
+                new BigNumber(value).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
+                'BSCGIRL',
+              );
             });
-        } else {
-          rootStore.user.disconnect();
-        }
-      });
-    } catch (err: any) {
-      rootStore.modals.error.setErr(`connect error: ${err.message}`);
-    }
+            this.getTokenBalance(account.address, 'BSCGIRLMOON').then((balance: any) => {
+              rootStore.user.setBalance(
+                new BigNumber(balance).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
+                'BSCGIRLMOON',
+              );
+            });
+            this.getBnbBalance(account.address).then((data) => {
+              rootStore.user.setBalance(
+                new BigNumber(data).dividedBy(new BigNumber(10).pow(18)).toFixed(5, 1),
+                'BNB',
+              );
+            });
+            try {
+              if (!localStorage.bsc_token) {
+                const metMsg: any = await userApi.getMsg();
+
+                const signedMsg = await this.signMsg(metMsg.data, providerName, account.address);
+
+                const login: any = await userApi.login({
+                  address: account.address,
+                  msg: metMsg.data,
+                  signedMsg,
+                });
+
+                localStorage.bsc_token = login.data.key;
+                localStorage.connector = providerName;
+                rootStore.user.setAddress(account.address);
+                await rootStore.user.getMe();
+                window.location.href = '/';
+              } else {
+                localStorage.connector = providerName;
+                rootStore.user.setAddress(account.address);
+                await rootStore.user.getMe();
+              }
+            } catch (err: any) {
+              rootStore.modals.error.setErr(err.message.text);
+              rootStore.user.disconnect();
+            }
+          })
+          .catch((err: any) => {
+            rootStore.modals.error.setErr(`Getting account ${err.message}`);
+          });
+      } else {
+        rootStore.user.disconnect();
+      }
+    });
   };
 
   public async initWalletConnect(connectName: string): Promise<boolean> {

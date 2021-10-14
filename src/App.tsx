@@ -7,6 +7,7 @@ import {
   CreateCollectiblePage,
   CreatePage,
   EditProfilePage,
+  Error404Page,
   HomePage,
   ProfilePage,
   SearchPage,
@@ -50,6 +51,9 @@ export const App: React.FC = () => {
         </Route>
         <Route exact path="/staking">
           <StakingPage />
+        </Route>
+        <Route>
+          <Error404Page />
         </Route>
       </Switch>
       <Footer />

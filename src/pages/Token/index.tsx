@@ -282,9 +282,12 @@ const TokenPage: React.FC = observer(() => {
         handleSetTokenData(tokendata);
       })
       .catch((err: any) => {
-        clogData('get token', err);
-        history.push('/');
-        modals.error.setErr('Something went wrong');
+        if (err.response.data === 'token not found') {
+          history.push('/error');
+        } else {
+          history.push('/');
+          modals.error.setErr('Something went wrong');
+        }
       });
   }, [history, modals.error, tokenId]);
 

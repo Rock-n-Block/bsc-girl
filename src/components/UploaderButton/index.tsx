@@ -86,8 +86,10 @@ const UploaderButton: React.FC<IUploader> = ({
     if (type === 'area' && setFormat) setFormat(file.type.slice(0, file.type.indexOf('/')));
     if (handleUpload) {
       handleUpload(file.originFileObj);
-    } else formik.setFieldValue('img', file.originFileObj);
-    getBase64(file.originFileObj, (prop: string) => setUrl(prop));
+    } else {
+      formik.setFieldValue('img', file.originFileObj);
+      getBase64(file.originFileObj, (prop: string) => setUrl(prop));
+    }
   };
 
   const handleClear = () => {

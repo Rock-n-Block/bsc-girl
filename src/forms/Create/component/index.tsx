@@ -51,8 +51,12 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
     const serviceFee = 3;
 
     const onSubmit = () => {
-      modals.createModal.open();
-      setModalOpen(true);
+      if ((values.selling && +values.price <= 0.001) || +values.tokenRoyalties > 90) {
+        modals.info.setMsg('Wrong form values, please type correct values', 'error');
+      } else {
+        modals.createModal.open();
+        setModalOpen(true);
+      }
     };
 
     const handleChooseCurrency = (currency: string) => {
@@ -291,7 +295,7 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                       onBlur={handleBlur}
                       positiveOnly
                       integer
-                      max={99}
+                      max={90}
                     />
                     <div className="unit">%</div>
                   </div>
