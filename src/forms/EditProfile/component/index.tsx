@@ -136,27 +136,6 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
               </a>
             </div>
           </Form.Item>
-          <Form.Item
-            name="site"
-            className="form-item"
-            initialValue={values.site}
-            validateStatus={validateField('site', touched, errors)}
-            help={!touched.site ? false : errors.site}
-            label={<span className="form-item__title">Personal site or portfolio</span>}
-          >
-            <div className="form-item__input">
-              <Input
-                id="site"
-                value={values.site}
-                placeholder="https://"
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              <a href={`https://${values.site}`} target="_blank" rel="noreferrer">
-                Link
-              </a>
-            </div>
-          </Form.Item>
           <button type="button" className="gradient-button" onClick={onSubmit}>
             Update profile
           </button>
