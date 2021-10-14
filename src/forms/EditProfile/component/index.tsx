@@ -66,7 +66,7 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
               <Input
                 id="customUrl"
                 value={values.customUrl}
-                placeholder="site.com/{your_custom_url}"
+                placeholder="Enter your custom URL"
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
