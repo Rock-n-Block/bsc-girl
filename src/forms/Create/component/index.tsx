@@ -295,7 +295,6 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                       onBlur={handleBlur}
                       positiveOnly
                       integer
-                      max={90}
                     />
                     <div className="unit">%</div>
                   </div>
