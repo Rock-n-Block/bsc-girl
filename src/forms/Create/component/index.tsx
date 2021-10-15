@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input } from 'antd';
 import BigNumber from 'bignumber.js/bignumber';
-import { FieldArray, FormikProps } from 'formik';
+import { FormikProps } from 'formik';
 import { observer } from 'mobx-react-lite';
 
 import DefaultImg from '../../../assets/img/card-default.png';
@@ -11,11 +11,6 @@ import { ratesApi } from '../../../services/api';
 import { useMst } from '../../../store/store';
 import { clogData } from '../../../utils/logger';
 import { validateField } from '../../../utils/validate';
-
-interface IProperties {
-  size: string | number;
-  amount: string | number;
-}
 
 interface IRate {
   rate: string;
@@ -34,7 +29,6 @@ export interface ICreateForm {
   tokenDescription: string;
   tokenRoyalties: number | string;
   numberOfCopies: number | string;
-  tokenProperties: IProperties[];
   isSingle?: boolean;
 }
 
@@ -68,28 +62,6 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
         result = 0;
       } else result = 1;
       setRate(result);
-    };
-
-    const handleChangeProperty = (e: any, index: any, type: any) => {
-      const localProperties = [...values.tokenProperties];
-
-      if (type === 'size') {
-        localProperties[index].size = e.target.value;
-      }
-      if (type === 'amount') {
-        localProperties[index].amount = e.target.value;
-      }
-      if (
-        localProperties[localProperties.length - 1].size &&
-        localProperties[localProperties.length - 1].amount
-      ) {
-        localProperties.push({
-          size: '',
-          amount: '',
-        });
-      }
-      setFieldValue('tokenProperties', localProperties);
-      handleChange(e);
     };
 
     useEffect(() => {
@@ -325,76 +297,6 @@ const CreateComponent: React.FC<FormikProps<ICreateForm> & ICreateForm> = observ
                   React.Fragment
                 )}
               </div>
-              <>
-                <FieldArray
-                  name="tokenProperties"
-                  render={() => {
-                    return values.tokenProperties?.map((item, index) => (
-                      <div
-                        key={`tokenProperties[${index + 1}]`}
-                        className="create-form__fields__properties"
-                      >
-                        <Form.Item
-                          id={`tokenProperties[${index}].size`}
-                          className="field"
-                          validateStatus={validateField(`tokenProperties`, touched, errors)}
-                          label={<span className="field__title">Properties</span>}
-                          help={(() => {
-                            return errors.tokenProperties &&
-                              errors.tokenProperties[index] &&
-                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                              // @ts-ignore
-                              // eslint-disable-next-line no-param-reassign
-                              errors.tokenProperties[index].size
-                              ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                // @ts-ignore
-                                // eslint-disable-next-line no-param-reassign
-                                errors.tokenProperties[index].size
-                              : false;
-                          })()}
-                        >
-                          <div className="field__input">
-                            <Input
-                              id={`tokenProperties[${index}].size`}
-                              placeholder="e. g. Size"
-                              onChange={(e) => handleChangeProperty(e, index, 'size')}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                        </Form.Item>
-                        <Form.Item
-                          id={`tokenProperties[${index}].amount`}
-                          className="field"
-                          validateStatus={validateField(`tokenProperties`, touched, errors)}
-                          label={<span className="input__label text-bold" />}
-                          help={(() => {
-                            return errors.tokenProperties &&
-                              errors.tokenProperties[index] &&
-                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                              // @ts-ignore
-                              // eslint-disable-next-line no-param-reassign
-                              errors.tokenProperties[index].amount
-                              ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                // @ts-ignore
-                                // eslint-disable-next-line no-param-reassign
-                                errors.tokenProperties[index].amount
-                              : false;
-                          })()}
-                        >
-                          <div className="field__input">
-                            <Input
-                              id={`tokenProperties[${index}].amount`}
-                              placeholder="e. g. M"
-                              onChange={(e) => handleChangeProperty(e, index, 'amount')}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                        </Form.Item>
-                      </div>
-                    ));
-                  }}
-                />
-              </>
               <button type="button" onClick={onSubmit} className="gradient-button btn">
                 Create item
               </button>

@@ -26,7 +26,6 @@ interface IToken {
   creator: IUser;
   currency: string;
   description?: string;
-  details?: any;
   id: number;
   media: string;
   format: string;
@@ -199,7 +198,6 @@ const TokenPage: React.FC = observer(() => {
       creator: data.creator,
       currency: (data.currency?.symbol ?? data.currency).toUpperCase(),
       description: data.description,
-      details: data.details === '[object Object]' ? {} : JSON.parse(data.details),
       id: data.id,
       media: data.media,
       format: data.format,
@@ -532,17 +530,6 @@ const TokenPage: React.FC = observer(() => {
               >
                 History
               </div>
-              <div
-                className={`token__content__details__navbar__link ${
-                  activeTab === 'Details' ? 'active' : undefined
-                }`}
-                role="button"
-                tabIndex={0}
-                onClick={() => setActiveTab('Details')}
-                onKeyPress={() => {}}
-              >
-                Details
-              </div>
             </div>
             {tokenData.owners && tokenData.owners.length ? (
               <div className="token__content__details__data">
@@ -644,22 +631,6 @@ const TokenPage: React.FC = observer(() => {
                         </div>
                       </div>
                     ))}
-                  </div>
-                ) : (
-                  ''
-                )}
-                {activeTab === 'Details' ? (
-                  <div className="token__content__details__data">
-                    {tokenData.details && Object.keys(tokenData.details).length
-                      ? Object.keys(tokenData.details).map((key) => (
-                          <div className="person">
-                            <div className="info">
-                              {key}
-                              <div className="info__position">{tokenData.details[key]}</div>
-                            </div>
-                          </div>
-                        ))
-                      : 'No details'}
                   </div>
                 ) : (
                   ''

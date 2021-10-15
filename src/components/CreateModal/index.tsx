@@ -86,16 +86,6 @@ const CreateModal: React.FC<TypeCreateModalProps> = observer(({ values, isSingle
     formData.append('collection', isSingle ? '3' : '4');
     formData.append('selling', values.selling.toString());
 
-    if (values.tokenProperties[0].size) {
-      const details: any = {};
-      values.tokenProperties.forEach((item: any) => {
-        if (item.size) {
-          details[item.size] = item.amount;
-        }
-      });
-
-      formData.append('details', JSON.stringify(details));
-    }
     goToNextStep();
 
     storeApi

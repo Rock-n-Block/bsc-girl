@@ -24,12 +24,6 @@ const CreateForm: React.FC<CreateProps> = observer(({ isSingle }) => {
       tokenDescription: '',
       tokenRoyalties: '',
       numberOfCopies: '',
-      tokenProperties: [
-        {
-          size: '',
-          amount: '',
-        },
-      ],
     }),
     validate: (values) => {
       const notRequired: string[] = ['tokenDescription', 'preview'];
