@@ -123,7 +123,9 @@ const StakingPage: React.FC = observer(() => {
           .getContract('Staking')
           ?.methods.getProcessInfoForUser(user.address, poolId)
           .call();
+        clogData('processData:', processData);
         const currentBlock = await connector.connectorService.Web3().eth.getBlock('latest');
+        clogData('currentBlock:', currentBlock);
         // eslint-disable-next-line no-underscore-dangle
         const reward = await connector.connectorService
           ?.getContract('Staking')
@@ -136,9 +138,9 @@ const StakingPage: React.FC = observer(() => {
           currentBlock: currentBlock.number,
           endsIn: +timeLockUp
             ? Math.floor(
-                Math.abs(processData.start + +timeLockUp - +currentBlock.timestamp) / 3 +
+                Math.abs(+processData.start + +timeLockUp - +currentBlock.timestamp) / 3 +
                   +currentBlock.number,
-              )
+              ) - +currentBlock.number
             : 0,
           rewardDecimals:
             contractRef.current[tokenInfo.current[rewardsToken.toLowerCase()].name]?.params

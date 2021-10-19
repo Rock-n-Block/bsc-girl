@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite';
 import ArrowDown from '../../assets/img/icons/arrow-down-gradient.svg';
 import ArrowUp from '../../assets/img/icons/arrow-up-white.svg';
 import Calculator from '../../assets/img/icons/calculator-pink.svg';
-import Timer from '../../assets/img/icons/timer-icon.svg';
 import { useWalletConnectService } from '../../services/connectwallet';
 import { useMst } from '../../store/store';
 import { IPoolInfo } from '../../types';
@@ -105,17 +104,6 @@ const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInf
             .dividedBy(new BigNumber(10).pow(poolInfo.infoForUser.stakedDecimals))
             .toFixed(2, 1)}
         </div>
-        {poolInfo.infoForUser.isUnlocked ? (
-          <div className="stake-row__block">
-            <div className="title">Ends in</div>
-            <div className="stake-row__block__value">
-              {poolInfo.infoForUser.endsIn} blocks
-              <img src={Timer} alt="timer icon" />
-            </div>
-          </div>
-        ) : (
-          ''
-        )}
         {poolInfo.infoForUser.isUnlocked ? (
           <button
             type="button"
