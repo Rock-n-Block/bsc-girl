@@ -88,4 +88,12 @@ export default {
     axios.post('/store/report/', { page, reportMessage, token }),
   support: (email: string, message: string, token: string): Promise<any> =>
     axios.post('/store/support/', { email, message, token }),
+  transfer: (tokenId: number, address: string, amount: number): Promise<any> => {
+    const data: any = {
+      address,
+      amount,
+    };
+
+    return axios.post(`/store/transfer/${tokenId}/`, data);
+  },
 };

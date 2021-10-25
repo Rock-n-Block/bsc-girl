@@ -3,10 +3,13 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
 
 import LikeActive from '../../assets/img/icons/like-active.svg';
+import LikeHover from '../../assets/img/icons/like-hover.svg';
 import Like from '../../assets/img/icons/like.svg';
 import Loader from '../../assets/img/icons/loader.svg';
+import More from '../../assets/img/icons/more.svg';
+import Transfer from '../../assets/img/icons/transfer.svg';
 import Verified from '../../assets/img/icons/verification.svg';
-import { CheckoutModal, MultiBuyModal, PutOnSaleModal } from '../../components';
+import { CheckoutModal, MultiBuyModal, PutOnSaleModal, TransferModal } from '../../components';
 import { contracts } from '../../config';
 import { storeApi, userApi } from '../../services/api';
 import { useWalletConnectService } from '../../services/connectwallet';
@@ -78,6 +81,9 @@ const TokenPage: React.FC = observer(() => {
   const [isTokenLoading, setTokenLoading] = useState<boolean>(true);
   const [isMyToken, setMyToken] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [isMouseOver, setMouseOver] = useState<boolean>(false);
+  const [isMoreOpen, setMoreOpen] = useState<boolean>(false);
+  const [available, setAvailable] = useState<number>(0);
 
   clogData('tokenData:', tokenData);
 
@@ -291,13 +297,21 @@ const TokenPage: React.FC = observer(() => {
 
   useEffect(() => {
     if (Object.keys(tokenData).length && user.id) {
-      if (tokenData.owners.find((owner: IUser) => owner.id === user.id)) {
+      if (tokenData.owners.find((owner) => owner.id === user.id)) {
         setMyToken(true);
       }
     } else {
       setMyToken(false);
     }
   }, [tokenData, user.id]);
+
+  useEffect(() => {
+    if (tokenData?.owners?.length) {
+      for (let i = 0; i < tokenData.owners.length; i += 1) {
+        if (tokenData.owners[i].id === user.id) setAvailable(tokenData.owners[i].quantity);
+      }
+    }
+  }, [tokenData.owners, user.id]);
 
   useEffect(() => {
     if (user.address && tokenData.currency) {
@@ -362,6 +376,59 @@ const TokenPage: React.FC = observer(() => {
         <div className="token__content">
           <div className="token__content__card">
             <div className="token__content__card__header">
+              <div
+                className="shadow-block token__content__card__header__nav"
+                role="button"
+                tabIndex={0}
+                onKeyPress={() => {}}
+                onClick={handleLike}
+                onBlur={() => {}}
+                onFocus={() => {}}
+                onMouseOver={() => setMouseOver(true)}
+                onMouseOut={() => setMouseOver(false)}
+              >
+                {isMouseOver && !isLiked ? (
+                  <img src={LikeHover} alt="like hover icon" />
+                ) : (
+                  <img src={isLiked ? LikeActive : Like} alt="like" />
+                )}
+              </div>
+              {isMyToken ? (
+                <div
+                  className="shadow-block token__content__card__header__nav"
+                  role="button"
+                  tabIndex={0}
+                  onKeyPress={() => {}}
+                  onClick={() => {
+                    setMoreOpen(!isMoreOpen);
+                  }}
+                >
+                  <img src={More} alt="more icon" />
+                </div>
+              ) : (
+                ''
+              )}
+              {isMoreOpen ? (
+                <div className="more">
+                  <div
+                    className="more__transfer"
+                    role="button"
+                    tabIndex={0}
+                    onKeyPress={() => {}}
+                    onClick={() => {
+                      modals.transferModal.open();
+                      setMoreOpen(false);
+                    }}
+                  >
+                    <img src={Transfer} alt="transfer icon" />
+                    Transfer token
+                  </div>
+                </div>
+              ) : (
+                ''
+              )}
+            </div>
+            <div className="token__content__card__tags">
               {tokenData.tags?.map((tag) => (
                 <div className="shadow-block type">{tag}</div>
               ))}
@@ -482,17 +549,6 @@ const TokenPage: React.FC = observer(() => {
               {tokenData.updated_at
                 ? `${tokenData.updated_at.substr(0, 10)} ${tokenData.updated_at.substr(11, 8)}`
                 : ''}
-            </div>
-            <div className="token__content__card__btns">
-              <div
-                className="token__content__card__like"
-                role="button"
-                tabIndex={0}
-                onClick={() => handleLike()}
-                onKeyPress={() => {}}
-              >
-                <img src={isLiked ? LikeActive : Like} alt="like" />
-              </div>
             </div>
           </div>
           <div className="token__content__details">
@@ -666,6 +722,7 @@ const TokenPage: React.FC = observer(() => {
           )}
         </div>
       </div>
+      <TransferModal tokenId={tokenData.id} available={available} />
     </div>
   );
 });

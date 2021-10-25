@@ -146,6 +146,19 @@ const InfoModal = types
     },
   }));
 
+const TransferModal = types
+  .model({
+    isOpen: types.optional(types.boolean, false),
+  })
+  .actions((self) => ({
+    open() {
+      self.isOpen = true;
+    },
+    close() {
+      self.isOpen = false;
+    },
+  }));
+
 const StakeModal = types
   .model({
     isOpen: types.optional(types.boolean, false),
@@ -194,6 +207,7 @@ export const Modals = types
     checkAvailability: CheckAvailability,
     createModal: CreateModal,
     stakeModal: StakeModal,
+    transferModal: TransferModal,
   })
   .actions((self) => ({
     closeAll() {
@@ -204,5 +218,6 @@ export const Modals = types
       self.checkAvailability.close();
       self.createModal.close();
       self.stakeModal.close();
+      self.transferModal.close();
     },
   }));

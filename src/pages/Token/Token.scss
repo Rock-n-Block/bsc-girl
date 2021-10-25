@@ -55,23 +55,76 @@
         border: none;
       }
 
+      .shadow-block {
+        background: #fff;
+        border: 1px solid #ededed;
+        box-sizing: border-box;
+        box-shadow: 0 4px 12px rgba(244, 137, 137, 0.2);
+        border-radius: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
       &__header {
+        position: relative;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+        @include b(500) {
+          justify-content: center;
+        }
+
+        &__nav {
+          width: 48px;
+          height: 42px;
+          cursor: pointer;
+        }
+
+        .more {
+          position: absolute;
+          right: 0;
+          top: 55px;
+          width: 208px;
+          height: 84px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: #FCFCFD;
+          box-shadow: 0 16px 64px -48px rgba(31, 47, 70, 0.3);
+          border-radius: 12px;
+          border: 1px solid $soft-red;
+
+          &__transfer {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 16px;
+            color: #777E91;
+            cursor: pointer;
+
+            img {
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+
+      &__tags {
         margin-bottom: 10px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         gap: 10px;
-
-        .shadow-block {
-          background: #fff;
-          border: 1px solid #ededed;
-          box-sizing: border-box;
-          box-shadow: 0 4px 12px rgba(244, 137, 137, 0.2);
-          border-radius: 12px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
 
         .type {
           padding: 9px;

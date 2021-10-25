@@ -29,3 +29,5 @@ export { default as StakingCard } from './StakingCard';
 export { default as StakingRow } from './StakingRow';
 // eslint-disable-next-line import/no-cycle
 export { default as StakeModal } from './StakeModal';
+// eslint-disable-next-line import/no-cycle
+export { default as TransferModal } from './TransferModal';
