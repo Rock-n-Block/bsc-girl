@@ -90,20 +90,24 @@ const TransferModal: React.FC<TypeTransferModalProps> = observer(({ tokenId, ava
           </div>
         </div>
       </div>
-      <div className="transfer-modal__input">
-        <div className="transfer-modal__input__label">Amount of tokens</div>
-        <div className="transfer-modal__input__field">
-          <div className="input-address">
-            <InputNumber
-              value={amount}
-              placeholder="Paste address"
-              onChange={handleChangeAmount}
-              id="amount"
-              positiveOnly
-            />
+      {available === 1 ? (
+        ''
+      ) : (
+        <div className="transfer-modal__input">
+          <div className="transfer-modal__input__label">Amount of tokens</div>
+          <div className="transfer-modal__input__field">
+            <div className="input-address">
+              <InputNumber
+                value={amount}
+                placeholder="Paste address"
+                onChange={handleChangeAmount}
+                id="amount"
+                positiveOnly
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
       {amountError ? <div className="error-message">{amountError}</div> : ''}
       <button type="button" className="transfer-modal__confirm" onClick={handleConfirm}>
         {isLoading ? 'In process...' : 'Continue'}

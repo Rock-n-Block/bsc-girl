@@ -87,30 +87,34 @@ const TokenPage: React.FC = observer(() => {
 
   clogData('tokenData:', tokenData);
 
-  const createBuyTransaction = async (buyTokenData: any) => {
-    clogData('buyTokenData:', buyTokenData);
+  const createBuyTransaction = async (tx: any) => {
+    clogData('initial_tx:', tx);
     try {
       await connector.connectorService.createTransaction(
-        buyTokenData.initial_tx.method,
+        tx.method,
         [
-          buyTokenData.initial_tx.data.idOrder,
-          buyTokenData.initial_tx.data.SellerBuyer,
-          buyTokenData.initial_tx.data.tokenToBuy,
-          buyTokenData.initial_tx.data.tokenToSell,
-          buyTokenData.initial_tx.data.fee.feeAddresses,
-          [
-            buyTokenData.initial_tx.data.fee.feeAmounts[0].toString(),
-            buyTokenData.initial_tx.data.fee.feeAmounts[1].toString(),
-          ],
-          buyTokenData.initial_tx.data.signature,
+          tx.data.idOrder,
+          tx.data.SellerBuyer,
+          tx.data.tokenToBuy,
+          {
+            tokenAddress: tx.data.tokenToSell.tokenAddress,
+            id: tx.data.tokenToSell.id,
+            amount:
+              tx.data.tokenToSell.tokenAddress === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+                ? tx.data.tokenToSell.amount.toString()
+                : tx.data.tokenToSell.amount,
+          },
+          tx.data.fee.feeAddresses,
+          [tx.data.fee.feeAmounts[0].toString(), tx.data.fee.feeAmounts[1].toString()],
+          tx.data.signature,
         ],
         'BEP20',
         {
-          gas: buyTokenData.initial_tx.gas,
-          gasPrice: buyTokenData.initial_tx.gasPrice,
-          nonce: buyTokenData.initial_tx.nonce,
-          to: buyTokenData.initial_tx.to,
-          value: buyTokenData.initial_tx.value,
+          gas: tx.gas,
+          gasPrice: tx.gasPrice,
+          nonce: tx.nonce,
+          to: tx.to,
+          value: tx.value,
         },
       );
       setLoading(false);
@@ -119,6 +123,7 @@ const TokenPage: React.FC = observer(() => {
     } catch (err: any) {
       modals.closeAll();
       modals.error.setErr('Something went wrong');
+      clogData('create transaction', err);
       setLoading(false);
     }
   };
@@ -135,15 +140,17 @@ const TokenPage: React.FC = observer(() => {
       const { data: buyTokenData }: any = await storeApi.buyToken(
         tokenId,
         tokenData.standart === 'ERC721' ? 0 : quantity,
-        contract[tokenData.currency]?.chain[type]?.address ?? '',
+        contract[tokenData.currency]?.chain[type]?.address ??
+          '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
         tokenData.owners[0].id.toString(),
       );
 
-      await createBuyTransaction(buyTokenData);
+      await createBuyTransaction(buyTokenData.initial_tx);
       setLoading(false);
     } catch (err: any) {
       modals.closeAll();
       modals.error.setErr(err.message);
+      clogData('buy token', err);
       setLoading(false);
     }
   };
@@ -497,7 +504,7 @@ const TokenPage: React.FC = observer(() => {
                       tokenData.owners.length > 1
                     : tokenData.owners.length > 1)) ? (
                   <>
-                    {isApproved ? (
+                    {isApproved || tokenData.currency === 'BNB' ? (
                       <>
                         {(tokenData.standart === 'ERC721' &&
                           tokenData.price &&

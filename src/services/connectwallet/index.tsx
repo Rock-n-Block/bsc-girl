@@ -243,7 +243,7 @@ class ConnectWalletService extends React.Component<any, any> {
     return this.connectWallet.currentWeb3();
   }
 
-  createTransaction(
+  async createTransaction(
     method: string,
     data: Array<any>,
     contract: string,
@@ -272,6 +272,7 @@ class ConnectWalletService extends React.Component<any, any> {
 
       return this.sendTransaction('', tx);
     }
+
     return this.sendTransaction(walletAddress, {
       to: tokenAddress || contracts.contract[contract].chain[contracts.type].address,
       data: signature || '',
