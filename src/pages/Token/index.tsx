@@ -175,7 +175,7 @@ const TokenPage: React.FC = observer(() => {
         clogData('approve', err);
         setLoading(false);
         setApproved(false);
-        modals.err.setErr('Something went wrong');
+        modals.error.setErr('Something went wrong');
       });
   };
 

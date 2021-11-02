@@ -102,7 +102,7 @@ class ConnectWalletService extends React.Component<any, any> {
   }
 
   public async getTokenBalance(address: string, tokenName: string): Promise<string | number> {
-    return this.connectWallet.Contract(tokenName).methods.balanceOf(address).call();
+    return this.connectWallet.Contract(tokenName)?.methods?.balanceOf(address)?.call();
   }
 
   public async getAccount(account: { address?: string }): Promise<any> {
