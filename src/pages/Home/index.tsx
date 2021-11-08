@@ -18,10 +18,15 @@ const Home: React.FC = observer(() => {
   useEffect(() => {
     if (user.address) {
       setLoading(true);
-      storeApi.getCollectibles(user.address, 1).then(({ data }) => {
-        setTokens(data);
-        setLoading(false);
-      });
+      storeApi
+        .getCollectibles(user.address, 1)
+        .then(({ data }) => {
+          setTokens(data);
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
     }
   }, [user.address]);
 
