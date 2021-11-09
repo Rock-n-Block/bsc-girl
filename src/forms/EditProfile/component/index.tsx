@@ -13,26 +13,13 @@ export interface IProfile {
   bio?: string;
   twitter?: string;
   instagram?: string;
-  email?: string;
-  site?: string;
   img?: any;
   preview?: string;
-  url?: string;
   isLoading: boolean;
 }
 
 const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
   ({ touched, errors, handleChange, handleBlur, values, handleSubmit }) => {
-    const onSubmit = () => {
-      handleSubmit();
-    };
-
-    // const handleChange = (e: any) => {
-    //   if (e.target.id === 'customUrl') {
-    //     values.customUrl = e.target.value.match(/[A-Z0-9_]/);
-    //   }
-    // };
-
     return (
       <Form className="edit-profile__main">
         <div className="edit-profile__main__form">
@@ -136,8 +123,8 @@ const ProfileComponent: React.FC<FormikProps<IProfile>> = observer(
               </a>
             </div>
           </Form.Item>
-          <button type="button" className="gradient-button" onClick={onSubmit}>
-            Update profile
+          <button type="button" className="gradient-button" onClick={() => handleSubmit()}>
+            {values.isLoading ? 'In progress...' : 'Update profile'}
           </button>
         </div>
         <div className="edit-profile__main__upload">

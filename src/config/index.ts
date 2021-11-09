@@ -6507,10 +6507,13 @@ export const contracts: IContracts = {
     FACTORYERC721: {
       chain: {
         mainnet: {
-          address: '0x1c0864012d2f8a4D7157B9b87e612556F2ec53e8',
+          address: '0x0dDd2e249D81a91B1DE45a673aCF8417FcD7F5d3',
           abi: [
             {
-              inputs: [{ internalType: 'address', name: '_exchange', type: 'address' }],
+              inputs: [
+                { internalType: 'address', name: '_exchange', type: 'address' },
+                { internalType: 'string', name: '_CONTRACT_URI', type: 'string' },
+              ],
               stateMutability: 'nonpayable',
               type: 'constructor',
             },
@@ -6582,6 +6585,20 @@ export const contracts: IContracts = {
               type: 'function',
             },
             {
+              inputs: [],
+              name: 'getFee',
+              outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
+              inputs: [],
+              name: 'getReceiver',
+              outputs: [{ internalType: 'address', name: '', type: 'address' }],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
               inputs: [{ internalType: 'bytes32', name: 'role', type: 'bytes32' }],
               name: 'getRoleAdmin',
               outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
@@ -6644,6 +6661,20 @@ export const contracts: IContracts = {
             {
               inputs: [{ internalType: 'address', name: '_exchange', type: 'address' }],
               name: 'setExchange',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+            {
+              inputs: [{ internalType: 'uint256', name: '_fee', type: 'uint256' }],
+              name: 'setFee',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+            {
+              inputs: [{ internalType: 'address', name: '_receiver', type: 'address' }],
+              name: 'setReceiver',
               outputs: [],
               stateMutability: 'nonpayable',
               type: 'function',
@@ -6816,10 +6847,13 @@ export const contracts: IContracts = {
     FACTORYERC1155: {
       chain: {
         mainnet: {
-          address: '0x7f72BC6686947B58e854879258C8461CCA526199',
+          address: '0xE5b967F41fc276d228E81ED4218b43f34f990CbA',
           abi: [
             {
-              inputs: [{ internalType: 'address', name: '_exchange', type: 'address' }],
+              inputs: [
+                { internalType: 'address', name: '_exchange', type: 'address' },
+                { internalType: 'string', name: '_CONTRACT_URI', type: 'string' },
+              ],
               stateMutability: 'nonpayable',
               type: 'constructor',
             },
@@ -6827,6 +6861,7 @@ export const contracts: IContracts = {
               anonymous: false,
               inputs: [
                 { indexed: false, internalType: 'address', name: 'newToken', type: 'address' },
+                { indexed: false, internalType: 'string', name: 'name', type: 'string' },
                 { indexed: true, internalType: 'address', name: 'signer', type: 'address' },
               ],
               name: 'ERC1155Made',
@@ -6889,6 +6924,20 @@ export const contracts: IContracts = {
               type: 'function',
             },
             {
+              inputs: [],
+              name: 'getFee',
+              outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
+              inputs: [],
+              name: 'getReceiver',
+              outputs: [{ internalType: 'address', name: '', type: 'address' }],
+              stateMutability: 'view',
+              type: 'function',
+            },
+            {
               inputs: [{ internalType: 'bytes32', name: 'role', type: 'bytes32' }],
               name: 'getRoleAdmin',
               outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
@@ -6917,6 +6966,7 @@ export const contracts: IContracts = {
             },
             {
               inputs: [
+                { internalType: 'string', name: 'name', type: 'string' },
                 { internalType: 'string', name: 'uri', type: 'string' },
                 { internalType: 'address', name: 'signer', type: 'address' },
                 { internalType: 'bytes', name: 'signature', type: 'bytes' },
@@ -6949,6 +6999,20 @@ export const contracts: IContracts = {
             {
               inputs: [{ internalType: 'address', name: '_exchange', type: 'address' }],
               name: 'setExchange',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+            {
+              inputs: [{ internalType: 'uint256', name: '_fee', type: 'uint256' }],
+              name: 'setFee',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+            {
+              inputs: [{ internalType: 'address', name: '_receiver', type: 'address' }],
+              name: 'setReceiver',
               outputs: [],
               stateMutability: 'nonpayable',
               type: 'function',
@@ -7118,7 +7182,7 @@ export const contracts: IContracts = {
     EXCHANGE: {
       chain: {
         mainnet: {
-          address: '0x0dc90D06F7f47D92F08cdd494253279B1E7C3fD9',
+          address: '0x2744884Ef9fF372863353b2E728694ed631E645a',
           abi: [
             { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
             {

@@ -83,7 +83,7 @@ const CreateModal: React.FC<TypeCreateModalProps> = observer(({ values, isSingle
     formData.append('creator_royalty', values.tokenRoyalties.toString());
     formData.append('standart', isSingle ? 'ERC721' : 'ERC1155');
     formData.append('currency', values.currency);
-    formData.append('collection', isSingle ? '3' : '4');
+    formData.append('collection', isSingle ? '3' : '2');
     formData.append('selling', values.selling.toString());
 
     goToNextStep();

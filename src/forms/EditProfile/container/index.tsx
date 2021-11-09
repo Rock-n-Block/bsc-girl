@@ -19,8 +19,6 @@ const EditProfile: React.FC = observer(() => {
     bio: user.bio || '',
     twitter: user.twitter || '',
     instagram: user.instagram || '',
-    email: user.email || '',
-    site: user.site || '',
     img: '',
     preview: user.avatar || '',
     isLoading: false,
@@ -31,7 +29,7 @@ const EditProfile: React.FC = observer(() => {
     validate: (values) => {
       return validateForm({
         values,
-        notRequired: ['bio', 'twitter', 'instagram', 'img', 'preview', 'site'],
+        notRequired: ['bio', 'twitter', 'instagram', 'img', 'preview'],
       });
     },
 
@@ -44,8 +42,6 @@ const EditProfile: React.FC = observer(() => {
       formData.append('custom_url', values.customUrl ? values.customUrl : '');
       formData.append('twitter', values.twitter ? values.twitter : '');
       formData.append('instagram', values.instagram ? values.instagram : '');
-      formData.append('email', values.email ? values.email : '');
-      formData.append('site', values.site ? values.site : '');
 
       userApi
         .update(formData)

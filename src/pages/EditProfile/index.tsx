@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react';
 
 import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
 import ArrowLeftRed from '../../assets/img/icons/arrow-left-red.svg';
@@ -8,7 +9,7 @@ import { useMst } from '../../store/store';
 
 import './EditProfile.scss';
 
-const EditProfilePage: React.FC = () => {
+const EditProfilePage: React.FC = observer(() => {
   const { user } = useMst();
 
   return (
@@ -31,6 +32,6 @@ const EditProfilePage: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default EditProfilePage;
