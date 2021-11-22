@@ -163,17 +163,12 @@ class ConnectWalletService extends React.Component<any, any> {
           address: rootStore.user.address,
         })
           .then(async (account: any) => {
-            this.getTokenBalance(account.address, 'BSCGIRL')
-              .then((value: any) => {
-                rootStore.user.setBalance(
-                  new BigNumber(value).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
-                  'BSCGIRL',
-                );
-              })
-              .catch((err: any) => {
-                console.log(123);
-                console.log(err);
-              });
+            this.getTokenBalance(account.address, 'BSCGIRL').then((value: any) => {
+              rootStore.user.setBalance(
+                new BigNumber(value).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
+                'BSCGIRL',
+              );
+            });
             this.getTokenBalance(account.address, 'BSCGIRLMOON').then((balance: any) => {
               rootStore.user.setBalance(
                 new BigNumber(balance).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
