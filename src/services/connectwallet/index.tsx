@@ -26,17 +26,13 @@ const walletConnectContext = createContext<any>({
 
 @observer
 class ConnectWalletService extends React.Component<any, any> {
-  static calcTransactionAmount(amount: number | string, tokenDecimal: number) {
-    return new BigNumber(amount).times(new BigNumber(10).pow(tokenDecimal)).toString(10);
-  }
+  public accountChangedObs: any;
 
   private wallet: any;
 
   private readonly connectWallet: ConnectWallet;
 
   private connector: any | undefined;
-
-  public accountChangedObs: any;
 
   constructor(props: any) {
     super(props);
@@ -50,6 +46,16 @@ class ConnectWalletService extends React.Component<any, any> {
         subscriber.next();
       });
     });
+  }
+
+  static calcTransactionAmount(amount: number | string, tokenDecimal: number) {
+    return new BigNumber(amount).times(new BigNumber(10).pow(tokenDecimal)).toString(10);
+  }
+
+  static getMethodInterface(abi: Array<any>, methodName: string) {
+    return abi.filter((m) => {
+      return m.name === methodName;
+    })[0];
   }
 
   componentDidMount() {
@@ -145,12 +151,6 @@ class ConnectWalletService extends React.Component<any, any> {
           clogData('checkNetwork', err);
         });
     });
-  }
-
-  static getMethodInterface(abi: Array<any>, methodName: string) {
-    return abi.filter((m) => {
-      return m.name === methodName;
-    })[0];
   }
 
   public connect = (providerName: string) => {
@@ -397,6 +397,20 @@ class ConnectWalletService extends React.Component<any, any> {
     });
   }
 
+  render() {
+    return (
+      <walletConnectContext.Provider
+        value={{
+          connectorService: this,
+          connect: this.connect,
+          disconnect: this.disconnect,
+        }}
+      >
+        {this.props.children}
+      </walletConnectContext.Provider>
+    );
+  }
+
   private initContracts(): void {
     const { type, names, contract } = contracts;
 
@@ -465,20 +479,6 @@ class ConnectWalletService extends React.Component<any, any> {
       }
     }
     return true;
-  }
-
-  render() {
-    return (
-      <walletConnectContext.Provider
-        value={{
-          connectorService: this,
-          connect: this.connect,
-          disconnect: this.disconnect,
-        }}
-      >
-        {this.props.children}
-      </walletConnectContext.Provider>
-    );
   }
 }
 

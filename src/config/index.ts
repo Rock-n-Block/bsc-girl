@@ -41,7 +41,7 @@ export const chain: IChainConfigData = {
 
 export const connectWalletInfo: IConnectWallet = {
   network: {
-    name: chain.name,
+    chainName: chain.name,
     chainID: chain.id,
   },
   provider: {
