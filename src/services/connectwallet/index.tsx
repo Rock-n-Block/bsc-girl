@@ -2,10 +2,12 @@ import React, { createContext, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import { ConnectWallet } from '@amfi/connect-wallet';
 import { ContractWeb3 } from '@amfi/connect-wallet/dist/interface';
+import WalletConnectProvider from '@walletconnect/web3-provider';
 import BigNumber from 'bignumber.js/bignumber';
 import { observer } from 'mobx-react';
 import { Observable } from 'rxjs';
 import Web3 from 'web3';
+import Web3Modal from 'web3modal';
 
 import { blockchains, chain, connectWalletInfo, contracts } from '../../config';
 import { rootStore } from '../../store/store';
@@ -161,12 +163,17 @@ class ConnectWalletService extends React.Component<any, any> {
           address: rootStore.user.address,
         })
           .then(async (account: any) => {
-            this.getTokenBalance(account.address, 'BSCGIRL').then((value: any) => {
-              rootStore.user.setBalance(
-                new BigNumber(value).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
-                'BSCGIRL',
-              );
-            });
+            this.getTokenBalance(account.address, 'BSCGIRL')
+              .then((value: any) => {
+                rootStore.user.setBalance(
+                  new BigNumber(value).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
+                  'BSCGIRL',
+                );
+              })
+              .catch((err: any) => {
+                console.log(123);
+                console.log(err);
+              });
             this.getTokenBalance(account.address, 'BSCGIRLMOON').then((balance: any) => {
               rootStore.user.setBalance(
                 new BigNumber(balance).dividedBy(new BigNumber(10).pow(8)).toFixed(0, 1),
@@ -195,7 +202,8 @@ class ConnectWalletService extends React.Component<any, any> {
                 localStorage.connector = providerName;
                 rootStore.user.setAddress(account.address);
                 await rootStore.user.getMe();
-                window.location.href = '/';
+                this.props.history.push('/');
+                // window.location.href = '/';
               } else {
                 localStorage.connector = providerName;
                 rootStore.user.setAddress(account.address);
@@ -216,24 +224,99 @@ class ConnectWalletService extends React.Component<any, any> {
   };
 
   public async initWalletConnect(connectName: string): Promise<boolean> {
-    const { provider, network, settings } = connectWalletInfo;
-    clog(`${provider[connectName]}, ${network}, ${settings}`);
-
-    const connecting = this.connectWallet
-      .connect(provider[connectName], network, settings)
-      .then((connected: boolean | {}) => {
-        if (connected) {
-          this.initContracts();
-        }
-        return connected;
-      })
-      .catch((err: any) => {
-        clogData('initWalletConnect providerWallet err: ', err);
-      });
-
-    return Promise.all([connecting]).then((connect: any) => {
-      return connect[0];
+    return new Promise((resolve, reject) => {
+      const { provider, network, settings } = connectWalletInfo;
+      clog(`${provider[connectName]}, ${network}, ${settings}`);
+      if (connectName === 'TrustWallet') {
+        const providerOptions = {
+          walletconnect: {
+            package: WalletConnectProvider,
+            options: {
+              infuraId: '0a84f16b8da94bada042b0203db6095f',
+              rpc: {
+                56: 'https://bsc-dataseed1.binance.org',
+              },
+              chainId: 56,
+            },
+          },
+        };
+        const web3Modal = new Web3Modal({
+          network: 'mainnet', // optional
+          cacheProvider: true, // optional
+          providerOptions, // required
+        });
+        web3Modal
+          .connect()
+          .then((web3Provider) => {
+            web3Modal.toggleModal();
+            this.connectWallet.initWeb3(web3Provider);
+            this.initContracts();
+            resolve(true);
+          })
+          // eslint-disable-next-line prefer-promise-reject-errors
+          .catch(() => reject(false));
+      } else {
+        this.connectWallet
+          .connect(provider[connectName], network, settings)
+          .then(() => {
+            this.initContracts();
+            resolve(true);
+          })
+          .catch((err: any) => {
+            clogData('initWalletConnect providerWallet err: ', err);
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject(false);
+          });
+      }
     });
+
+    // if (connectName === 'TrustWallet') {
+    //   const providerOptions = {
+    //     walletconnect: {
+    //       package: WalletConnectProvider,
+    //       options: {
+    //         rpc: {
+    //           [isProduction ? 56 : 97]: isProduction
+    //             ? 'https://bsc-dataseed1.binance.org'
+    //             : 'https://data-seed-prebsc-1-s1.binance.org:8545',
+    //         },
+    //         chainId: isProduction ? 56 : 97,
+    //       },
+    //     },
+    //   };
+    //   const web3Modal = new Web3Modal({
+    //     network: isProduction ? 'mainnet' : 'testnet', // optional
+    //     cacheProvider: true, // optional
+    //     providerOptions, // required
+    //   });
+    //   const web3ModalProvider = await web3Modal.connect();
+    //   await web3Modal.toggleModal();
+    //   this.connectWallet.initWeb3(web3ModalProvider);
+    //   connecting = [true];
+    // } else {
+    //   try {
+    //     const response = await this.connectWallet.connect(provider[connectName], network, settings);
+    //     connecting = [!!response];
+    //   } catch (err: any) {
+    //     clogData('initWalletConnect providerWallet err: ', err);
+    //   }
+    //   // const connecting = await this.connectWallet
+    //   //   .connect(provider[connectName], network, settings)
+    //   //   // .then((connected: boolean | {}) => {
+    //   //   //   if (connected) {
+    //   //   //     this.initContracts();
+    //   //   //   }
+    //   //   //   return connected;
+    //   //   // })
+    //   //   .catch((err: any) => {
+    //   //     clogData('initWalletConnect providerWallet err: ', err);
+    //   //   });
+    //
+    //   return Promise.all([connecting]).then((connect: any) => {
+    //     this.initContracts();
+    //     return connect[0];
+    //   });
+    // }
   }
 
   public disconnect(): void {
