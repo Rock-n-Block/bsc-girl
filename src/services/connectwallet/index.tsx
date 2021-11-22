@@ -48,6 +48,7 @@ class ConnectWalletService extends React.Component<any, any> {
     });
   }
 
+  // eslint-disable-next-line
   static calcTransactionAmount(amount: number | string, tokenDecimal: number) {
     return new BigNumber(amount).times(new BigNumber(10).pow(tokenDecimal)).toString(10);
   }
@@ -240,7 +241,7 @@ class ConnectWalletService extends React.Component<any, any> {
   }
 
   public Web3(): Web3 {
-    return this.connectWallet.currentWeb3();
+    return this.connectWallet.currentWeb3() as unknown as Web3;
   }
 
   async createTransaction(
@@ -397,6 +398,7 @@ class ConnectWalletService extends React.Component<any, any> {
     });
   }
 
+  // eslint-disable-next-line
   render() {
     return (
       <walletConnectContext.Provider
