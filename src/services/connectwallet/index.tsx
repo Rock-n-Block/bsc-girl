@@ -114,13 +114,13 @@ class ConnectWalletService extends React.Component<any, any> {
     return this.connectWallet.Contract(tokenName)?.methods?.balanceOf(address)?.call();
   }
 
-  public async getAccount(account: { address?: string }): Promise<any> {
+  public async getAccount(acc: { address?: string }): Promise<any> {
     return new Promise((resolve: any, reject: any) => {
       this.checkNetwork()
         .then(() => {
           this.connectWallet.getAccounts().subscribe(
             (userAccount: any) => {
-              if (!account || userAccount.address !== account.address) {
+              if (!acc || userAccount.address !== acc.address) {
                 resolve(userAccount);
                 clog(
                   `account connected: ${userAccount.address.substring(
@@ -192,13 +192,12 @@ class ConnectWalletService extends React.Component<any, any> {
                   msg: metMsg.data,
                   signedMsg,
                 });
-
                 localStorage.bsc_token = login.data.key;
                 localStorage.connector = providerName;
                 rootStore.user.setAddress(account.address);
                 await rootStore.user.getMe();
-                this.props.history.push('/');
-                // window.location.href = '/';
+                // this.props.history.push('/');
+                window.location.href = '/';
               } else {
                 localStorage.connector = providerName;
                 rootStore.user.setAddress(account.address);
@@ -240,6 +239,7 @@ class ConnectWalletService extends React.Component<any, any> {
           cacheProvider: true, // optional
           providerOptions, // required
         });
+        this.connector = web3Modal;
         web3Modal
           .connect()
           .then((web3Provider) => {
@@ -360,7 +360,9 @@ class ConnectWalletService extends React.Component<any, any> {
   }
 
   public signMsg(msg: string, providerName: string, address: string): any {
-    this.connector = this.connectWallet.getConnector();
+    if (providerName === 'TrustWallet') {
+      return this.Web3().eth.personal.sign(msg, address, '');
+    }
     if (providerName === 'MetaMask') {
       return this.Web3().eth.personal.sign(msg, address, '');
     }
