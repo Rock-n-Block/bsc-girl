@@ -148,6 +148,7 @@
         width: 100px;
         @include b(900) {
           margin: 0;
+          width: 70px;
         }
       }
     }
