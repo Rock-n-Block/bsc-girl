@@ -4,7 +4,7 @@ import { IChainConfigData, IConnectWallet, IContracts } from '../types';
 
 export const isProduction = true;
 
-export const show_logs = false;
+export const show_logs = true;
 
 export const wallets: string[] = ['MetaMask', 'WalletConnect'];
 
@@ -41,13 +41,25 @@ export const chain: IChainConfigData = {
 
 export const connectWalletInfo: IConnectWallet = {
   network: {
-    name: chain.name,
+    chainName: chain.name,
     chainID: chain.id,
   },
   provider: {
     MetaMask: { name: 'MetaMask' },
     WalletConnect: {
       name: 'WalletConnect',
+      useProvider: chain.useProvider,
+      provider: {
+        rpc: {
+          rpc: {
+            [chain.id]: chain.rpc,
+          },
+          chainId: chain.id,
+        },
+      },
+    },
+    TrustWallet: {
+      name: 'TrustWallet',
       useProvider: chain.useProvider,
       provider: {
         rpc: {

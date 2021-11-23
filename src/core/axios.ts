@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import { clogData } from '../utils/logger';
 
-axios.defaults.baseURL = 'https://bscgirl.net/api/v1';
+axios.defaults.baseURL = 'https://dev2bscgirl.rocknblock.io/api/v1';
+// axios.defaults.baseURL = 'https://bscgirl.net/api/v1';
 
 axios.interceptors.request.use(
   (config) => {

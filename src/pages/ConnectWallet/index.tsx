@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import ArrowLeftBlack from '../../assets/img/icons/arrow-left-black.svg';
 import ArrowLeftRed from '../../assets/img/icons/arrow-left-red.svg';
 import Metamask from '../../assets/img/icons/metamask-logo.svg';
+import TrustWallet from '../../assets/img/icons/trustWallet.svg';
 import WalletConnect from '../../assets/img/icons/wallet-connect-logo.svg';
 import { useWalletConnectService } from '../../services/connectwallet';
 
@@ -48,6 +49,14 @@ const ConnectWalletPage: React.FC = observer(() => {
           >
             <img src={WalletConnect} alt="WalletConnect logo" className="connectWallet" />
             WalletConnect
+          </button>
+          <button
+            type="button"
+            className="connect__buttons__item"
+            onClick={() => connectWallet('TrustWallet')}
+          >
+            <img src={TrustWallet} alt="TrustWallet logo" className="trustWallet" />
+            Trust Wallet
           </button>
         </div>
         <div className="connect__footer">

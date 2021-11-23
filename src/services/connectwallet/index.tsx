@@ -2,10 +2,12 @@ import React, { createContext, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import { ConnectWallet } from '@amfi/connect-wallet';
 import { ContractWeb3 } from '@amfi/connect-wallet/dist/interface';
+import WalletConnectProvider from '@walletconnect/web3-provider';
 import BigNumber from 'bignumber.js/bignumber';
 import { observer } from 'mobx-react';
 import { Observable } from 'rxjs';
 import Web3 from 'web3';
+import Web3Modal from 'web3modal';
 
 import { blockchains, chain, connectWalletInfo, contracts } from '../../config';
 import { rootStore } from '../../store/store';
@@ -26,17 +28,13 @@ const walletConnectContext = createContext<any>({
 
 @observer
 class ConnectWalletService extends React.Component<any, any> {
-  static calcTransactionAmount(amount: number | string, tokenDecimal: number) {
-    return new BigNumber(amount).times(new BigNumber(10).pow(tokenDecimal)).toString(10);
-  }
+  public accountChangedObs: any;
 
   private wallet: any;
 
   private readonly connectWallet: ConnectWallet;
 
   private connector: any | undefined;
-
-  public accountChangedObs: any;
 
   constructor(props: any) {
     super(props);
@@ -50,6 +48,17 @@ class ConnectWalletService extends React.Component<any, any> {
         subscriber.next();
       });
     });
+  }
+
+  // eslint-disable-next-line
+  static calcTransactionAmount(amount: number | string, tokenDecimal: number) {
+    return new BigNumber(amount).times(new BigNumber(10).pow(tokenDecimal)).toString(10);
+  }
+
+  static getMethodInterface(abi: Array<any>, methodName: string) {
+    return abi.filter((m) => {
+      return m.name === methodName;
+    })[0];
   }
 
   componentDidMount() {
@@ -105,13 +114,13 @@ class ConnectWalletService extends React.Component<any, any> {
     return this.connectWallet.Contract(tokenName)?.methods?.balanceOf(address)?.call();
   }
 
-  public async getAccount(account: { address?: string }): Promise<any> {
+  public async getAccount(acc: { address?: string }): Promise<any> {
     return new Promise((resolve: any, reject: any) => {
       this.checkNetwork()
         .then(() => {
           this.connectWallet.getAccounts().subscribe(
             (userAccount: any) => {
-              if (!account || userAccount.address !== account.address) {
+              if (!acc || userAccount.address !== acc.address) {
                 resolve(userAccount);
                 clog(
                   `account connected: ${userAccount.address.substring(
@@ -145,12 +154,6 @@ class ConnectWalletService extends React.Component<any, any> {
           clogData('checkNetwork', err);
         });
     });
-  }
-
-  static getMethodInterface(abi: Array<any>, methodName: string) {
-    return abi.filter((m) => {
-      return m.name === methodName;
-    })[0];
   }
 
   public connect = (providerName: string) => {
@@ -189,11 +192,11 @@ class ConnectWalletService extends React.Component<any, any> {
                   msg: metMsg.data,
                   signedMsg,
                 });
-
                 localStorage.bsc_token = login.data.key;
                 localStorage.connector = providerName;
                 rootStore.user.setAddress(account.address);
                 await rootStore.user.getMe();
+                // this.props.history.push('/');
                 window.location.href = '/';
               } else {
                 localStorage.connector = providerName;
@@ -215,24 +218,100 @@ class ConnectWalletService extends React.Component<any, any> {
   };
 
   public async initWalletConnect(connectName: string): Promise<boolean> {
-    const { provider, network, settings } = connectWalletInfo;
-    clog(`${provider[connectName]}, ${network}, ${settings}`);
-
-    const connecting = this.connectWallet
-      .connect(provider[connectName], network, settings)
-      .then((connected: boolean | {}) => {
-        if (connected) {
-          this.initContracts();
-        }
-        return connected;
-      })
-      .catch((err: any) => {
-        clogData('initWalletConnect providerWallet err: ', err);
-      });
-
-    return Promise.all([connecting]).then((connect: any) => {
-      return connect[0];
+    return new Promise((resolve, reject) => {
+      const { provider, network, settings } = connectWalletInfo;
+      clog(`${provider[connectName]}, ${network}, ${settings}`);
+      if (connectName === 'TrustWallet') {
+        const providerOptions = {
+          walletconnect: {
+            package: WalletConnectProvider,
+            options: {
+              infuraId: '0a84f16b8da94bada042b0203db6095f',
+              rpc: {
+                56: 'https://bsc-dataseed1.binance.org',
+              },
+              chainId: 56,
+            },
+          },
+        };
+        const web3Modal = new Web3Modal({
+          network: 'mainnet', // optional
+          cacheProvider: true, // optional
+          providerOptions, // required
+        });
+        this.connector = web3Modal;
+        web3Modal
+          .connect()
+          .then((web3Provider) => {
+            web3Modal.toggleModal();
+            this.connectWallet.initWeb3(web3Provider);
+            this.initContracts();
+            resolve(true);
+          })
+          // eslint-disable-next-line prefer-promise-reject-errors
+          .catch(() => reject(false));
+      } else {
+        this.connectWallet
+          .connect(provider[connectName], network, settings)
+          .then(() => {
+            this.initContracts();
+            resolve(true);
+          })
+          .catch((err: any) => {
+            clogData('initWalletConnect providerWallet err: ', err);
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject(false);
+          });
+      }
     });
+
+    // if (connectName === 'TrustWallet') {
+    //   const providerOptions = {
+    //     walletconnect: {
+    //       package: WalletConnectProvider,
+    //       options: {
+    //         rpc: {
+    //           [isProduction ? 56 : 97]: isProduction
+    //             ? 'https://bsc-dataseed1.binance.org'
+    //             : 'https://data-seed-prebsc-1-s1.binance.org:8545',
+    //         },
+    //         chainId: isProduction ? 56 : 97,
+    //       },
+    //     },
+    //   };
+    //   const web3Modal = new Web3Modal({
+    //     network: isProduction ? 'mainnet' : 'testnet', // optional
+    //     cacheProvider: true, // optional
+    //     providerOptions, // required
+    //   });
+    //   const web3ModalProvider = await web3Modal.connect();
+    //   await web3Modal.toggleModal();
+    //   this.connectWallet.initWeb3(web3ModalProvider);
+    //   connecting = [true];
+    // } else {
+    //   try {
+    //     const response = await this.connectWallet.connect(provider[connectName], network, settings);
+    //     connecting = [!!response];
+    //   } catch (err: any) {
+    //     clogData('initWalletConnect providerWallet err: ', err);
+    //   }
+    //   // const connecting = await this.connectWallet
+    //   //   .connect(provider[connectName], network, settings)
+    //   //   // .then((connected: boolean | {}) => {
+    //   //   //   if (connected) {
+    //   //   //     this.initContracts();
+    //   //   //   }
+    //   //   //   return connected;
+    //   //   // })
+    //   //   .catch((err: any) => {
+    //   //     clogData('initWalletConnect providerWallet err: ', err);
+    //   //   });
+    //
+    //   return Promise.all([connecting]).then((connect: any) => {
+    //     this.initContracts();
+    //     return connect[0];
+    //   });
+    // }
   }
 
   public disconnect(): void {
@@ -240,7 +319,7 @@ class ConnectWalletService extends React.Component<any, any> {
   }
 
   public Web3(): Web3 {
-    return this.connectWallet.currentWeb3();
+    return this.connectWallet.currentWeb3() as unknown as Web3;
   }
 
   async createTransaction(
@@ -281,7 +360,9 @@ class ConnectWalletService extends React.Component<any, any> {
   }
 
   public signMsg(msg: string, providerName: string, address: string): any {
-    this.connector = this.connectWallet.getConnector();
+    if (providerName === 'TrustWallet') {
+      return this.Web3().eth.personal.sign(msg, address, '');
+    }
     if (providerName === 'MetaMask') {
       return this.Web3().eth.personal.sign(msg, address, '');
     }
@@ -397,6 +478,21 @@ class ConnectWalletService extends React.Component<any, any> {
     });
   }
 
+  // eslint-disable-next-line
+  render() {
+    return (
+      <walletConnectContext.Provider
+        value={{
+          connectorService: this,
+          connect: this.connect,
+          disconnect: this.disconnect,
+        }}
+      >
+        {this.props.children}
+      </walletConnectContext.Provider>
+    );
+  }
+
   private initContracts(): void {
     const { type, names, contract } = contracts;
 
@@ -465,20 +561,6 @@ class ConnectWalletService extends React.Component<any, any> {
       }
     }
     return true;
-  }
-
-  render() {
-    return (
-      <walletConnectContext.Provider
-        value={{
-          connectorService: this,
-          connect: this.connect,
-          disconnect: this.disconnect,
-        }}
-      >
-        {this.props.children}
-      </walletConnectContext.Provider>
-    );
   }
 }
 
