@@ -4,7 +4,7 @@ import { IChainConfigData, IConnectWallet, IContracts } from '../types';
 
 export const isProduction = true;
 
-export const show_logs = true;
+export const show_logs = false;
 
 export const wallets: string[] = ['MetaMask', 'WalletConnect'];
 
