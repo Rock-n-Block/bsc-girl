@@ -118,8 +118,9 @@ class ConnectWalletService extends React.Component<any, any> {
     return new Promise((resolve: any, reject: any) => {
       this.checkNetwork()
         .then(() => {
-          this.connectWallet.getAccounts().subscribe(
-            (userAccount: any) => {
+          this.connectWallet
+            .getAccounts()
+            .then((userAccount: any) => {
               if (!acc || userAccount.address !== acc.address) {
                 resolve(userAccount);
                 clog(
@@ -132,8 +133,8 @@ class ConnectWalletService extends React.Component<any, any> {
                   )}`,
                 );
               }
-            },
-            (err: any) => {
+            })
+            .catch((err: any) => {
               clogData('getAccount wallet connect - get user account err: ', err.message.message);
               rootStore.user.disconnect();
               this.disconnect();
@@ -146,8 +147,7 @@ class ConnectWalletService extends React.Component<any, any> {
                 rootStore.modals.error.setErr(err.message.text);
               }
               reject(err);
-            },
-          );
+            });
         })
         .catch((err) => {
           rootStore.modals.error.setErr(`⚠️ something went wrong`);
@@ -196,8 +196,8 @@ class ConnectWalletService extends React.Component<any, any> {
                 localStorage.connector = providerName;
                 rootStore.user.setAddress(account.address);
                 await rootStore.user.getMe();
-                // this.props.history.push('/');
-                window.location.href = '/';
+                this.props.history.push('/');
+                // window.location.href = '/';
               } else {
                 localStorage.connector = providerName;
                 rootStore.user.setAddress(account.address);
