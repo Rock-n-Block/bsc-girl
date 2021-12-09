@@ -87,6 +87,14 @@
       }
     }
 
+    .red-border {
+      border: 3px solid red;
+    }
+
+    &__error {
+      color: red;
+    }
+
     &__footer {
       margin-bottom: 5px;
       display: flex;

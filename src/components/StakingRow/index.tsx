@@ -89,7 +89,7 @@ const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInf
           <div className="title">Recent {tokenInfo[poolInfo.rewardsToken]?.name} profit</div>
           {new BigNumber(poolInfo.infoForUser.reward)
             .dividedBy(new BigNumber(10).pow(poolInfo.infoForUser.rewardDecimals))
-            .toFixed(2, 1)}
+            .toFixed(5, 1)}
         </div>
         <div className="stake-row__apy">
           <div className="title">APY</div>
@@ -102,7 +102,7 @@ const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInf
           <div className="title">Total staked</div>
           {new BigNumber(+poolInfo.amountStaked)
             .dividedBy(new BigNumber(10).pow(poolInfo.infoForUser.stakedDecimals))
-            .toFixed(2, 1)}
+            .toFixed(5, 1)}
         </div>
         {poolInfo.infoForUser.isUnlocked ? (
           <button
@@ -127,7 +127,7 @@ const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInf
           <div className="stake-row__get-profit__content">
             {new BigNumber(poolInfo.infoForUser.reward)
               .dividedBy(new BigNumber(10).pow(poolInfo.infoForUser.rewardDecimals))
-              .toFixed(2, 1)}
+              .toFixed(5, 1)}
             <button type="button" className="gradient-button" onClick={handleWithdraw}>
               {isLoading ? 'Wait...' : 'Collect'}
             </button>
@@ -138,7 +138,7 @@ const StakingRow: React.FC<TypeStakingRowProps> = observer(({ poolInfo, tokenInf
           <div className="stake-row__get-profit__content">
             {new BigNumber(poolInfo.infoForUser.amount)
               .dividedBy(new BigNumber(10).pow(poolInfo.infoForUser.stakedDecimals))
-              .toFixed(2, 1)}
+              .toFixed(5, 1)}
             <div>
               <button type="button" className="gradient-button" onClick={handleRemovePart}>
                 -

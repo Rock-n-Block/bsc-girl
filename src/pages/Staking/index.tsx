@@ -117,7 +117,9 @@ const StakingPage: React.FC = observer(() => {
       rewardsToken: string,
     ): Promise<IUserInfo> => {
       let isUnlocked = false;
-      if (stakeholders.find((holder: string) => holder.toLowerCase() === user.address)) {
+      if (
+        stakeholders.find((holder: string) => holder.toLowerCase() === user.address.toLowerCase())
+      ) {
         isUnlocked = true;
         const processData = await connector.connectorService
           .getContract('Staking')

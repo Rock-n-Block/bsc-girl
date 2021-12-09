@@ -99,7 +99,7 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
             {poolInfo.infoForUser.reward
               ? new BigNumber(poolInfo.infoForUser.reward)
                   .dividedBy(new BigNumber(10).pow(poolInfo.infoForUser.rewardDecimals))
-                  .toFixed(2, 1)
+                  .toFixed(5, 1)
               : 0}
           </div>
           {poolInfo.infoForUser.isUnlocked && poolInfo.infoForUser.reward ? (
@@ -123,7 +123,7 @@ const StakingCard: React.FC<TypeStakingCardProps> = observer(({ poolInfo, tokenI
               <div className="staked__amount__value">
                 {new BigNumber(poolInfo.infoForUser.amount)
                   .dividedBy(new BigNumber(10).pow(poolInfo.infoForUser.stakedDecimals))
-                  .toFixed(2, 1)}
+                  .toFixed(5, 1)}
               </div>
               <div className="staked__amount__edit">
                 <button
