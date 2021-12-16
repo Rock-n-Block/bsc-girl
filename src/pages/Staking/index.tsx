@@ -217,7 +217,7 @@ const StakingPage: React.FC = observer(() => {
 
   const handleOnlyStaked = () => {
     const filteredData = poolsData.filter((pool) =>
-      pool.stakeholders.find((holder) => holder.toLowerCase() === user.address),
+      pool.stakeholders.find((holder) => holder.toLowerCase() === user.address.toLowerCase()),
     );
     if (!isStakedOnly) {
       setPoolsData(filteredData);
